@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .ping-pong{
+        @apply duration-100 relative block ease-in-out 
+    }
+    .ping-wrapper:hover{
+        @apply text-theme-secondary
+    }
+    .ping-wrapper:hover .ping-pong::after{
+        @apply bg-theme-secondary
+    }
+    .ping-pong::after{
+
+        @apply size-6 bg-slate-700  text-white inline-flex items-center justify-center rounded-full p-2 z-10 absolute -top-2 left-1/2
+    }
+}
