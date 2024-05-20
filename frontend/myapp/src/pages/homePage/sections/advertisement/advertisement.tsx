@@ -1,6 +1,7 @@
 import React from 'react'
 import image from "../../../../assets/images/lucas-favre-4x-67z_TaGo-unsplash.jpg"
 import "./advertisement-style.css"
+import Button from '../../../../components/Button/button'
 const AdvertisementPage = () => {
   console.log(image)
   return (
@@ -13,6 +14,7 @@ const AdvertisementPage = () => {
               <span className='header-description09a break-all text-xl font-light my-4 leading-relaxed  max-w-[600px] text-wrap'>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae architecto sint totam, dolor obcaecati, accusantium nihil praesentium deleniti necessitatibus accusamus adipisci ex, debitis itaque.
               </span>
+              <Button  type='submit' content='button' size='small'></Button>
             </div>
           </div>
         </div>
