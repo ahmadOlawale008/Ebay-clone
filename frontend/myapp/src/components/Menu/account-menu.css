@@ -4,7 +4,7 @@
 
 @layer base{
     .ashau8{
-        background: linear-gradient(356deg, transparent, #c7ced7);
+        background: linear-gradient(350deg, transparent, #dee6f3);
         @apply pt-8
     }
 }
