@@ -9,7 +9,7 @@ const NavbarInto = () => {
     return (
         <nav className='bg-white px-12 py-3 border-b border-gray-400/40'>
             <div className='flex flex-row'>
-                <h4 className='text-xl flex-1 font-black font-petit'><span className='  text-theme-secondary'>Eaze</span> sales</h4>
+                <h4 className='text-3xl flex-1 font-cursive'><span className='font-black text-theme-secondary'>Eaze</span> sales</h4>
                 <div className=''>
                     <div className='flex flex-row items-center relative flex-nowrap gap-x-6'>
                         <span className='text-base'>
@@ -32,13 +32,13 @@ const NavbarInto = () => {
                                 Sign Up
                             </button>
                         </span>
-                        <span className='after:content-[""] cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-theme-secondary after:absolute after:right-1 after:top-1 relative'>
+                        <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-theme-secondary after:absolute after:right-1 after:top-1 relative'>
                             <NotificationIcon className='size-7  hover:fill-slate-700  fill-slate-500' />
                         </span>
-                        <div ref={accountMenuRef} className="">
-                            <motion.div onMouseEnter={() => setOpenAccountMenuState(true)} className='flex cursor-pointer relative items-center'>
-                                <span className='border inline-flex items-center justify-center m-auto size-9 rounded-full bg-theme-customPrimary p-1 '>
-                                    <UserIcon className='size-9 content-[1] relative cursor-pointer fill-white' />
+                        <div className="">
+                            <motion.div ref={accountMenuRef} onMouseEnter={() => setOpenAccountMenuState(true)} className='flex cursor-pointer gap-x-2 relative items-center'>
+                                <span className='border inline-flex items-center justify-center m-auto size-7 rounded-full bg-theme-customPrimary p-1 '>
+                                    <UserIcon className='size-7 content-[1] relative cursor-pointer fill-white' />
                                 </span>
                                 User
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
