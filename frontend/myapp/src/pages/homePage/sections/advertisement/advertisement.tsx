@@ -14,7 +14,9 @@ const AdvertisementPage = () => {
               <span className='header-description09a break-all text-xl font-light my-4 leading-relaxed  max-w-[600px] text-wrap'>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae architecto sint totam, dolor obcaecati, accusantium nihil praesentium deleniti necessitatibus accusamus adipisci ex, debitis itaque.
               </span>
-              <Button  type='submit' content='button' size='small'></Button>
+              <Button  color='primary' size='large' variant='filled' >
+                <a href="">Hello</a>
+              </Button>
             </div>
           </div>
         </div>

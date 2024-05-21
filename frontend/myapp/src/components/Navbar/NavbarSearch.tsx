@@ -17,7 +17,7 @@ const NavbarSearch = () => {
             <div className='col-span-3 '>
                 <form className='h-fit rounded-md'>
                     <div className="flex items-center flex-1">
-                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative cursor-pointer  ring-slate-400/15 ring-inset ring-2 rounded-md z-[1] bg-gray-200  py-3.5 px-2">
+                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative cursor-pointer  ring-slate-400/10 ring-inset ring-2 rounded-md z-[1] bg-gray-200  py-3.5 px-2">
                             <div className="flex items-center gap-x-1">
                                 <span className='text-base font-semibold text-nowrap text-slate-700'>
                                     {selectedCategory}
