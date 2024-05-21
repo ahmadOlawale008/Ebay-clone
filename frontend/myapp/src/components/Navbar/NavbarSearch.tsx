@@ -1,6 +1,6 @@
 import React, { SelectHTMLAttributes, useEffect, useRef, useState } from 'react'
-import Searchicon from '../../assets/icons/searchicon'
-import ShoppingCartIcon from '../../assets/icons/shopping-cart'
+import {SearchIcon} from '../../assets/icons/icons'
+import {ShoppingCartIcon} from '../../assets/icons/icons'
 import { motion } from "framer-motion"
 const NavbarSearch = () => {
     const [menu, setMenu] = useState(1)
@@ -38,7 +38,9 @@ const NavbarSearch = () => {
                         </div>
                         <div className='relative bg-gray-100 w-full'>
                             <input type="search" name="" className='w-full bg-gray-100 focus:bg-slate-50  pl-10 outline-none bg-transparent relative py-3 px-2  tracking-wider text-lg' placeholder='Search' id="" />
-                            <Searchicon className='absolute left-2 w-7 fill-gray-500 h-full top-0' />
+                            <div className="flex items-center left-2 top-0 absolute justify-center h-full w-fit">
+                                <SearchIcon className='text-3xl fill-gray-500 ' />
+                            </div>
                         </div>
                     </div>
                 </form>

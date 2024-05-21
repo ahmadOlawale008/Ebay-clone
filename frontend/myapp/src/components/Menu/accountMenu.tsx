@@ -25,7 +25,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ anchorOrigin, setOpen }) => {
             <div className="w-full mx-auto  items-center">
                 <div className="w-full flex flex-col ashau8 gap-y-4 justify-center mx-auto">
                     <span className='border ring-2 ring-slate-300 inline-flex items-center justify-center m-auto size-20 rounded-full bg-slate-500 p-1 '>
-                        <UserIcon className=' w-full content-[1] relative cursor-pointer fill-white' />
+                        <UserIcon className='  text-5xl content-[1] relative cursor-pointer fill-white' />
                     </span>
                     <div className="text-center tracking-wide block">
                         <p className="text-center text-lg ">
@@ -55,7 +55,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ anchorOrigin, setOpen }) => {
                     </div>
                     <hr className="bg-slate-700/20 h-[2px]" />
                     <div className="px-2 items-center gap-x-3 flex cursor-pointer hover:bg-slate-300/30 py-3">
-                        <SettingsIcon className="size-8 fill-gray-500" />
+                        <SettingsIcon className="text-3xl fill-gray-500" />
                         <div className="">
                             Settings
                         </div>

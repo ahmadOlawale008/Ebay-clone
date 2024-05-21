@@ -20,7 +20,6 @@
         @apply bg-orange-500 text-slate-100
     }    
     html{
-    overflow: hidden;
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
