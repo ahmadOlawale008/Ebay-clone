@@ -3,6 +3,7 @@ import NotificationIcon from '../../assets/icons/notificationicon'
 import UserIcon from '../../assets/icons/userIcon'
 import AccountMenu from '../Menu/accountMenu'
 import { motion } from "framer-motion"
+import Button from '../Button/button'
 const NavbarInto = () => {
     const [accountMenuState, setOpenAccountMenuState] = useState(false)
     const accountMenuRef = useRef<HTMLDivElement | null>(null)
@@ -23,14 +24,14 @@ const NavbarInto = () => {
                         </span>
                         <hr className='w-[1px] h-5 bg-gray-500' />
                         <span>
-                            <button className='text-base inline-flex font-medium px-3 py-1 ease-in-out transition-all rounded-md hover:bg-gray-100/55 bg-transparent border-none'>
+                            <Button size='small' baseClassName='shadow-none' ringEffect={false} color='primary' >
                                 Sign in
-                            </button>
+                            </Button>
                         </span>
                         <span>
-                            <button className='text-base px-3 inline-flex font-medium py-1 ease-in-out transition-all rounded-md hover:bg-gray-100/55 bg-transparent border-none'>
+                            <Button size='small' baseClassName='shadow-none' ringEffect={false} color='primary' >
                                 Sign Up
-                            </button>
+                            </Button>
                         </span>
                         <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-theme-secondary after:absolute after:right-1 after:top-1 relative'>
                             <NotificationIcon className='size-7  hover:fill-slate-700  fill-slate-500' />
