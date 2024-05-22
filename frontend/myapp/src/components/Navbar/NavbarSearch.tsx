@@ -48,7 +48,7 @@ const NavbarSearch = () => {
             <div className='col-span-1 ml-auto items-end'>
                 <div className='flex ping-wrapper items-center gap-x-2 text-theme-primary cursor-pointer'>
                     <span className='ping-pong after:content-["1"]'>
-                        <ShoppingCartIcon className='size-8' />
+                        <ShoppingCartIcon className='text-3xl' />
                     </span>
                     <span className='font-medium'>
                         Cart
