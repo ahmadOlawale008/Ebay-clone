@@ -7,4 +7,7 @@
         scroll-behavior: smooth;
         scrollbar-width: none;
     }
+    .gradient-overlapping-cardai{
+        background: linear-gradient(45deg, #34292994, #5c58581f);
+    }
 }

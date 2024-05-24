@@ -14,7 +14,7 @@ const AdvertisementPage = () => {
                 <span className='header-description09a  break-all text-xl font-normal my-4 leading-relaxed  max-w-[600px] text-wrap'>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae architecto sint totam, dolor obcaecati, accusantium nihil praesentium deleniti necessitatibus accusamus adipisci ex, debitis itaque.
                 </span>
-                <span className="font-bold  text-2xl items-baseline gap-x-2">
+                <span className="font-semibold  text-3xl items-baseline gap-x-2">
                   <span className=''>
                     $125.00
                   </span>
