@@ -1,11 +1,7 @@
-import React from 'react'
-import onlineSalesIllustration from "../../../../assets/images/undraw_shopping_app_flsj (2).svg"
-import starImage from "../../../../assets/images/undraw_fun-star.svg"
-import underlineImage from "../../../../assets/images/undraw_fun-underline.svg"
 import "./advertisement-style.css"
 import Button from '../../../../components/Button/button'
-import {FunUnderlineIcon} from '../../../../assets/icons/icons'
-import {SettingsIcon} from '../../../../assets/icons/icons'
+import { FunUnderlineIcon } from '../../../../assets/icons/icons'
+import shopIllustationIcon from "../../../../assets/icons/21727022_6505892.svg"
 const AdvertisementPage = () => {
   return (
     <div>
@@ -18,22 +14,22 @@ const AdvertisementPage = () => {
                 <span className='header-description09a  break-all text-xl font-normal my-4 leading-relaxed  max-w-[600px] text-wrap'>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae architecto sint totam, dolor obcaecati, accusantium nihil praesentium deleniti necessitatibus accusamus adipisci ex, debitis itaque.
                 </span>
-                <div className="inline-flex font-bold text-2xl items-baseline gap-x-2">
-                  <span className='font-mono'>
+                <span className="font-bold  text-2xl items-baseline gap-x-2">
+                  <span className=''>
                     $125.00
                   </span>
-                  <sub className=' line-through  font-semibold italic text-lg stroke-slate-900'>
+                  <sub className=' line-through  font-normal italic text-lg stroke-slate-900'>
                     $ 500.00
                   </sub>
-                </div>
+                </span>
                 <a href="" className='font-mono'>
-                  <Button  iconPosition='start' icon={<svg className='w-[1em] h-[1em] text-2xl' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#e8eaed"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M5 6h14c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1 .45-1 1s.45 1 1 1zm15.16 1.8c-.09-.46-.5-.8-.98-.8H4.82c-.48 0-.89.34-.98.8l-1 5c-.12.62.35 1.2.98 1.2H4v5c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-5h4v5c0 .55.45 1 1 1s1-.45 1-1v-5h.18c.63 0 1.1-.58.98-1.2l-1-5zM12 18H6v-4h6v4z" /></svg>} baseClassName='min-w-[130px] py-3 text-white text-2xl'  color='secondary'  variant='filled' >
-                  Sell
-                  </Button>                  
+                  <Button iconPosition='start' icon={<svg className='w-[1em] h-[1em] text-2xl' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#e8eaed"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M5 6h14c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1 .45-1 1s.45 1 1 1zm15.16 1.8c-.09-.46-.5-.8-.98-.8H4.82c-.48 0-.89.34-.98.8l-1 5c-.12.62.35 1.2.98 1.2H4v5c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-5h4v5c0 .55.45 1 1 1s1-.45 1-1v-5h.18c.63 0 1.1-.58.98-1.2l-1-5zM12 18H6v-4h6v4z" /></svg>} baseClassName='min-w-[130px] py-3 text-white text-2xl' color='secondary' variant='filled' >
+                    Sell
+                  </Button>
                 </a>
               </div>
               <div className="flex relative justify-end col-span-3">
-                <img src={onlineSalesIllustration} className='relative w-[100%] lg:w-[400px] md:w-[300px] sele' alt="shopping sale illustration" />
+                <img style={{ fill: "#" }} src={shopIllustationIcon} className='relative min-w-[100%]    sele' alt="shopping sale illustration" />
               </div>
             </div>
           </div>
