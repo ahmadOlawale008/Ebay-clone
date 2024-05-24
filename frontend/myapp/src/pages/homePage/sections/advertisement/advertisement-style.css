@@ -7,4 +7,7 @@
         /* @apply grayscale; */
         background: linear-gradient(45deg, #1f1e1e7a, #19141469), url("../../../../assets/images/lucas-favre-4x-67z_TaGo-unsplash.jpg")
     }
+    .ads9oajA{
+        @apply w-full bg-no-repeat
+    }
 }

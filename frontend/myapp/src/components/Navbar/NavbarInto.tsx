@@ -10,7 +10,7 @@ const NavbarInto = () => {
     return (
         <nav className='bg-white px-12 py-3 border-b border-gray-400/40'>
             <div className='flex flex-row'>
-                <h4 className='text-3xl flex-1 font-cursive'><span className='font-black text-theme-secondary'>Eaze</span> sales</h4>
+                <h4 className='text-3xl flex-1 font-cursive'><span className='font-black text-secondary'>Eaze</span> sales</h4>
                 <div className=''>
                     <div className='flex flex-row items-center relative flex-nowrap gap-x-6'>
                         <span className='text-base'>
@@ -24,21 +24,21 @@ const NavbarInto = () => {
                         </span>
                         <hr className='w-[1px] h-5 bg-gray-500' />
                         <span>
-                            <Button size='small' baseClassName='shadow-none' ringEffect={false} color='primary' >
+                            <button className='text-base inline-flex font-medium px-3 py-1 ease-in-out transition-all rounded-md hover:bg-gray-100/55 bg-transparent border-none'>
                                 Sign in
-                            </Button>
+                            </button>
                         </span>
                         <span>
-                            <Button size='small' baseClassName='shadow-none' ringEffect={false} color='primary' >
+                            <button className='text-base px-3 inline-flex font-medium py-1 ease-in-out transition-all rounded-md hover:bg-gray-100/55 bg-transparent border-none'>
                                 Sign Up
-                            </Button>
+                            </button>
                         </span>
-                        <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-theme-secondary after:absolute after:right-1 after:top-1 relative'>
-                            <NotificationIcon className='size-7  hover:fill-slate-700  fill-slate-500' />
+                        <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-secondary after:absolute after:right-1 after:top-1 relative'>
+                            <NotificationIcon className='text-2xl hover:fill-slate-700  fill-slate-500' />
                         </span>
                         <div className="">
                             <motion.div ref={accountMenuRef} onMouseEnter={() => setOpenAccountMenuState(true)} className='flex cursor-pointer gap-x-2 relative items-center'>
-                                <span className='border inline-flex items-center justify-center m-auto size-7 rounded-full bg-theme-customPrimary p-1 '>
+                                <span className='border inline-flex items-center justify-center m-auto size-7 rounded-full bg-primary-dark p-1 '>
                                     <UserIcon className='size-7 content-[1] relative cursor-pointer fill-white' />
                                 </span>
                                 User

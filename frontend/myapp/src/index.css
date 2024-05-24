@@ -17,12 +17,13 @@
 
 @layer base{
     ::selection{
-        @apply bg-orange-500 text-slate-100
+        @apply bg-orange-600 text-slate-100
     }    
     html{
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
+    overflow-x: hidden;
     @apply font-sans 
 }
 }

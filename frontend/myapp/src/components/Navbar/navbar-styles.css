@@ -7,13 +7,13 @@
         @apply duration-100 relative block ease-in-out 
     }
     .ping-wrapper:hover{
-        @apply text-theme-secondary
+        @apply text-secondary
     }
     .ping-wrapper:hover .ping-pong::after{
-        @apply bg-theme-secondary
+        @apply bg-secondary
     }
     .ping-pong::after{
 
-        @apply size-6 bg-slate-700  text-white inline-flex items-center justify-center rounded-full p-2 z-10 absolute -top-2 left-1/2
+        @apply size-6 bg-slate-700 ring-2 ring-neutral-50 text-white inline-flex items-center justify-center rounded-full p-2 z-10 absolute -top-2 left-1/2
     }
 }
