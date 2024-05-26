@@ -1,7 +1,6 @@
 import React, { MouseEventHandler, UIEventHandler, useEffect, useRef, useState } from 'react'
 import { motion } from "framer-motion"
 import "./topcategories-styles.css"
-import clotheImage from "../../../../assets/images/sarah-dorweiler-gUPiTDBdRe4-unsplash.jpg"
 import foodImage from "../../../../assets/images/thomas-le-pRJhn4MbsMM-unsplash.jpg"
 
 import Button from '../../../../components/Button/button'
