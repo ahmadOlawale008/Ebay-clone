@@ -1,51 +1,22 @@
-import React, { lazy } from 'react'
-import closetClothes from "../../../../assets/icons/closet-clothes-furniture-2-svgrepo-com.svg"
-import devicesIcon from "../../../../assets/icons/devices-svgrepo-com.svg"
-import foodDinnerIcon from "../../../../assets/icons/food-dinner-svgrepo-com.svg"
-import gemIcon from "../../../../assets/icons/gem-svgrepo-com.svg"
-import phoneMobileIcon from "../../../../assets/icons/phone-mobile-user-svgrepo-com.svg"
-import shoeIcon from "../../../../assets/icons/sports-shoes-1-svgrepo-com.svg"
+import { motion } from 'framer-motion'
 import Button from '../../../../components/Button/button'
+import { ScrollContent } from './scrollContent'
+import { useScroll } from 'framer-motion'
 const ImageScrolll = () => {
-    const scrollContent = [{
-        id: 1,
-        src: closetClothes,
-        category: "Clothes",
-    },
-    {
-        id: 2,
-        src: devicesIcon,
-        category: "Devices",
-    },
-    {
-        id: 3,
-        src: foodDinnerIcon,
-        category: "Food",
-    },
-    {
-        id: 4,
-        src: gemIcon,
-        category: "Jewelries",
-    },
-    {
-        id: 5,
-        src: phoneMobileIcon,
-        category: "Mobile Phone"
-    },
-    {
-        id: 6,
-        src: shoeIcon,
-        category: "Shoe"
-    }
-    ]
-    console.log(scrollContent)
+    const {scrollYProgress} = useScroll()
     return (
-        <div className=' border-t border-b border-black'>
-            <div className="flex flex-row justify-evenly items-start">
-                {scrollContent.map((d)=> <div key={d.id} className='flex flex-col items-center justify-center'>
-                    <Button color='secondary' size='large' icon={d.src}>{d.category}</Button>
+        <div className='border-y-4 border-neutal-900 border-slate-200'>
+            <motion.div className="flex w-full overflow-hidden flex-row  justify-evenly items-start">
+                {ScrollContent.map((d) => <div key={d.id} className='flex flex-1 basis-full flex-col items-center'>
+                    <Button baseClassName='px-3 flex w-full flex-col active:scale-1 active:shadow-none !text-xl' style={{fontWeight: 900}} rounded='none' color='primary' iconClassName='size-9' variant='text'  icon={d.src}>{d.category}</Button>
                 </div>)}
-            </div>
+                {ScrollContent.map((d) => <div key={d.id} className='flex flex-col items-center justify-center'>
+                    <Button baseClassName='px-3 flex w-full flex-col active:scale-1 active:shadow-none !text-xl' style={{ fontWeight: 900 }} rounded='none' color='primary' iconClassName='size-9' variant='text' icon={d.src}>{d.category}</Button>
+                </div>)}
+                {/* {ScrollContent.map((d) => <div key={d.id} className='flex flex-col items-center justify-center'>
+                    <Button baseClassName='px-3 flex  flex-col active:scale-1 active:shadow-none !text-xl' style={{ fontWeight: 900 }} rounded='none' color='primary' iconClassName='size-9' variant='text' icon={d.src}>{d.category}</Button>
+                </div>)} */}
+            </motion.div>
         </div>
     )
 }

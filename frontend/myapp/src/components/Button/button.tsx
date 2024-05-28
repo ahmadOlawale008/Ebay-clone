@@ -8,7 +8,7 @@ type VariantType = "filled" | "outlined" | "text"
 type SizeType = "small" | "large" | "medium"
 type IconPositionType = "end" | "start"
 type ColorType = "secondary" | "primary"
-type RoundedType = "sm" | "md" | "lg" | "xl" | "full"
+type RoundedType = "sm" | "md" | "lg" | "xl" | "full" | "none"
 type ChildrenType = ReactNode | string
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,7 +21,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      * @default medium
      */
     size?: SizeType
-    icon?: string | JSX.Element | LazyExoticComponent<React.FC<IconType>>
+    icon?: string | JSX.Element | LazyExoticComponent<React.FC<IconType>> | ReactElement
     /**
      * @default start
      */
@@ -32,6 +32,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      */
     rounded?: RoundedType
     ringEffect?: boolean,
+    /**
+     * Use Tailwind or custom css to set your desired icon style
+     */
+    iconClassName?: string,
     baseClassName?: string
     /**
      * @default false
@@ -42,17 +46,17 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      */
     className?: string
 }
-const Button: React.FC<ButtonProps> = ({ children, fullWidth, baseClassName, ringEffect = true, rounded = "md", className, icon, iconPosition = "start", color = "secondary", variant = "text", size = "medium", ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, baseClassName, ringEffect = true, rounded = "md", icon, iconPosition = "start", color = "secondary", variant = "text", size = "medium", ...props }) => {
     const btnBaseClassNames = `active:scale-[0.98] gap-x-2 disabled:scale-0 disabled:hover:bg-transparent disabled:active:bg-transparent ease-in-out font-normal tracking-wider inline-flex text-center justify-center items-center m-0
         ${fullWidth ? "w-full" : "w-fit"}
-        ${rounded == 'xl' ? 'rounded-xl' : rounded == "sm" ? " rounded-sm" : rounded == "lg" ? "rounded-lg" : "rounded-md"}
-        ${size == "small" ? "px-3 text-sm py-1.5 active:shadow-md " : size == "large" ? "px-6  py-3 active:shadow-2xl text-lg" : "px-4 py-2 active:shadow-xl text-lg"}
+        ${  rounded === 'xl' ? 'rounded-xl' : rounded === "none" ? "rounded-none" : rounded === "sm" ? " rounded-sm" : rounded === "lg" ? "rounded-lg" : "rounded-md"}
+        ${size === "small" ? "px-3 text-sm py-1.5 active:shadow-md " : size === "large" ? "px-6  py-3 active:shadow-2xl text-lg" : "px-4 py-2 active:shadow-xl text-lg"}
         ${(variant === "text" && color === 'secondary') ? "hover:bg-secondary/10" :
             (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
                 (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
-                    (variant == "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
-                        (variant == "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
-                            (variant == "outlined" && color == "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
+                    (variant === "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
+                        (variant === "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
+                            (variant === "outlined" && color === "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
                                 ""
         }
         
@@ -63,12 +67,14 @@ const Button: React.FC<ButtonProps> = ({ children, fullWidth, baseClassName, rin
     ].join(" ")
     const renderIcon = () => {
         if (typeof icon === 'string' && isAnImageType(icon)) {
-            return <img src={icon} alt="icon" />;
+            return <img src={icon} className={"size-4 " + iconClassName} alt="icon" />;
         } else if (React.isValidElement(icon)) {
-            return icon;
+            return React.cloneElement(icon as React.ReactElement<any>, {
+                className: "size-5 " + iconClassName
+            })
         } else if (icon as React.LazyExoticComponent<React.FC<IconType>>) {
             const IconComponent = icon as React.LazyExoticComponent<React.FC<IconType>>;
-            return <IconComponent />;
+            return <IconComponent className={iconClassName} />;
         }
         return null;
     };
