@@ -37,7 +37,6 @@ const TopCategories = () => {
       const scrollLeft = element.scrollLeft
       let scrollTo = scrollLeft + (moveTo === "left" ? -(clientWidth - 100) : (clientWidth - 100))
 
-      console.log(scrollTo)
       if (moveTo == "left" && availableCardController != "right") {
         element.scrollTo({ "left": scrollTo, "behavior": "smooth" })
       }
@@ -47,7 +46,6 @@ const TopCategories = () => {
     }
   }
   useEffect(() => {
-    console.log(scrollPercentage)
     categoriesWrapperRef.current?.addEventListener("scroll", handleContainerScroll)
     return (() => categoriesWrapperRef.current?.removeEventListener("scroll", handleContainerScroll))
   })

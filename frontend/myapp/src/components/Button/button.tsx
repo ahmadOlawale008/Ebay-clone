@@ -48,12 +48,12 @@ const Button: React.FC<ButtonProps> = ({ children, fullWidth, baseClassName, rin
         ${rounded == 'xl' ? 'rounded-xl' : rounded == "sm" ? " rounded-sm" : rounded == "lg" ? "rounded-lg" : "rounded-md"}
         ${size == "small" ? "px-3 text-sm py-1.5 active:shadow-md " : size == "large" ? "px-6  py-3 active:shadow-2xl text-lg" : "px-4 py-2 active:shadow-xl text-lg"}
         ${(variant === "text" && color === 'secondary') ? "hover:bg-secondary/10" :
-        (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
-        (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
-        (variant == "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
-        (variant == "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
-        (variant == "outlined" && color == "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
-    ""
+            (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
+                (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
+                    (variant == "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
+                        (variant == "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
+                            (variant == "outlined" && color == "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
+                                ""
         }
         
         `
@@ -61,7 +61,6 @@ const Button: React.FC<ButtonProps> = ({ children, fullWidth, baseClassName, rin
         btnBaseClassNames,
         baseClassName,
     ].join(" ")
-    if (icon) console.log(icon, typeof icon, children)
     const renderIcon = () => {
         if (typeof icon === 'string' && isAnImageType(icon)) {
             return <img src={icon} alt="icon" />;

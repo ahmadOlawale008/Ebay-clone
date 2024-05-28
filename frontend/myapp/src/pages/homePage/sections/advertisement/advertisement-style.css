@@ -7,9 +7,10 @@
 
   .shadow-btn {
     box-shadow: 8px 6px 3px black;
+    transition: ease-in-out;
   }
   .shadow-btn:hover {
-    box-shadow: 8px 6px 5px black !important;
+    box-shadow: 10px 7px 5px black !important;
   }
   .shadow-btn:active {
     box-shadow: 8px 6px 3px black !important;
