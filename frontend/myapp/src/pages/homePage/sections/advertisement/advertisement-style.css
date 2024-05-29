@@ -15,4 +15,14 @@
   .shadow-btn:active {
     box-shadow: 8px 6px 3px black !important;
   }
+  .marquee{
+    animation: marqueeAnimate 20s linear infinite;
+  }
+  @keyframes marqueeAnimate {
+    from {
+      transform: translateX(0);
+    }to{
+      transform: translateX(-100%);
+    }
+  }
 }

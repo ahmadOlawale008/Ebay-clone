@@ -51,13 +51,13 @@ const TopCategories = () => {
   })
   categoriesWrapperRef.current?.addEventListener("scroll", handleContainerScroll)
   const containerVariant = {
-    visible:{
-        transition: {
-          when:"beforeChildren"
-        }
+    visible: {
+      transition: {
+        when: "beforeChildren"
+      }
     },
     hidden: {
-      
+
     }
   }
   const childrenVariants = {
@@ -76,7 +76,7 @@ const TopCategories = () => {
           <motion.div
             ref={categoriesWrapperRef}
             className="flex cardWrap0a1  cursor-grab overflow-x-auto w-full space-x-3 flex-nowrap flex-row ">
-            {topCategoriesProducts.map((item) => <motion.div  variants={containerVariant} ref={(el) => allCardsRef.current[item] = el} className="h-[500px] relative  basis-3/12 overflow-hidden shrink-0 rounded-md">
+            {topCategoriesProducts.map((item, index) => <motion.div key={index} variants={containerVariant} ref={(el) => allCardsRef.current[item] = el} className="h-[500px] relative  basis-3/12 overflow-hidden shrink-0 rounded-md">
               <img className='w-full relative h-full aspect-auto' src={foodImage} alt="Food Image" />
               <motion.div variants={childrenVariants} className="absolute  z-10 pl-2 gap-y-2 py-4 top-0 text-wrap w-full flex flex-nowrap justify-between items-center text-white left-0">
                 <span className='text-xl font-semibold'>Six Pieces-in-1 Quality Ankle Socks</span>
@@ -87,8 +87,8 @@ const TopCategories = () => {
                   <span className='text-xl font-semibold'>₦ 1,799</span>
                   <span className='text-md font-normal line-through'>₦ 6,799</span>
                 </div>
-                <Button iconPosition='end' color='primary' variant='text' baseClassName='shadow-none' icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-[1em] h-[1em]">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                <Button iconPosition='end' color='primary' variant='text' baseClassName='shadow-none' icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-[1em] h-[1em]">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                 </svg>
                 }>
                   Visit
@@ -99,12 +99,12 @@ const TopCategories = () => {
           </motion.div>
           <span onClick={handleScrollCardPosition} data-direction="left" className={`absolute top-1/2 ${availableCardController == "right" && "opacity-20 backdrop-blur-md"} left-0 shadow-lg shadow-neutral-500 cursor-pointer  bg-neutral-100 rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99]`}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[1em] h-[1em] text-4xl">
-              <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" />
+              <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
             </svg>
           </span>
           <span onClick={handleScrollCardPosition} data-direction="right" className={`absolute top-1/2 right-0 ${availableCardController == "left" && "opacity-20 backdrop-blur-md"}  shadow-lg shadow-neutral-500 cursor-pointer  bg-neutral-100 rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99] `}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-[1em] h-[1em] text-4xl ">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-[1em] h-[1em] text-4xl ">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </span>
         </div>
