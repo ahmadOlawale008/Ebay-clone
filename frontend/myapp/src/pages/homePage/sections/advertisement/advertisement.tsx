@@ -11,6 +11,7 @@ import imageF from "../../../../assets/images/arno-senoner-oCXVxwTFwqE-unsplash.
 import imageG from "../../../../assets/images/firosnv-photography-Z2c6ounF-iE-unsplash.jpg"
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import {motion} from "framer-motion"
 import ImageScrolll from "./imageScrolll"
 import { Player } from "@lordicon/react"
 import { useEffect, useRef } from "react"
@@ -33,8 +34,10 @@ const AdvertisementPage = () => {
               <span className="font-medium">₦2900</span>
               <sub className="line-through">₦5700</sub>
             </span>
-            <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player icon={ShopIcon} colorize="#fff" ></Player>}>Shop
-            </Button>
+            <motion.div onHoverStart={()=>shopRef.current?.playFromBeginning()}>
+              <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player icon={ShopIcon} colorize="#fff" ></Player>}>Shop
+              </Button>
+            </motion.div>
           </div>
           <div className="col-span-3 gap-x-6 p-3   grid grid-cols-2">
             <div className="flex flex-col gap-y-5">

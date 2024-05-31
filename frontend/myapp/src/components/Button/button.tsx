@@ -1,9 +1,7 @@
-import React, { ButtonHTMLAttributes, DeprecatedLifecycle, LazyExoticComponent, ReactElement, ReactNode } from 'react'
-import { JsxElement } from 'typescript'
+import React, { ButtonHTMLAttributes, LazyExoticComponent, ReactElement, ReactNode } from 'react'
 import IconType from '../../assets/icons/icons'
 import isAnImageType from '../../utils/isAnImageType'
-import SettingsIcon from '../../assets/icons/settingsIcon'
-import { getByLabelText, render } from '@testing-library/react'
+import { twMerge } from 'tailwind-merge'
 type VariantType = "filled" | "outlined" | "text"
 type SizeType = "small" | "large" | "medium"
 type IconPositionType = "end" | "start"
@@ -75,24 +73,14 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
             primary: "ring-1 active:ring-2 hover:bg-primary/10 ring-primary"
         }
     }
-    // const btnVariants = `${(variant === "text" && color === 'secondary') ? "hover:bg-secondary/10" :
-    //     (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
-    //         (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
-    //             (variant === "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
-    //                 (variant === "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
-    //                     (variant === "outlined" && color === "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
-    //                         ""
-    //     }`
+
     const btnRounded = rounded ? `rounded-${btnState[rounded]} ` : defaultRoundedState
     const btnSize = size ? sizeState[size] : sizeState["medium"]
     const btnVariants = btnVariantState[variant][color]
     const btnWidth = `${fullWidth ? "w-full" : "w-fit"}`
 
     const btnBaseClassNames = [defaultProps, btnRounded, btnSize, btnVariants, btnWidth].join(" ")
-    const classNames = [
-        btnBaseClassNames,
-        baseClassName,
-    ].join(" ")
+    const classNames = twMerge(btnBaseClassNames, baseClassName)
     const renderIcon = () => {
         if (typeof icon === 'string' && isAnImageType(icon)) {
             return <img src={icon} className={"size-4 " + iconClassName} alt="icon" />;
