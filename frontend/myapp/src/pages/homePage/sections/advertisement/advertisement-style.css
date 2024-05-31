@@ -12,8 +12,9 @@
   .shadow-btn:hover {
     box-shadow: 10px 7px 5px black !important;
   }
+
   .shadow-btn:active {
-    box-shadow: 8px 6px 3px black !important;
+    box-shadow: 8px 6px 3px rgb(0, 0, 0) !important;
   }
   .marquee{
     animation: marqueeAnimate 20s linear infinite;

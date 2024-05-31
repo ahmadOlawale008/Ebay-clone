@@ -3,14 +3,13 @@ import { JsxElement } from 'typescript'
 import IconType from '../../assets/icons/icons'
 import isAnImageType from '../../utils/isAnImageType'
 import SettingsIcon from '../../assets/icons/settingsIcon'
-import { render } from '@testing-library/react'
+import { getByLabelText, render } from '@testing-library/react'
 type VariantType = "filled" | "outlined" | "text"
 type SizeType = "small" | "large" | "medium"
 type IconPositionType = "end" | "start"
 type ColorType = "secondary" | "primary"
 type RoundedType = "sm" | "md" | "lg" | "xl" | "full" | "none"
 type ChildrenType = ReactNode | string
-
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ChildrenType
     /**
@@ -47,20 +46,49 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
 }
 const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, baseClassName, ringEffect = true, rounded = "md", icon, iconPosition = "start", color = "secondary", variant = "text", size = "medium", ...props }) => {
-    const btnBaseClassNames = `active:scale-[0.98] gap-x-2 disabled:scale-0 disabled:hover:bg-transparent disabled:active:bg-transparent ease-in-out font-normal tracking-wider inline-flex text-center justify-center items-center m-0
-        ${fullWidth ? "w-full" : "w-fit"}
-        ${  rounded === 'xl' ? 'rounded-xl' : rounded === "none" ? "rounded-none" : rounded === "sm" ? " rounded-sm" : rounded === "lg" ? "rounded-lg" : "rounded-md"}
-        ${size === "small" ? "px-3 text-sm py-1.5 active:shadow-md " : size === "large" ? "px-6  py-3 active:shadow-2xl text-lg" : "px-4 py-2 active:shadow-xl text-lg"}
-        ${(variant === "text" && color === 'secondary') ? "hover:bg-secondary/10" :
-            (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
-                (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
-                    (variant === "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
-                        (variant === "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
-                            (variant === "outlined" && color === "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
-                                ""
+    const defaultProps = "active:scale-[0.98] gap-x-2 disabled:scale-0 disabled:hover:bg-transparent disabled:active:bg-transparent ease-in-out font-normal tracking-wider inline-flex text-center justify-center items-center m-0"
+    const defaultRoundedState = 'rounded-md'
+    const btnState: Record<RoundedType, RoundedType> = {
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+        xl: "xl",
+        full: "full",
+        none: "none"
+    }
+    const sizeState = {
+        small: "px-3 text-sm py-1.5 active:shadow-md",
+        large: "px-6  py-3 active:shadow-2xl text-lg",
+        medium: "px-4 py-2 active:shadow-xl text-lg"
+    }
+    const btnVariantState: Record<VariantType, Record<ColorType, string>> = {
+        text: {
+            secondary: "hover:bg-secondary/10",
+            primary: "hover:bg-primary/10"
+        },
+        filled: {
+            secondary: ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary" : "bg-secondary  active:bg-secondary/90",
+            primary: ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary" : "bg-primary  active:bg-primary/8 "
+        },
+        outlined: {
+            secondary: "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary",
+            primary: "ring-1 active:ring-2 hover:bg-primary/10 ring-primary"
         }
-        
-        `
+    }
+    // const btnVariants = `${(variant === "text" && color === 'secondary') ? "hover:bg-secondary/10" :
+    //     (variant == "text" && color == "primary") ? "hover:bg-primary/10" :
+    //         (variant === "filled" && color === 'secondary') ? (ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary " : "bg-secondary  active:bg-secondary/90 ") :
+    //             (variant === "filled" && color == "primary") ? (ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary " : "bg-primary  active:bg-primary/80 ") :
+    //                 (variant === "outlined" && color == "primary") ? "ring-1 active:ring-2 hover:bg-primary/10 ring-primary" :
+    //                     (variant === "outlined" && color === "secondary") ? "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary" :
+    //                         ""
+    //     }`
+    const btnRounded = rounded ? `rounded-${btnState[rounded]} ` : defaultRoundedState
+    const btnSize = size ? sizeState[size] : sizeState["medium"]
+    const btnVariants = btnVariantState[variant][color]
+    const btnWidth = `${fullWidth ? "w-full" : "w-fit"}`
+
+    const btnBaseClassNames = [defaultProps, btnRounded, btnSize, btnVariants, btnWidth].join(" ")
     const classNames = [
         btnBaseClassNames,
         baseClassName,
@@ -84,9 +112,7 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
             {iconPosition == "start" && renderIcon()}
             {children}
             {iconPosition == "end" && renderIcon()}
-
         </button>
     )
 }
-
 export default Button
