@@ -18,10 +18,6 @@ import { useEffect, useRef } from "react"
 const ShopIcon = require("../../../../assets/icons/animated/system-solid-64-shopping-bag.json")
 const AdvertisementPage = () => {
   const shopRef = useRef<Player>(null)
-  useEffect(() => {
-    shopRef?.current?.playFromBeginning();
-  }, []);
-
   return (
     <div>
       <div className="min-h-screen items-start flex flex-col relative bg-gray-100">
@@ -35,7 +31,7 @@ const AdvertisementPage = () => {
               <sub className="line-through">₦5700</sub>
             </span>
             <motion.div onHoverStart={()=>shopRef.current?.playFromBeginning()}>
-              <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player icon={ShopIcon} colorize="#fff" ></Player>}>Shop
+              <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
               </Button>
             </motion.div>
           </div>

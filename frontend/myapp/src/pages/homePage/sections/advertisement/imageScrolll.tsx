@@ -7,48 +7,45 @@ type MoveMarqueeType = {
     current: number
     target: number
 }
+type marqueeFunctionType = {
+    cmd?: "start" | "end" | "pause",
+    timeStamp?: 1
+}
 const ImageScrolll = () => {
     const marqueeRef = useRef<HTMLDivElement | null>(null)
+    const marqueeId = useRef<number>(0)
     const x = useMotionValue(0)
     const [pauseAnimation, setPauseAnimationState] = useState(false)
     const svgVariants: Variants = {
         hidden: {
-            pathLength: 0,
-            pathOffset: 1,
-            opacity: 0,
-            background: "red"
+
         },
         visible: {
-            pathLength: 1,
-            pathOffset: 0,
-            opacity: 1,
-            background: "blue"
+
         },
         exit: {
-            pathLength: 0,
-            pathOffset: 1,
-            opacity: 0,
-            scale: 100,
-            background: "red"
+
         }
     }
-    const speed = 1
-    useEffect(() => {
-        const P0 = 0, t = 0, P1 = 0, P2 = 0;
-        const easeFormula = Math.pow((1 - t), 2) * P0 + 2 * (1 - t) * t * P1 + Math.pow(t, 2) * P2
-        const moveMarquee = ({ ease, current, target }: MoveMarqueeType) => {
-            if (marqueeRef && marqueeRef.current) {
-
+    useEffect(()=>{
+        const marqueeFunction = (args: { target: number, current: number })=>{
+            if (!marqueeRef || !marqueeRef.current) return
+            const target = marqueeRef.current.clientWidth
+            const current = x.get()
+            const jump = ()=>{
+               args.current = current * (1-0.1) + target * 0.1
             }
+            const moveMarquee = ()=>{
+                jump()
+                marqueeId.current = window.requestAnimationFrame(moveMarquee)
+            }
+
         }
-        const startMarquee = ()=>{
-            
-        }
-    }, [x])
+    })
     return (
         <div className='overflow-hidden py-3 bg-gray-100'>
-            <motion.div ref={marqueeRef} className='marqueeContainer gap-0 flex flex-nowrap'>
-                <motion.div style={{ x }} transition={{ type: "tween" }} onClick={(e) => console.log(e.currentTarget.offsetWidth)} className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start">
+            <motion.div className='marqueeContainer gap-0 flex flex-nowrap'>
+                <motion.div ref={marqueeRef} style={{ x }} transition={{ type: "tween" }} onClick={(e) => console.log(e.currentTarget.offsetWidth)} className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start">
                     {ScrollContent.map((d) => <motion.div key={d.id} className='flex flex-1 basis-full flex-col items-center'>
                         <Button baseClassName='px-3 flex w-full gap-y-2 flex-col py-2 active:scale-1 active:shadow-none font-normal !text-lg tracking-tight leading-loose' rounded='none' color='primary' iconClassName='size-12' variant='text' icon={d.src}>{d.category}</Button>
                     </motion.div>)}

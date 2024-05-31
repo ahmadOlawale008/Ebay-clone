@@ -73,20 +73,18 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
             primary: "ring-1 active:ring-2 hover:bg-primary/10 ring-primary"
         }
     }
-
     const btnRounded = rounded ? `rounded-${btnState[rounded]} ` : defaultRoundedState
     const btnSize = size ? sizeState[size] : sizeState["medium"]
     const btnVariants = btnVariantState[variant][color]
     const btnWidth = `${fullWidth ? "w-full" : "w-fit"}`
-
     const btnBaseClassNames = [defaultProps, btnRounded, btnSize, btnVariants, btnWidth].join(" ")
     const classNames = twMerge(btnBaseClassNames, baseClassName)
     const renderIcon = () => {
         if (typeof icon === 'string' && isAnImageType(icon)) {
-            return <img src={icon} className={"size-4 " + iconClassName} alt="icon" />;
+            return <img src={icon} className={twMerge("size-5", iconClassName)} alt="icon" />;
         } else if (React.isValidElement(icon)) {
             return React.cloneElement(icon as React.ReactElement<any>, {
-                className: "size-5 " + iconClassName
+                className: twMerge("size-5", iconClassName)
             })
         } else if (icon as React.LazyExoticComponent<React.FC<IconType>>) {
             const IconComponent = icon as React.LazyExoticComponent<React.FC<IconType>>;
