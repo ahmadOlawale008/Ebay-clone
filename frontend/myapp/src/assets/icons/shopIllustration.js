@@ -2,7 +2,7 @@ import React from "react";
 import IconType, { defaultClass } from "./icons";
 import { twMerge } from "tailwind-merge";
 
-const shopIllustration: React.FC<IconType> = ({ iconStyles, className }) => {
+const shopIllustration = ({ iconStyles, className }) => {
   <svg
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
