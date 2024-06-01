@@ -1,7 +1,8 @@
-import { AnimatePresence, Variants, motion, useMotionValue, useTransform } from 'framer-motion'
+import { AnimatePresence, MotionValue, Variants, easeIn, motion, useMotionValue, useTransform } from 'framer-motion'
 import Button from '../../../../components/Button/button'
 import { ScrollContent } from './scrollContent'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { animateMarquee } from '../../../../utils/animateMarquee'
 type MoveMarqueeType = {
     ease: number,
     current: number
@@ -13,35 +14,12 @@ type marqueeFunctionType = {
 }
 const ImageScrolll = () => {
     const marqueeRef = useRef<HTMLDivElement | null>(null)
-    const marqueeId = useRef<number>(0)
+    const marqueeId = useRef(0)
     const x = useMotionValue(0)
-    const [pauseAnimation, setPauseAnimationState] = useState(false)
-    const svgVariants: Variants = {
-        hidden: {
-
-        },
-        visible: {
-
-        },
-        exit: {
-
-        }
-    }
+    const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
     useEffect(()=>{
-        const marqueeFunction = (args: { target: number, current: number })=>{
-            if (!marqueeRef || !marqueeRef.current) return
-            const target = marqueeRef.current.clientWidth
-            const current = x.get()
-            const jump = ()=>{
-               args.current = current * (1-0.1) + target * 0.1
-            }
-            const moveMarquee = ()=>{
-                jump()
-                marqueeId.current = window.requestAnimationFrame(moveMarquee)
-            }
-
-        }
-    })
+        animateMarquee(marqueeRef, marqueeId, 0, 1, x)
+    }, [x])
     return (
         <div className='overflow-hidden py-3 bg-gray-100'>
             <motion.div className='marqueeContainer gap-0 flex flex-nowrap'>

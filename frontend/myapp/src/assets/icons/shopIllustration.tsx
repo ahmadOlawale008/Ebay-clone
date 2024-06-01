@@ -1,6 +1,8 @@
 import React from "react";
+import IconType, { defaultClass } from "./icons";
+import { twMerge } from "tailwind-merge";
 
-const shopIllustration = () => {
+const shopIllustration: React.FC<IconType> = ({ iconStyles, className }) => {
   <svg
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +12,7 @@ const shopIllustration = () => {
     viewBox="0 0 750 500"
     style="enable-background:new 0 0 750 500;"
     xml:space="preserve"
+    className={twMerge(defaultClass, className)}
   >
     <g id="Background_Complete">
       <g>
