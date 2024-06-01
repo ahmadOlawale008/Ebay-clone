@@ -1,6 +1,6 @@
 // import NotificationIcon from "";
 import { lazy } from "react";
-export const defaultClass = "size-4 "
+export const defaultClass = "size-[1em] "
 export const NotificationIcon = lazy(() => import("./notificationicon"))
 export const SearchIcon = lazy(() => import("./searchicon"))
 export const SettingsIcon = lazy(() => import("./settingsIcon"))

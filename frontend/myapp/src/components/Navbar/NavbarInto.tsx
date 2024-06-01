@@ -34,7 +34,7 @@ const NavbarInto = () => {
                             </button>
                         </span>
                         <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-secondary after:absolute after:right-1 after:top-1 relative'>
-                            <NotificationIcon className='text-2xl hover:fill-slate-700  fill-slate-500' />
+                            <NotificationIcon className='size-5 inline-flex items-center font-bold hover:fill-slate-700  fill-slate-500' />
                         </span>
                         <div className="">
                             <motion.div ref={accountMenuRef} onMouseEnter={() => setOpenAccountMenuState(true)} className='flex cursor-pointer gap-x-2 relative items-center'>
