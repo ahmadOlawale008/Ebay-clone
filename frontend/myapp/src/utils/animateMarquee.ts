@@ -3,15 +3,15 @@ export const animateMarquee = (
     elementId: React.MutableRefObject<number>,
     current = 0,
     speed = 0.5,
-    direction: -1 | 1 = 1
+    direction: -1 | 1 = 1,
+    // continueFrom: string
 ) => {
     if (!element.current) return
-    (element.current.children[1] as HTMLDivElement).style.cssText = `position: absolute; top:0; left: ${-direction * 100}%`
+    const children = element.current.children as HTMLCollectionOf<HTMLDivElement>
+    children[0].style.cssText = `position: absolute; top:0; left: ${-direction * 100}%`
+    // children[2].style.cssText = `position: absolute; top:0; left: ${-direction * 200}%`
 
-    // (element.current.children[1] as HTMLDivElement).style.cssText = `position: absolute; top:0; left: ${-direction * 100}%`
-
-
-    const ease = 0.05
+    const ease = 0.1
 
     let lp = {
         target: current,
@@ -22,8 +22,8 @@ export const animateMarquee = (
     }
     const start = () => {
         lp.target += speed
-        if (lp.target > 100) {
-            lp.current -= 100
+        if (lp.target > 200) {
+            lp.current -= 200
             lp.target = 0 
         }
     }
@@ -35,8 +35,5 @@ export const animateMarquee = (
         elementId.current = window.requestAnimationFrame(moveMarquee);
     }
     window.requestAnimationFrame(moveMarquee)
-    // const pauseMarquee = ()=>{
-    //     window.cancelAnimationFrame(elementId.current)
-    // }
-    // return pauseMarquee
+
 }

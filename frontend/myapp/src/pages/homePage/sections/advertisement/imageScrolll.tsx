@@ -1,25 +1,28 @@
-import { AnimatePresence, MotionValue, Variants, easeIn, motion, useMotionValue, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, } from 'framer-motion'
 import Button from '../../../../components/Button/button'
 import { ScrollContent } from './scrollContent'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { animateMarquee } from '../../../../utils/animateMarquee';
 const ImageScrolll = () => {
     const [pauseAnimation, setPauseAnimationState] = useState(false);
     const marqueeRef = useRef<HTMLDivElement | null>(null)
     const marqueeRefB = useRef<HTMLDivElement | null>(null)
-
     const marqueeId = useRef(1)
     const marqueeIdB = useRef(2)
-
-    useEffect(() => {
+    let closeAnimation = (id: number)=>cancelAnimationFrame(id)
+    const runAnimation = () => {
         if (marqueeRef.current && marqueeRef.current) {
             animateMarquee(marqueeRef, marqueeId, 0, 0.08)
-            animateMarquee(marqueeRefB, marqueeId, 0, 0.08, -1)
+            animateMarquee(marqueeRefB, marqueeIdB, 0, 0.08, -1)
         }
+    }
+    closeAnimation = (id: number) => cancelAnimationFrame(id)
+    useEffect(() => {
+        // runAnimation()
     }, []);
     return (
-        <div className='overflow-hidden  py-3 bg-gray-100'>
-            <div className="-rotate-1 mt-3">
+        <div className='overflow-hidden  py-5 bg-gray-100'>
+            <div className="-rotate-1 mt-4">
                 <div className="  border-t border-neutral-900">
                     <motion.div ref={marqueeRef} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>
                         {[0, 1, 2].map((_, ind) => (
@@ -29,9 +32,9 @@ const ImageScrolll = () => {
                                 className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
                             >
                                 {ScrollContent.map((d) => (
-                                    <motion.div key={d.id} className='flex flex-1 basis-full items-center'>
+                                    <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
                                         <Button
-                                            baseClassName='px-3 inline-flex w-full items-center justify-center text-center py-2 active:scale-1 active:shadow-none font-normal !text-lg tracking-tight leading-loose'
+                                            baseClassName='px-3  inline-flex w-full items-center justify-center text-center py-2 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
                                             rounded='none'
                                             color='primary'
                                             iconClassName='size-12'
@@ -40,7 +43,7 @@ const ImageScrolll = () => {
                                         >
                                             {d.category}
                                         </Button>
-                                    </motion.div>
+                                    </motion.a>
                                 ))}
                             </motion.div>
                         ))}
@@ -55,9 +58,9 @@ const ImageScrolll = () => {
                                 className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
                             >
                                 {ScrollContent.map((d) => (
-                                    <motion.div key={d.id} className='flex flex-1 basis-full items-center'>
+                                    <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
                                         <Button
-                                            baseClassName='px-3 inline-flex w-full items-center justify-center text-center py-2 active:scale-1 active:shadow-none font-normal !text-lg tracking-tight leading-loose'
+                                            baseClassName='px-3 inline-flex w-full items-center justify-center text-center py-2 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
                                             rounded='none'
                                             color='primary'
                                             iconClassName='size-12'
@@ -66,7 +69,7 @@ const ImageScrolll = () => {
                                         >
                                             {d.category}
                                         </Button>
-                                    </motion.div>
+                                    </motion.a>
                                 ))}
                             </motion.div>
                         ))}
@@ -75,7 +78,13 @@ const ImageScrolll = () => {
                 <div className="flex items-end justify-end mt-2">
                     <div onClick={() => {
                         setPauseAnimationState(!pauseAnimation)
-                        window.cancelAnimationFrame(marqueeIdB.current)}} className="pause-animation inline-block cursor-pointer hover:scale-[1.09] active:scale-[0.91] bg-gray-300 rounded-full p-3 mr-20">
+                        if(pauseAnimation){
+                            closeAnimation(marqueeId.current)
+                            closeAnimation(marqueeIdB.current)
+                        }else{
+                            runAnimation()
+                        }
+                    }} className="pause-animation inline-block cursor-pointer hover:scale-[1.09] active:scale-[0.91] bg-gray-300 rounded-full p-3 mr-20">
                         <AnimatePresence>
                             {!pauseAnimation ? (
                                 <motion.svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[1em] h-[1em] font-black text-3xl">
