@@ -1,17 +1,19 @@
-export const animateMarquee = (
-    element: React.MutableRefObject<HTMLDivElement | null>,
+import React, { MutableRefObject } from "react"
+
+interface AnimateMarqueeProps {
+    element: MutableRefObject<HTMLDivElement | null>,
     elementId: React.MutableRefObject<number>,
-    current = 0,
-    speed = 0.5,
-    direction: -1 | 1 = 1,
-    // continueFrom: string
-) => {
+    current: number,
+    speed: number,
+    direction: 1 | -1,
+    pause: boolean
+}
+export const animateMarquee = ({element, elementId, current=0, speed=0.08, direction=1, pause=false}: AnimateMarqueeProps) => {
     if (!element.current) return
     const children = element.current.children as HTMLCollectionOf<HTMLDivElement>
     children[0].style.cssText = `position: absolute; top:0; left: ${-direction * 100}%`
-    // children[2].style.cssText = `position: absolute; top:0; left: ${-direction * 200}%`
 
-    const ease = 0.1
+    const ease = 0.05
 
     let lp = {
         target: current,
@@ -22,9 +24,9 @@ export const animateMarquee = (
     }
     const start = () => {
         lp.target += speed
-        if (lp.target > 200) {
-            lp.current -= 200
-            lp.target = 0 
+        if (lp.target > 100) {
+            lp.current -= 100
+            lp.target = 0
         }
     }
     const moveMarquee = () => {
@@ -32,8 +34,12 @@ export const animateMarquee = (
         jump(lp.current, lp.target)
         //@ts-ignore
         element.current.style.transform = `translateX(${lp.current * direction}%)`
-        elementId.current = window.requestAnimationFrame(moveMarquee);
+        if (!pause) {
+            elementId.current = window.requestAnimationFrame(moveMarquee);
+        } else {
+            cancelAnimationFrame(elementId.current)
+        }
     }
-    window.requestAnimationFrame(moveMarquee)
-
+    moveMarquee()
+    // window.requestAnimationFrame(moveMarquee)
 }
