@@ -33,22 +33,26 @@ const NavbarSearch = () => {
                                 <option className="text-base tracking-wide" value="2">Electricity</option>
                                 <option className="text-base tracking-wide" value="3">Home appliances</option>
                                 <option className="text-base tracking-wide" value="4">Food stuffs</option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-                                <option className="text-base tracking-wide" value="5">Work </option>
-
+                                <option className="text-base tracking-wide" value="1">Electronics</option>
+                                <option className="text-base tracking-wide" value="2">Clothing</option>
+                                <option className="text-base tracking-wide" value="3">Books</option>
+                                <option className="text-base tracking-wide" value="4">Food stuffs</option>
+                                <option className="text-base tracking-wide" value="5">Home Appliances</option>
+                                <option className="text-base tracking-wide" value="6">Furniture</option>
+                                <option className="text-base tracking-wide" value="7">Health & Beauty</option>
+                                <option className="text-base tracking-wide" value="8">Toys</option>
+                                <option className="text-base tracking-wide" value="9">Sports Equipment</option>
+                                <option className="text-base tracking-wide" value="10">Automotive</option>
+                                <option className="text-base tracking-wide" value="11">Jewelry</option>
+                                <option className="text-base tracking-wide" value="12">Garden Supplies</option>
+                                <option className="text-base tracking-wide" value="13">Pet Supplies</option>
+                                <option className="text-base tracking-wide" value="14">Office Supplies</option>
+                                <option className="text-base tracking-wide" value="15">Footwear</option>
+                                <option className="text-base tracking-wide" value="16">Musical Instruments</option>
+                                <option className="text-base tracking-wide" value="17">Groceries</option>
+                                <option className="text-base tracking-wide" value="18">Baby Products</option>
+                                <option className="text-base tracking-wide" value="19">Handmade Crafts</option>
+                                <option className="text-base tracking-wide" value="20">Bags & Accessories</option>
                             </select>
                         </div>
                         <div className='relative bg-gray-100 w-full'>
