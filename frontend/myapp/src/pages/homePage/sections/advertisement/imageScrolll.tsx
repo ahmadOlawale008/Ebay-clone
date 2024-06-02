@@ -15,11 +15,16 @@ const ImageScrolll = () => {
         if (marqueeRef.current && marqueeRef.current) {
             animateMarquee({element: marqueeRef, elementId: marqueeId, current: 0, speed: 0.05, direction: 1, pause: pause})
             animateMarquee({ element: marqueeRefB, elementId: marqueeIdB, current: 0, speed: 0.05, direction: -1, pause: pause })
-
         }
     }
     useEffect(() => {
         runAnimation(pauseAnimation)
+        if(marqueeRef.current){
+        const style = window.getComputedStyle(marqueeRef.current)
+            console.log(style.transform)
+        }
+
+
     }, [pauseAnimation]);
     return (
         <div className='overflow-hidden  py-5 bg-gray-100'>

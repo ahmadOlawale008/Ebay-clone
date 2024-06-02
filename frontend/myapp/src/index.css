@@ -20,6 +20,9 @@
     ::selection{
         @apply bg-orange-600 text-slate-100
     }    
+    ::-moz-selection{
+        @apply bg-orange-600 text-slate-100
+    }
     html{
     box-sizing: border-box;
     width: 100%;

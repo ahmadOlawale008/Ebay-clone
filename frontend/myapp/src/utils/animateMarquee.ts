@@ -30,16 +30,19 @@ export const animateMarquee = ({element, elementId, current=0, speed=0.08, direc
         }
     }
     const moveMarquee = () => {
-        start()
-        jump(lp.current, lp.target)
-        //@ts-ignore
-        element.current.style.transform = `translateX(${lp.current * direction}%)`
         if (!pause) {
-            elementId.current = window.requestAnimationFrame(moveMarquee);
-        } else {
+            start()
+            jump(lp.current, lp.target)
+            //@ts-ignore
+            element.current.style.transform = `translateX(${lp.current * direction}%)`
+
+            elementId.current = window.requestAnimationFrame(moveMarquee)
+        } 
+    }
+    const pauseMarquee = ()=>{
+        if(pause){
             cancelAnimationFrame(elementId.current)
         }
     }
     moveMarquee()
-    // window.requestAnimationFrame(moveMarquee)
 }

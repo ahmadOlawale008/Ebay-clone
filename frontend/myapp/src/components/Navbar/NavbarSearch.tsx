@@ -26,14 +26,29 @@ const NavbarSearch = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                 </svg>
                             </div>
-                            <select value={menu} tabIndex={0} ref={filterSelectRef} className='h-full absolute cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
+                            <select aria-label='Select product by category' size={1} value={menu} tabIndex={0} ref={filterSelectRef} className='h-full absolute cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
                                 setMenu(Number(e.target.value))
                             }} name="categories-filter" id="">
-                                <option className=" text-lg tracking-wide" value="1">All categories</option>
-                                <option className=" text-lg tracking-wide" value="2">Electricity</option>
-                                <option className=" text-lg tracking-wide" value="3">Home appliances</option>
-                                <option className=" text-lg tracking-wide" value="4">Food stuffs</option>
-                                <option className=" text-lg tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="1">All categories</option>
+                                <option className="text-base tracking-wide" value="2">Electricity</option>
+                                <option className="text-base tracking-wide" value="3">Home appliances</option>
+                                <option className="text-base tracking-wide" value="4">Food stuffs</option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+                                <option className="text-base tracking-wide" value="5">Work </option>
+
                             </select>
                         </div>
                         <div className='relative bg-gray-100 w-full'>
