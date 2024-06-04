@@ -23,11 +23,18 @@
     ::-moz-selection{
         @apply bg-orange-600 text-slate-100
     }
+    *{
+        box-sizing: border-box;
+    }
     html{
-    box-sizing: border-box;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scroll-snap-align: y mandatory;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
     @apply font-sans 
 }
 }

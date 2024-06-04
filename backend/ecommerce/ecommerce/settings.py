@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
+    "auths.apps.AuthsConfig",
     "core.apps.CoreConfig",
     "payment.apps.PaymentConfig",
     "product.apps.ProductConfig",
@@ -168,6 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# User model
+AUTH_USER_MODEL = "auths.AuthUser"
 CELERY_BACKEND_URL = "redis://redis:127.0.0.1:6479/0"
 # CELERY_RESULT_BACKEND = "amqp:rabbitmq/guests"
