@@ -7,6 +7,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
 from .serializers import UserSerializer
 from rest_framework.permissions import BasePermission
+from .models import AuthUser
 # Create your views here.
 
 class UserCreatePermission(BasePermission):
@@ -19,3 +20,7 @@ class UserCreatePermission(BasePermission):
 class CreateUser(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny, ]
+    queryset = AuthUser
+    
+class UserDetails(generics.RetrieveDestroyAPIView):
+    pass
