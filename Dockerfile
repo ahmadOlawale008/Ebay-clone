@@ -1,3 +1,3 @@
 FROM python
-FROM node
+# FROM node
 

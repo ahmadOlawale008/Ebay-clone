@@ -28,9 +28,9 @@ const ImageScrolll = () => {
     }, [pauseAnimation]);
     return (
         <div className='overflow-hidden  py-5 bg-gray-100'>
-            <div className="-rotate-1 mt-4">
-                <div className="flex items-center justify-center">
-                    <span className='p-3 text-3xl italic font-black tracking-widest text-secondary font-cursive'>Sales Categories</span>
+            <div className="-rotate-3 mt-4">
+                <div className="flex my-2 items-center justify-center">
+                    <span className='p-3 text-4xl italic font-black tracking-widest text-secondary-light -rotate-3 font-cursive'>Sales Categories</span>
                 </div>
                 <div className="border-t-2 border-neutral-900">
                     <motion.div ref={marqueeRef} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>

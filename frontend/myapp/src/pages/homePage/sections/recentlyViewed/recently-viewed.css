@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .scr5a6{
+        -webkit-overflow-scrolling: touch;
+        border-color: #0000;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        scroll-snap-type: proximity;
+        scroll-snap-type: x proximity;
+        scrollbar-width: thin;
+        scroll-margin: 40px 0px;
+    }
+
+}

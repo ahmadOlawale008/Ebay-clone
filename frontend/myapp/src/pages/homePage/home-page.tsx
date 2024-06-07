@@ -4,13 +4,23 @@ import AdvertisementPage from './sections/advertisement/advertisement'
 import onlineSales from "../../assets/images/onlinesales.svg"
 import Button from '../../components/Button/button'
 import TopCategories from './sections/topCategories/topcategories-export'
+import RecentlyViewed from './sections/recentlyViewed/recently-viewed'
+import ImageScrolll from './sections/advertisement/imageScrolll'
 // const validator = require('validator');
 const HomePage = () => {
   return (
-    <div className='content'>
+    <div className='main-content'>
       <Navbar />
-      <AdvertisementPage />
-      <TopCategories />
+      <div className="ads091k-content bg-gray-100">
+        <div className="suv-ciiq container mx-auto">
+          <AdvertisementPage />
+        </div>
+        <ImageScrolll />
+      </div>
+      <div className="main-content container mx-auto">
+        <RecentlyViewed />
+      </div>
+      {/* <TopCategories /> */}
     </div>
   )
 }

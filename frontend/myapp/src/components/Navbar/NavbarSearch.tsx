@@ -26,7 +26,7 @@ const NavbarSearch = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                 </svg>
                             </div>
-                            <select aria-label='Select product by category' size={1} value={menu} tabIndex={0} ref={filterSelectRef} className='h-full absolute cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
+                            <select aria-label='Select product by category'  value={menu} tabIndex={1} ref={filterSelectRef} className='h-full w-full absolute cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
                                 setMenu(Number(e.target.value))
                             }} name="categories-filter" id="">
                                 <option className="text-base tracking-wide" value="1">All categories</option>
