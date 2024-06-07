@@ -10,7 +10,6 @@ import ImageScrolll from './sections/advertisement/imageScrolll'
 const HomePage = () => {
   return (
     <div className='main-content'>
-      <Navbar />
       <div className="ads091k-content bg-gray-100">
         <div className="suv-ciiq container mx-auto">
           <AdvertisementPage />
