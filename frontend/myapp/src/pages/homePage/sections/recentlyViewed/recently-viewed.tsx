@@ -3,7 +3,7 @@ import image from "../../../../assets/images/sarah-dorweiler-gUPiTDBdRe4-unsplas
 import imageB from "../../../../assets/images/filip-mroz-gma1zfS3_6E-unsplash.jpg"
 import imageC from "../../../../assets/images/thomas-le-pRJhn4MbsMM-unsplash.jpg"
 import imageD from "../../../../assets/images//tobias-tullius-Fg15LdqpWrs-unsplash.jpg"
-import React, { MouseEventHandler, UIEventHandler, useEffect, useRef, useState } from 'react'
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import "./recently-viewed.css"
 type AvailableCardController = "left" | "right" | "both"
 type ScrollTasks = "right" | "left" | "default"
@@ -46,19 +46,19 @@ const RecentlyViewed = () => {
     return (() => categoriesWrapperRef.current?.removeEventListener("scroll", handleContainerScroll))
   })
   return (
-    <div className="mt-4 px-0">
+    <div className="mt-4 mb-3 px-0 ">
       <div className="recently-headoai">
         <h1 className='text-2xl my-7 font-semibold'>Your Recently Viewed Products</h1>
       </div>
       <div className="relative w-full">
         <div ref={categoriesWrapperRef} className="flex overflow-x-auto scr5a6 modal-scroll relative flex-nowrap w-full shrink-0 gap-x-2.5 flex-row">
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={imageB} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={imageC} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div  className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={1} link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={3}  link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4}  link='a' img={imageB} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={5}  link='a' img={imageC} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={2}  link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4}  link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4}  link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
         </div>
         <span onClick={handleScrollCardPosition} data-direction="left" className={`absolute top-1/3 ${availableCardController == "right" && "opacity-20 backdrop-blur-md"} left-0 shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99]`}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-3xl">
@@ -72,6 +72,8 @@ const RecentlyViewed = () => {
           </svg>
         </span>
       </div>
+
+
     </div>
   )
 }

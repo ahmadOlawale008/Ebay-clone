@@ -1,0 +1,35 @@
+
+@layer base {
+  * {
+    --tw-bg-opacity: 1;
+    opacity: 1;
+    background-color: initial;
+  }
+  .ms-star {
+    @apply hidden;
+  }
+  .ms-star + label {
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    mask-image: url("../../../assets/icons/star.svg");
+    -webkit-appearance: none;
+    appearance: none;
+    -moz-appearance: none;
+    @apply max-md:size-5 size-6 bg-neutral-300;
+  }
+  .rating {
+    @apply flex-row-reverse justify-end flex
+  }
+  .rating input:checked ~ label{
+    @apply !bg-yellow-300
+  }
+  .rating:not(:checked) .ms-star-label:hover ~ .ms-star-label,
+  .rating .ms-star-label:hover{
+    @apply bg-yellow-300/50
+  }
+  
+}

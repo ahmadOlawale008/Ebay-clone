@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Player } from "@lordicon/react"
-import Rating from '../Rating/rating'
+import Rating, { RatingType } from '../Rating/rating-export'
 interface ProductCard {
     link: string
     img: string,
@@ -9,10 +9,11 @@ interface ProductCard {
     price: number
     discount?: number
     discountPrice?: number
+    rate: RatingType
 }
 const hearticon = require("../../assets/icons/animated/system-regular-48-favorite-heart.json")
 const heartFilledIcon = require("../../assets/icons/animated/system-solid-48-favorite-heart.json")
-const ProductCard: React.FC<ProductCard> = ({ link, img, product_name, stars, price, discount, discountPrice }) => {
+const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, stars, price, discount, discountPrice }) => {
     const [likedPost, setLikedPost] = useState(false)
     const iconRef = useRef<Player>(null)
     return (
@@ -38,7 +39,9 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, product_name, stars, pr
                     {likedPost ? <Player onComplete={() => setLikedPost(false)} ref={iconRef} icon={heartFilledIcon} size={21} colorize='#ef2424'></Player> : <Player ref={iconRef} onComplete={() => setLikedPost(true)} size={21} icon={hearticon}></Player>}
                 </span>
             </div>
-            <Rating></Rating>
+            <div className='ratingu7a'>
+                <Rating rate={rate} />
+            </div>
         </div >
     )
 }

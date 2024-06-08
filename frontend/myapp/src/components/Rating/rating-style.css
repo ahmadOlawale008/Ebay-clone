@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .star::before{
+        background-image: url("../../assets/icons/star.svg");
+        @apply  absolute content-[""] left-0 top-0 bg-left w-full h-full bg-repeat-x bg-contain
+    }
+    .star-in{
+        background-image: url("../../assets/icons/yellow-star.svg");
+        @apply  absolute content-[""] left-0 top-0 bg-left w-full h-full bg-repeat-x bg-contain
+
+    }
+}
