@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from "react"
-
 interface AnimateMarqueeProps {
     element: MutableRefObject<HTMLDivElement | null>,
     elementId: React.MutableRefObject<number>,
@@ -8,13 +7,11 @@ interface AnimateMarqueeProps {
     direction: 1 | -1,
     pause: boolean
 }
-export const animateMarquee = ({element, elementId, current=0, speed=0.08, direction=1, pause=false}: AnimateMarqueeProps) => {
+export const animateMarquee = ({ element, elementId, current = 0, speed = 0.08, direction = 1, pause = false }: AnimateMarqueeProps) => {
     if (!element.current) return
     const children = element.current.children as HTMLCollectionOf<HTMLDivElement>
     children[0].style.cssText = `position: absolute; top:0; left: ${-direction * 100}%`
-
     const ease = 0.05
-
     let lp = {
         target: current,
         current: current
@@ -35,12 +32,11 @@ export const animateMarquee = ({element, elementId, current=0, speed=0.08, direc
             jump(lp.current, lp.target)
             //@ts-ignore
             element.current.style.transform = `translateX(${lp.current * direction}%)`
-
             elementId.current = window.requestAnimationFrame(moveMarquee)
-        } 
+        }
     }
-    const pauseMarquee = ()=>{
-        if(pause){
+    const pauseMarquee = () => {
+        if (pause) {
             cancelAnimationFrame(elementId.current)
         }
     }
