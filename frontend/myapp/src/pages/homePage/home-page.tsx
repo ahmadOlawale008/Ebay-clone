@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import AdvertisementPage from './sections/advertisement/advertisement'
 import onlineSales from "../../assets/images/onlinesales.svg"
 import Button from '../../components/Button/button'
-import TopCategories from './sections/topCategories/topcategories-export'
+import TopCategories from './sections/topCategories/topcategories'
 import RecentlyViewed from './sections/recentlyViewed/recently-viewed'
 import ImageScrolll from './sections/advertisement/imageScrolll'
 // const validator = require('validator');
@@ -19,7 +19,9 @@ const HomePage = () => {
       <div className="main-content container mx-auto">
         <RecentlyViewed />
       </div>
-      {/* <TopCategories /> */}
+      <div className="main-content container mx-auto">
+        <TopCategories />
+      </div>
     </div>
   )
 }

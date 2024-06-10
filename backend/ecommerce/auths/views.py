@@ -7,8 +7,13 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
 from .serializers import UserSerializer
 from rest_framework.permissions import BasePermission
+from rest_framework_simplejwt.tokens import AccessToken
 from .models import AuthUser
-# Create your views here.
+from django.contrib.auth import get_user_model
+
+def get_tokens_for_admin(user):
+    access = AccessToken.for_user(user)
+    return access
 
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
@@ -21,6 +26,8 @@ class CreateUser(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny, ]
     queryset = AuthUser
+    def get_permissions(self):
+        return super().get_permissions()
     
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

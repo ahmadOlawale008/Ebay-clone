@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, ReactNode, useEffect, useRef, useState } from "react"
 import SettingsIcon from "../../assets/icons/settingsIcon"
 import UserIcon from "../../assets/icons/userIcon"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import "./account-menu.css"
 interface AccountMenuProps {
     anchorOrigin?: HTMLDivElement | null,
@@ -87,10 +87,10 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ anchorOrigin, setOpen }) => {
                             </>
                         }
                     </div>
-                    <motion.div onClick={() => setMode(mode == "light" ? "dark" : "light")} className={`capsule flex  shadow-md ${mode == "light" ? "justify-end" : "justify-start"} basis-1/5 w-full cursor-pointer  rounded-full mt-6 bg-slate-300`}>
-                        <motion.div className={`capsule-login size-10 rounded-full flex items-center justify-center bg-gray-400`}>
+                    <div onClick={() => setMode(mode == "light" ? "dark" : "light")} className={`capsule flex  shadow-md   w-full cursor-pointer  rounded-full mt-6 bg-slate-300`}>
+                        <motion.div className={`capsule-login size-10 justify-self-end rounded-full flex items-center basis-1/5 justify-center bg-gray-400`}>
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </div>

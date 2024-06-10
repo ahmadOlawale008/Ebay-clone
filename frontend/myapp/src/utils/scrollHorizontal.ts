@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from "react"
 export type AvailableCardController = "left" | "right" | "both"
 export type ScrollType = "right" | "left" | "default"
 
-export const handleContainerScroll = (e: React.UIEvent<HTMLDivElement>, setCardContainerScrollDirection: React.Dispatch<React.SetStateAction<AvailableCardController>>) => {
+export const handleContainerScroll = (e: React.UIEvent, setCardContainerScrollDirection: React.Dispatch<React.SetStateAction<AvailableCardController>>) => {
     const element = e.currentTarget as HTMLDivElement
     const clientWidth = element.clientWidth
     const scrollLeft = element.scrollLeft
