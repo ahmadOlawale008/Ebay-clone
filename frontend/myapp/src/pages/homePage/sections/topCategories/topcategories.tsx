@@ -3,7 +3,7 @@ import image from "../../../../assets/images/sarah-dorweiler-gUPiTDBdRe4-unsplas
 import imageB from "../../../../assets/images/filip-mroz-gma1zfS3_6E-unsplash.jpg"
 import imageC from "../../../../assets/images/thomas-le-pRJhn4MbsMM-unsplash.jpg"
 import imageD from "../../../../assets/images//tobias-tullius-Fg15LdqpWrs-unsplash.jpg"
-import {useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { AvailableCardController, handleContainerScroll, handleScrollCardPosition } from "../../../../utils/scrollHorizontal"
 const TopCategories = () => {
 
