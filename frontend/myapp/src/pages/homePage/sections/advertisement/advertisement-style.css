@@ -19,6 +19,11 @@
   .marquee{
     animation: marqueeAnimate 20s linear infinite;
   }
+  .maniquee-container::before{
+    background: linear-gradient(to right  #e5e5e580, #f9f3f349);
+    @apply  absolute top-0 left-0 w-2/12 h-full;
+    background: linear-gradient(to right, rgba(95, 56, 9, 0.101), rgba(118, 42, 1, 0.142));
+  }
   @keyframes marqueeAnimate {
     from {
       transform: translateX(0);
@@ -26,4 +31,5 @@
       transform: translateX(-100%);
     }
   }
+
 }

@@ -6,6 +6,7 @@ import Button from '../../components/Button/button'
 import TopCategories from './sections/topCategories/topcategories'
 import RecentlyViewed from './sections/recentlyViewed/recently-viewed'
 import ImageScrolll from './sections/advertisement/imageScrolll'
+import AdvertisementCategory from './sections/topCategories/advertisement/advertisement-category'
 // const validator = require('validator');
 const HomePage = () => {
   return (
@@ -18,6 +19,9 @@ const HomePage = () => {
       </div>
       <div className="main-content container mx-auto">
         <RecentlyViewed />
+      </div>
+      <div className="my-12 bg-slate-100 mx-auto">
+        <AdvertisementCategory />
       </div>
       <div className="main-content container mx-auto">
         <TopCategories />

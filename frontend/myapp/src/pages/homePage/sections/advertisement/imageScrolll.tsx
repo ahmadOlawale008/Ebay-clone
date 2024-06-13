@@ -3,6 +3,7 @@ import Button from '../../../../components/Button/button'
 import { ScrollContent } from './scrollContent'
 import { useEffect, useRef, useState } from 'react'
 import { animateMarquee } from '../../../../utils/animateMarquee';
+import "./image-scroll.css"
 const closeAnimation = (id: number) => cancelAnimationFrame(id);
 
 const ImageScrolll = () => {
@@ -32,57 +33,59 @@ const ImageScrolll = () => {
                 <div className="flex my-2 items-center justify-center">
                     <span className='p-3 text-4xl italic font-light tracking-widest text-secondary-light -rotate-1 font-cursive'>Sales Categories</span>
                 </div>
-                <div className="border-t-2 border-neutral-900">
-                    <motion.div ref={marqueeRef} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>
-                        {[0, 1, 2].map((_, ind) => (
-                            <motion.div
-                                key={ind}
-                                transition={{ type: "tween" }}
-                                className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
-                            >
-                                {ScrollContent.map((d) => (
-                                    <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
-                                        <Button
-                                            baseClassName='px-3  inline-flex w-full items-center justify-center text-center py-4 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
-                                            rounded='none'
-                                            color='primary'
-                                            iconClassName='size-12'
-                                            variant='text'
-                                            icon={d.src}
-                                        >
-                                            {d.category}
-                                        </Button>
-                                    </motion.a>
-                                ))}
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-                <div className=" border-b-2 border-t-2 border-neutral-800">
-                    <motion.div ref={marqueeRefB} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>
-                        {[0, 1, 2].map((_, ind) => (
-                            <motion.div
-                                key={ind}
-                                transition={{ type: "tween" }}
-                                className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
-                            >
-                                {ScrollContent.map((d) => (
-                                    <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
-                                        <Button
-                                            baseClassName='px-3 inline-flex w-full items-center justify-center text-center py-4 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
-                                            rounded='none'
-                                            color='primary'
-                                            iconClassName='size-12'
-                                            variant='text'
-                                            icon={d.src}
-                                        >
-                                            {d.category}
-                                        </Button>
-                                    </motion.a>
-                                ))}
-                            </motion.div>
-                        ))}
-                    </motion.div>
+                <div  className="maniquee-container relative">
+                    <div className="border-t-2 border-neutral-900">
+                        <motion.div ref={marqueeRef} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>
+                            {[0, 1, 2].map((_, ind) => (
+                                <motion.div
+                                    key={ind}
+                                    transition={{ type: "tween" }}
+                                    className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
+                                >
+                                    {ScrollContent.map((d) => (
+                                        <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
+                                            <Button
+                                                baseClassName='px-3  inline-flex w-full items-center justify-center text-center py-4 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
+                                                rounded='none'
+                                                color='primary'
+                                                iconClassName='size-12'
+                                                variant='text'
+                                                icon={d.src}
+                                            >
+                                                {d.category}
+                                            </Button>
+                                        </motion.a>
+                                    ))}
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                    <div className=" border-b-2 border-t-2 border-neutral-800">
+                        <motion.div ref={marqueeRefB} className='marqueeContainer relative gap-0 inline-flex flex-nowrap justify-between'>
+                            {[0, 1, 2].map((_, ind) => (
+                                <motion.div
+                                    key={ind}
+                                    transition={{ type: "tween" }}
+                                    className="flex marquee02 whitespace-nowrap w-full shrink-0 justify-between items-start"
+                                >
+                                    {ScrollContent.map((d) => (
+                                        <motion.a href={d.link} key={d.id} className='flex flex-1 basis-full items-center'>
+                                            <Button
+                                                baseClassName='px-3 inline-flex w-full items-center justify-center text-center py-4 active:scale-1 active:shadow-none font-medium !text-lg tracking-tight leading-loose'
+                                                rounded='none'
+                                                color='primary'
+                                                iconClassName='size-12'
+                                                variant='text'
+                                                icon={d.src}
+                                            >
+                                                {d.category}
+                                            </Button>
+                                        </motion.a>
+                                    ))}
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
                 </div>
                 <div className="flex items-end justify-end mt-2">
                     <div onClick={() => setPauseAnimationState(!pauseAnimation)} className="pause-animation inline-block cursor-pointer hover:scale-[1.09] active:scale-[0.91] bg-gray-300 rounded-full p-3 mr-20">

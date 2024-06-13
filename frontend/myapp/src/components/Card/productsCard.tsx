@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Player } from "@lordicon/react"
 import Rating, { RatingType } from '../Rating/rating-export'
+import Button from '../Button/button'
 interface ProductCard {
     link: string
     img: string,
@@ -24,10 +25,15 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
                     </div>
                     <div className="card-text flex gap-y-1 flex-col my-4">
-                        <div className="prod-category"><span className='text-lg tracking-wide'>Fashion {">"}Men {">"} clothes</span></div>
+                        <div className="prod-category"><span className='text-base tracking-wide'>Fashion {">"}Men {">"} clothes</span></div>
                         <div className="prod-name"> <span className='text-xl font-semibold'>{product_name}</span></div>
-                        <div className="prod-price text-xl leading-snug font-semibold">
-                            <span>₦{price}</span>
+                        <div className="prod-price inline-flex text-nowrap space-x-3 items-center text-xl leading-snug font-semibold">
+                           <div className="card-discount">
+                                <span className=' text-secondary-light'>₦4000</span>
+                           </div>
+                            <div className="card-price">
+                                <small className='line-through'>₦{price}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,8 +45,14 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                     {likedPost ? <Player onComplete={() => setLikedPost(false)} ref={iconRef} icon={heartFilledIcon} size={21} colorize='#ef2424'></Player> : <Player ref={iconRef} onComplete={() => setLikedPost(true)} size={21} icon={hearticon}></Player>}
                 </span>
             </div>
-            <div className='ratingu7a'>
+            <div className='ratingu7a flex gap-x-5 flex-row'>
                 <Rating rate={rate} />
+                <div className="bg-primary-light px-3 py-1 text-white rounded-sm  text-sm">
+                    <span>{rate}</span>
+                </div>
+            </div>
+            <div className="my-2">
+                <Button color='secondary' baseClassName='text-white' fullWidth variant='filled'>Add to cart</Button>
             </div>
         </div >
     )
