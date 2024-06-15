@@ -1,4 +1,5 @@
 #!/bin/sh
+# Collect static files and directories
 echo -e "\033[1m\033[33m|->Collecting static files\033[0m"
 python manage.py collectstaic --noinput
 echo -e "\033[1m\033[33m|->Applying database migration"

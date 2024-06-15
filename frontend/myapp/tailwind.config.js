@@ -21,6 +21,7 @@ module.exports = {
         serif: ["Noto Serif", "serif"],
         custom: ["Roboto Mono", "monospace"],
         cursive: ["Caveat", "cursive"],
+        mono: ["adapter-mono-pe-variable", "sans-serif"],
         monospace: ["IBM Plex Mono", "monospace"],
       },
     },

@@ -56,7 +56,7 @@ const NavbarSearch = () => {
                             </select>
                         </div>
                         <div className='relative bg-gray-100 w-full'>
-                            <input type="search" name="" className='w-full bg-gray-100 focus:bg-slate-50  pl-10 outline-none bg-transparent relative py-3 px-2  tracking-wider text-lg' placeholder='Search' id="" />
+                            <input type="search" name="" className='w-full bg-gray-100 focus:bg-slate-50  pl-10 outline-none bg-transparent relative py-3 px-2  tracking-wider text-lg' placeholder='Search...' id="" />
                             <div className="flex items-center left-2 top-0 absolute justify-center h-full w-fit">
                                 <SearchIcon className='text-3xl fill-gray-500 ' />
                             </div>

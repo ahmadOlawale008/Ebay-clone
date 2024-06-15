@@ -29,10 +29,10 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         <div className="prod-name"> <span className='text-xl font-semibold'>{product_name}</span></div>
                         <div className="prod-price inline-flex text-nowrap space-x-3 items-center text-xl leading-snug font-semibold">
                            <div className="card-discount">
-                                <span className=' text-secondary-light'>₦4000</span>
+                                <span className='text-secondary-light text-2xl'>₦{price}</span>
                            </div>
                             <div className="card-price">
-                                <small className='line-through'>₦{price}</small>
+                                <small className='line-through'>₦{price-100}</small>
                             </div>
                         </div>
                     </div>

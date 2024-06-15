@@ -35,24 +35,24 @@ const AdvertisementPage = () => {
           <div className="col-span-3 gap-x-6 p-3   grid grid-cols-2">
             <div className="flex flex-col gap-y-5">
               <div className="rounded-lg min-h-[200px] relative overflow-hidden flex basis-1/3">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={image} loading="eager" className="size-full bg-gray-200 absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={image} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
               <div className="rounded-lg min-h-[200px] relative overflow-hidden flex basis-1/3">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageG} loading="eager" className="size-full bg-gray-200 absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageG} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
               <div className="rounded-lg min-h-[200px] relative overflow-hidden flex basis-1/3">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageC} loading="eager" className="size-full bg-gray-200 absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageC} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
             </div>
             <div className=" flex flex-col gap-y-5">
               <div className="rounded-lg  relative overflow-hidden flex basis-1/5">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} src={imageD} threshold={0.4} loading="eager" className="size-full bg-gray-200 aspect-auto absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} src={imageD} threshold={0.4} loading="eager" className="size-full bg-white aspect-square  absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
               <div className="rounded-lg min-h-[200px] relative overflow-hidden flex basis-1/2">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageE} loading="eager" className="size-full bg-gray-200 absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageE} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
               <div className="rounded-lg min-h-[200px] relative overflow-hidden flex basis-1/4">
-                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageF} loading="eager" className="size-full  bg-gray-200 absolute top-0 left-0 object-cover" alt="image-card" />
+                <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageF} loading="eager" className="size-full  bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
             </div>
           </div>
