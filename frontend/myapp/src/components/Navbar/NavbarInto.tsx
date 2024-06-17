@@ -4,7 +4,7 @@ import UserIcon from '../../assets/icons/userIcon'
 import AccountMenu from '../Menu/accountMenu'
 import { motion } from "framer-motion"
 import Button from '../Button/button'
-import EazeSalesLogoB from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
+import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
 
 const NavbarInto = () => {
     const [accountMenuState, setOpenAccountMenuState] = useState(false)
@@ -12,10 +12,12 @@ const NavbarInto = () => {
     return (
         <nav className='bg-white px-12 py-3 border-b border-gray-400/40'>
             <div className='flex flex-row justify-between'>
-                <a href="/" className='self-start'>
-                    {<EazeSalesLogoB className='size-8'/>}
-                </a>
-                <div className=''>
+                <div className="nav-icon">
+                    <a href="/" className='self-start'>
+                        {<EazeSalesLogo className='size-8' />}
+                    </a>
+                </div>
+                <div className='nav-links'>
                     <div className='flex flex-row items-center relative flex-nowrap gap-x-6'>
                         <span className='text-base'>
                             <a href="">About</a>
