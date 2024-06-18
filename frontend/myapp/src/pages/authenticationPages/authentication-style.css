@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .card-part-group-1{
+        background: url("../../assets/images/rupixen-pbgYcq3_Zx0-unsplash.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+    }
+}
