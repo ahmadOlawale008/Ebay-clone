@@ -43,17 +43,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      */
     className?: string
 }
+export const roundedStyleState: Record<RoundedType, RoundedType> = {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
+    full: "full",
+    none: "none"
+}
 const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, baseClassName, ringEffect = true, rounded = "md", icon, iconPosition = "start", color = "secondary", variant = "text", size = "medium", ...props }) => {
     const defaultProps = "active:scale-[0.98] gap-x-2 disabled:scale-0 disabled:hover:bg-transparent disabled:active:bg-transparent ease-in-out font-normal tracking-wider inline-flex text-center justify-center items-center m-0"
     const defaultRoundedState = 'rounded-md'
-    const btnState: Record<RoundedType, RoundedType> = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-        xl: "xl",
-        full: "full",
-        none: "none"
-    }
+
     const sizeState = {
         small: "px-3 text-sm py-1.5 active:shadow-md",
         large: "px-6  py-3 active:shadow-2xl text-lg",
@@ -73,7 +74,7 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
             primary: "ring-1 active:ring-2 hover:bg-primary/10 ring-primary"
         }
     }
-    const btnRounded = rounded ? `rounded-${btnState[rounded]} ` : defaultRoundedState
+    const btnRounded = rounded ? `rounded-${roundedStyleState[rounded]} ` : defaultRoundedState
     const btnSize = size ? sizeState[size] : sizeState["medium"]
     const btnVariants = btnVariantState[variant][color]
     const btnWidth = `${fullWidth ? "w-full" : "w-fit"}`
