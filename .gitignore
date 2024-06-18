@@ -6,6 +6,6 @@ __pycache__/
 
 # Ignore environment variable files
 *.env
-
+.vscode/
 # Ignore SQLite database file
 db.sqlite3
