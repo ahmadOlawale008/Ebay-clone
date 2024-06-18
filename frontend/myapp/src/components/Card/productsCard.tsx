@@ -21,8 +21,8 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
     const iconRef = useRef<Player>(null)
     return (
         <div className="block relative">
-            <a href="">
-                <div className='bg-white p-1'>
+            <a href="#" className='p-1'>
+                <div className='bg-white'>
                     <div className="card-img select-none rounded-2xl overflow-hidden">
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
                     </div>
@@ -39,6 +39,24 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         </div>
                     </div>
                 </div>
+                <div className='ratingu7a block'>
+                    <Rating rate={rate} />
+                    <div className="">
+                        <span className='text-neutral-800 text-sm font-medium'>
+                            out of 60 products
+                        </span>
+                    </div>
+                    <div className="">
+                        <span className='text-neutral-600 text-sm'>
+                            12 quantitities are available
+                        </span>
+                    </div>
+                    <div>
+                        <span className='text-neutral-600 text-sm'>
+                            212 sold
+                        </span>
+                    </div>
+                </div>
             </a>
             <div className="">
                 <span onClick={() => {
@@ -52,25 +70,9 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                     </svg>
 
                 </span>
+
             </div>
-            <div className='ratingu7a block'>
-                <Rating rate={rate} />
-                <div className="">
-                    <span className='text-neutral-800 text-sm font-medium'>
-                        out of 60 products
-                    </span>
-                </div>
-                <div className="">
-                    <span className='text-neutral-600 text-sm'>
-                        12 quantitities are available
-                    </span>
-                </div>
-                <div>
-                    <span className='text-neutral-600 text-sm'>
-                        212 sold
-                    </span>
-                </div>
-            </div>
+
             <div className="my-1">
                 <Button color='secondary' baseClassName='text-white' fullWidth variant='filled'>Add to cart</Button>
             </div>
