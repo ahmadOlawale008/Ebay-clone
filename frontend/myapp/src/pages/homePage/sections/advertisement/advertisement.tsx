@@ -1,7 +1,6 @@
 import "./advertisement-style.css"
 import Button from '../../../../components/Button/button'
 import image from "../../../../assets/images/thomas-le-pRJhn4MbsMM-unsplash.jpg"
-import imageB from "../../../../assets/images/marisol-benitez-QvkAQTNj4zk-unsplash.jpg"
 import imageC from "../../../../assets/images/sarah-dorweiler-gUPiTDBdRe4-unsplash.jpg"
 import imageD from "../../../../assets/images/tobias-tullius-Fg15LdqpWrs-unsplash.jpg"
 import imageE from "../../../../assets/images/filip-mroz-gma1zfS3_6E-unsplash.jpg"
@@ -9,7 +8,7 @@ import imageF from "../../../../assets/images/arno-senoner-oCXVxwTFwqE-unsplash.
 import imageG from "../../../../assets/images/firosnv-photography-Z2c6ounF-iE-unsplash.jpg"
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 import { Player } from "@lordicon/react"
 import { useRef } from "react"
 const ShopIcon = require("../../../../assets/icons/animated/system-solid-64-shopping-bag.json")
@@ -27,7 +26,7 @@ const AdvertisementPage = () => {
               <span className="font-medium">₦2900</span>
               <sub className="line-through">₦5700</sub>
             </span>
-            <motion.div onHoverStart={()=>shopRef.current?.playFromBeginning()}>
+            <motion.div onHoverStart={() => shopRef.current?.playFromBeginning()}>
               <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
               </Button>
             </motion.div>
