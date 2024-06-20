@@ -11,8 +11,8 @@ const AdvertisementCategory = () => {
       <div className='w-full px-12 ads-contentua719  rounded-2xl py-12  overflow-hidden min-h-[540px] bg-slate-100'>
         <div className="grid h-[inherit] grid-cols-3 text-white gap-x-12 items-center justify-around">
           <div className="adscontent-text">
-            <h3 className='text-4xl leading-snug font-bold'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa cum dolore libero nostrum.</h3>
-            <h6 className='text-xl'>Lorem, ipsum dolor.</h6>
+            <h3 className='text-2xl leading-snug font-bold'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa cum dolore libero nostrum.</h3>
+            <h6 className='text-lg mt-3'>Lorem, ipsum dolor.</h6>
           </div>
           <div className="adscontent-card col-span-2 flex items-start justify-">
             <div className="w-[550px] h-[450px] relative">
@@ -20,13 +20,13 @@ const AdvertisementCategory = () => {
                 <div className="flex items-center glassmorphism-content justify-between mx-auto">
                   <div className="glassmorphism-text select-none basis-1/2">
                     <div className="smallheader-ai8a">
-                      <span className='text-lg font-thin'>Lorem ipsum dolor sit.</span>
+                      <span className='text-base font-thin'>Lorem ipsum dolor sit.</span>
                     </div>
                     <div className="bigheader-auaj my-3">
-                      <h6 className='text-2xl font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
+                      <h6 className='text-lg font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
                     </div>
                     <div className="smallheader-ai8a">
-                      <span className='text-sm font-light'>Lorem ipsum sit.</span>
+                      <span className='text-base font-light'>Lorem ipsum sit.</span>
                     </div>
                   </div>
                   <div className="glassmorphism-image">
@@ -34,17 +34,17 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
                 </div>
               </motion.div>
               <motion.div style={{ transform: "translateX(33%) rotate(-6deg)" }} className="glassmorphism z-[9] -ml-11 origin-bottom -rotate-3 absolute top-0 -left-0 shrink-0 w-[550px] px-6 py-8 overflow-hidden">
                 <div className="flex  items-center glassmorphism-content justify-between mx-auto">
                   <div className="glassmorphism-text select-none basis-1/2">
                     <div className="smallheader-ai8a">
-                      <span className='text-lg font-thin'>Lorem ipsum dolor sit.</span>
+                      <span className='text-base font-thin'>Lorem ipsum dolor sit.</span>
                     </div>
                     <div className="bigheader-auaj my-3">
-                      <h6 className='text-2xl font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
+                      <h6 className='text-lg font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
                     </div>
                     <div className="smallheader-ai8a">
                       <span className='text-sm font-light'>Lorem ipsum sit.</span>
@@ -55,17 +55,17 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
                 </div>
               </motion.div>
               <motion.div style={{ transform: "translateX(66%) rotate(-6deg)" }} className="glassmorphism z-[8] -ml-11  origin-bottom -rotate-3 absolute top-0 left-0 shrink-0 w-[550px] px-6 py-8 overflow-hidden">
                 <div className="flex items-center glassmorphism-content justify-between mx-auto">
                   <div className="glassmorphism-text select-none basis-1/2">
                     <div className="smallheader-ai8a">
-                      <span className='text-lg font-thin'>Lorem ipsum dolor sit.</span>
+                      <span className='text-base font-thin'>Lorem ipsum dolor sit.</span>
                     </div>
                     <div className="bigheader-auaj my-3">
-                      <h6 className='text-2xl font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
+                      <h6 className='text-lg font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vel nam sit.</h6>
                     </div>
                     <div className="smallheader-ai8a">
                       <span className='text-sm font-light'>Lorem ipsum sit.</span>
@@ -76,7 +76,7 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
                 </div>
               </motion.div>
             </div>

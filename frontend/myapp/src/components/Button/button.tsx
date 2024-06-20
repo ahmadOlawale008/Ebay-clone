@@ -8,7 +8,7 @@ type IconPositionType = "end" | "start"
 type ColorType = "secondary" | "primary"
 type RoundedType = "sm" | "md" | "lg" | "xl" | "full" | "none"
 type ChildrenType = ReactNode | string
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
     children: ChildrenType
     /**
      * @default text
