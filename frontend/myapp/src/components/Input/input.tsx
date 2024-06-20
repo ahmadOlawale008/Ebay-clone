@@ -1,37 +1,53 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { ButtonProps, roundedStyleState } from "../Button/button"
 import isAnImageType from "../../utils/isAnImageType";
 import { twMerge } from "tailwind-merge";
+import IconType from "../../assets/icons/icons";
 
-interface TextInputProps extends Omit<ButtonProps & Omit<React.InputHTMLAttributes<HTMLInputElement>, "className">, "children"> {
+interface TextInputProps extends Omit<ButtonProps & Omit<React.InputHTMLAttributes<HTMLInputElement>, "className" | "size">, "children"> {
     helperText?: string,
     helperTextClassName?: string,
     label?: string,
-    
 }
-const TextInput: React.FC<TextInputProps> = ({ fullWidth, baseClassName, iconClassName, ringEffect = true, rounded = "md", color="primary", icon, iconPosition = "start",  variant = "text", size = "medium", ...props }) => {
-    const inputVariant = variant == "filled" ? " bg-neutral-200/70 ring-1 ring-neutral-500 outline-none focus:ring-neutral-800 focus:ring-2" : variant == "outlined" ? "ring-1 " : "ring-0 border-b-[1px] border-b-stone-700 active:outline-none ease-in-out transition focus:border-b-secondary-light outline-none"
-    // const inputText = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    const inputSizeState = size == "small"? "px-3 text-sm" : size == "large"? "" : "p-2.5"
-    const inputHasIconState = icon ? "ps-10" : ""
+const TextInput: React.FC<TextInputProps> = ({ fullWidth, baseClassName, iconClassName, helperText, ringEffect = true, rounded = "md", color = "primary", icon, iconPosition = "start", variant = "text", size = "medium", ...props }) => {
+    const inputVariant = variant === "outlined" ? " bg-neutral-200/70 ring-1 ring-neutral-500 outline-none focus:ring-neutral-800 focus:ring-2" :
+        variant === "filled" ? "bg-neutral-200 outline-none border-b border-b-stone-800 focus:border-b-stone-300" : "ring-0 border-b border-b-stone-700 active:outline-none ease-in-out transition focus:border-b-secondary-light outline-none"
+    const inputSizeState = size == "small" ? "p-1 text-sm" : size === "large" ? "p-4  text-[1.9rem]" : "p-2.5"
+    const inputHasIconState = icon && iconPosition === "start" ? "ps-10" : icon && iconPosition === "end" ? "pe-10" : ""
     const defaultRoundedState = 'rounded-md'
     const inputRoundedState = rounded ? `rounded-${roundedStyleState[rounded]} ` : defaultRoundedState
-    
     // Icon
-    const defaultIconState = "w-4 h-4 text-gray-500 dark:text-gray-700"
-    const inputFieldClassName = twMerge(baseClassName, inputVariant, inputSizeState, inputRoundedState, inputHasIconState, "w-full")
+    const defaultIconState = "size-4 text-gray-500 dark:text-gray-400"
+    const inputFieldClassName = twMerge(baseClassName, inputVariant, inputSizeState, inputRoundedState, inputHasIconState, "w-full block")
     const iconClassNameMerged = twMerge(defaultIconState, iconClassName)
+    const renderIcon = () => {
+        if (typeof icon === 'string' && isAnImageType(icon)) {
+            return <img src={icon} className={twMerge("size-5", iconClassName)} alt="icon" />;
+        } else if (React.isValidElement(icon)) {
+            return React.cloneElement(icon as React.ReactElement<any>, {
+                className: iconClassNameMerged
+            })
+        } else if (icon as React.LazyExoticComponent<React.FC<IconType>>) {
+            const IconComponent = icon as React.LazyExoticComponent<React.FC<IconType>>;
+            return <div className="absolute  inset-y-0 end-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                <IconComponent className={iconClassNameMerged} />
+            </div>;
+        }
+        return null;
+    };
+    const inputRef = useRef<HTMLInputElement>(null)
     return (
-        <div className=" transition ">
+        <div className="">
+            <label htmlFor={inputRef.current?.id} className='text-sm font-light text-neutral-800'>First Name</label>
             <div className="relative">
-                <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg className={iconClassNameMerged} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
-                    </svg>
-                </div>
-                <input {...props}  className={inputFieldClassName} placeholder="12345 or 12345-6789" />
+                {iconPosition === "start" && <div className="absolute  inset-y-0 start-0 top-0 flex items-center  pointer-events-none">
+                    {renderIcon()}
+                </div>}
+                <input ref={inputRef} {...props} className={inputFieldClassName} placeholder="12345 or 12345-6789" />
+                {iconPosition === "end" && <div className="absolute  inset-y-0 end-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                </div>}
             </div>
-            <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">Please select a 5 digit number from 0 to 9.</p>
+            {helperText && <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>}
         </div>
     )
 }

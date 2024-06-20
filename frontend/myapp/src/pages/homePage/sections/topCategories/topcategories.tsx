@@ -15,7 +15,7 @@ const TopCategories = () => {
         <div className="top-categories">
             <div className="mt-4 mb-3 px-0 ">
                 <div className="recently-headoai flex items-center justify-between">
-                    <div className="content-name"><h1 className='text-2xl my-7 font-semibold'>Categorized by Fashion</h1></div>
+                    <div className="content-name"><h1 className='text-xl my-4 font-semibold'>Categorized by Fashion</h1></div>
                     <div className="content-link"><a className='underline text-xl underline-offset-2 hover:text-neutral-600' href="" target='_'>See all</a></div>
                 </div>
                 <div className="relative w-full">

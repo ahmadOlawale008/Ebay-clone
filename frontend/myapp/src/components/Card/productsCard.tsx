@@ -26,15 +26,15 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                     <div className="card-img select-none rounded-2xl overflow-hidden">
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
                     </div>
-                    <div className="card-text flex gap-y-[0.18rem] flex-col my-4">
-                        <div className="prod-category"><span className='text-base tracking-wide'>Fashion{" > "}Men{" > "}Clothes</span></div>
-                        <div className="prod-name"> <span className='text-lg font-medium'>{product_name}</span></div>
-                        <div className="prod-price inline-flex text-nowrap space-x-3 items-center text-xl leading-snug font-semibold">
+                    <div className="card-text flex gap-y-[0.18rem] flex-col my-2.5">
+                        <div className="prod-category"><span className='text-sm font-normal tracking-wide'>Fashion{" > "}Men{" > "}Clothes</span></div>
+                        <div className="prod-name"> <span className='text-lg font-semibold'>{product_name}</span></div>
+                        <div className="prod-price inline-flex text-nowrap space-x-2 items-center text-xl leading-snug font-semibold">
                             <div className="card-discount">
-                                <span className='text-secondary-light text-lg'>₦{price}</span>
+                                <span className='text-secondary-light font-bold text-lg'>₦{price}</span>
                             </div>
                             <div className="card-price">
-                                <small className='line-through'>₦{price - 100}</small>
+                                <small className='line-through font-normal text-sm'>₦{price - 100}</small>
                             </div>
                         </div>
                     </div>

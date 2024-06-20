@@ -17,7 +17,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Reddit Sans", "sans-serif"],
+        sans: ["Lato", "sans-serif"],
         serif: ["Noto Serif", "serif"],
         custom: ["Roboto Mono", "monospace"],
         cursive: ["Caveat", "cursive"],

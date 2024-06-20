@@ -57,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
 
     const sizeState = {
         small: "px-3 text-sm py-1.5 active:shadow-md",
-        large: "px-6  py-3 active:shadow-2xl text-lg",
+        large: "px-6 text-base  py-3 active:shadow-2xl",
         medium: "px-4 py-2 active:shadow-xl text-lg"
     }
     const btnVariantState: Record<VariantType, Record<ColorType, string>> = {
@@ -67,7 +67,7 @@ const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, bas
         },
         filled: {
             secondary: ringEffect ? "bg-secondary-dark active:ring-2 active:ring-secondary-dark active:bg-secondary" : "bg-secondary  active:bg-secondary/90",
-            primary: ringEffect ? "bg-primary-dark active:ring-2 active:ring-primary-dark active:bg-primary" : "bg-primary  active:bg-primary/8 "
+            primary: ringEffect ? "bg-primary-dark text-white active:ring-2 active:ring-primary-dark active:bg-primary" : "bg-primary text-white active:bg-primary/8 "
         },
         outlined: {
             secondary: "ring-1 active:ring-2 hover:bg-secondary/10 ring-secondary",

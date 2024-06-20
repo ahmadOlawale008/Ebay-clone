@@ -1,14 +1,11 @@
-import React from 'react'
 import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
 import "./authentication-style.css"
 import { Outlet } from 'react-router-dom'
-
 const AuthenticationWrapper = () => {
     return (
         <div className='authentication-wra8ai p-12'>
             <div className="auth-card grid grid-cols-2 rounded-xl overflow-hidden bg-slate-50 min-h-screen">
                 <div className="card-part-group-1 col-span-1">
-
                 </div>
                 <div className="card-part-group-2 col-span-1 p-8">
                     <div className="web-icon inline-flex justify-end w-full">
@@ -27,5 +24,4 @@ const AuthenticationWrapper = () => {
         </div>
     )
 }
-
 export default AuthenticationWrapper

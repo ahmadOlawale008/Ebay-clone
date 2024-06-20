@@ -18,16 +18,16 @@ const AdvertisementPage = () => {
     <div>
       <div className="min-h-full items-start flex flex-col relative">
         <div className="max-md:px-1 max-md:py-2 px-12 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col self-start gap-x-3  grid grid-cols-5  flex-auto w-full items-baseline ">
-          <div className="flex flex-col max-md:gap-y-2 gap-y-5 max-md:mt-0  col-span-2 ">
-            <h4 className="max-md:text-lg text-xl font-monospace font-medium">Lorem ipsum dolor sit amet.</h4>
-            <h3 className="text-5xl leading-relaxed font-black tracking-tighter">Shop Online With Us.</h3>
-            <p className="leading-snug tracking-wide text-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo minus nobis sunt sapiente accusantium optio deleniti dolore odio, illum quidem excepturi soluta nostrum ipsam tenetur? Suscipit.</p>
+          <div className="flex flex-col max-md:gap-y-2 gap-y-3 max-md:mt-0  col-span-2 ">
+            <h4 className="max-md:text[14px] text-md font-monospace font-medium">Lorem ipsum dolor sit amet.</h4>
+            <h3 className="text-4xl leading-relaxed font-black tracking-tighter">Shop Online With Us.</h3>
+            <p className="leading-snug tracking-wide text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo minus nobis sunt sapiente accusantium optio deleniti dolore odio, illum quidem excepturi soluta nostrum ipsam tenetur? Suscipit.</p>
             <span className="text-xl font-monospace font-normal">
               <span className="font-medium">₦2900</span>
               <sub className="line-through">₦5700</sub>
             </span>
             <motion.div onHoverStart={() => shopRef.current?.playFromBeginning()}>
-              <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
+              <Button variant="filled" size="small" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
               </Button>
             </motion.div>
           </div>
