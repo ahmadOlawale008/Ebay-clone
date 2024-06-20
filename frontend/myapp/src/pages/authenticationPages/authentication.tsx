@@ -10,7 +10,7 @@ const AuthenticationWrapper = () => {
                 <div className="card-part-group-2 col-span-1 p-8">
                     <div className="web-icon inline-flex justify-end w-full">
                         <a href="/">
-                            {<EazeSalesLogo className='size-8' />}
+                            {<EazeSalesLogo className='size-6' />}
                         </a>
                     </div>
                     <div className="page-greetings">

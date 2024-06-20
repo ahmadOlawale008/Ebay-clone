@@ -1,10 +1,17 @@
 import React, { useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
+import { toast } from 'sonner'
 
 const SignUpPage = () => {
+  const authToast = toast("signupSonner")
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
+    toast.warning("Error registering", {
+      position: 'bottom-center',
+      id: authToast,
+      duration: 3000
+    })
   }
   const [showPassword, setPasswordState] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
@@ -21,16 +28,16 @@ const SignUpPage = () => {
         <form onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid-cols-2 mt-2 mb-6 grid items-center justify-center gap-x-2 gap-y-0 grid-rows-3'>
             <div className="">
-              <TextInput type='text' baseClassName='text-sm' label='First Name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput required type='text' baseClassName='text-sm' label='First Name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput type='text' baseClassName='text-sm' label='Last Name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput required type='text' baseClassName='text-sm' label='Last Name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput label='Email' baseClassName='text-sm' variant='outlined' id='email_input' placeholder='Email' type='email' />
+              <TextInput required label='Email' baseClassName='text-sm' variant='outlined' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
+              <TextInput required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -50,7 +57,7 @@ const SignUpPage = () => {
                 </div>
             </div>
             <div className="col-span-2">
-              <TextInput label='Confirm password' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
+              <TextInput required label='Confirm password' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
             </div>
           </div>
           <div className="form-signup-submit">

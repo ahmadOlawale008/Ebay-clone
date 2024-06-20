@@ -22,10 +22,10 @@ const LoginPage = () => {
           <form onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
             <div className='mt-4 mb-6 grid grid-cols-1 gap-y-5'>
               <div className="">
-                <TextInput baseClassName='text-sm' type='email' variant='outlined' id='first_name_input' placeholder='Email or Phone Number' />
+                <TextInput required baseClassName='text-sm' type='email' variant='outlined' id='first_name_input' placeholder='Email or Phone Number' />
               </div>
               <div className="">
-                <TextInput baseClassName='text-sm' type='password' variant='outlined' id='first_name_input' placeholder='Password' />
+                <TextInput required baseClassName='text-sm' type='password' variant='outlined' id='first_name_input' placeholder='Password' />
               </div>
             </div>
             <div className="form-signup-submit">
