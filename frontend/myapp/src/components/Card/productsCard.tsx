@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import { Player } from "@lordicon/react"
 import Rating, { RatingType, RatingSizeType } from '../Rating/rating-export'
 import Button from '../Button/button'
-import Bookmark from '../../assets/icons/bookmark'
 interface ProductCard {
     link: string
     img: string,

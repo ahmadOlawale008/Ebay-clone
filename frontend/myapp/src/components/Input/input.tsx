@@ -1,17 +1,17 @@
-import React, { ButtonHTMLAttributes, useEffect, useRef } from "react"
+import React, { ButtonHTMLAttributes, forwardRef, useEffect, useRef } from "react"
 import { ButtonProps, roundedStyleState } from "../Button/button"
 import isAnImageType from "../../utils/isAnImageType";
 import { twMerge } from "tailwind-merge";
 import IconType from "../../assets/icons/icons";
 
-type InputPropsWithoutSize = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>;
+type InputPropsWithoutSize = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'>;
 interface TextInputProps extends Omit<ButtonProps, keyof ButtonHTMLAttributes<HTMLButtonElement>>, InputPropsWithoutSize {
     helperText?: string,
     helperTextClassName?: string,
     label?: string,
     labelClassName?: string
 }
-const TextInput = ({ fullWidth, id, baseClassName, label, labelClassName, iconClassName, helperText, ringEffect = true, rounded = "md", icon, iconPosition = "start", variant = "text", size = "medium", ...props }: TextInputProps) => {
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, id, baseClassName, label, labelClassName, iconClassName, helperText, ringEffect = true, rounded = "md", icon, iconPosition = "start", variant = "text", size = "medium", ...props }, ref) => {
     const inputVariant = variant === "outlined" ? " bg-neutral-200/70 ring-1 ring-neutral-500 outline-none focus:ring-neutral-800 focus:ring-2" :
         variant === "filled" ? "bg-neutral-200 outline-none border-b border-b-stone-800 focus:border-b-stone-300" : "ring-0 border-b border-b-stone-700 active:outline-none ease-in-out transition focus:border-b-secondary-light outline-none"
     const inputSizeState = size == "small" ? "p-1 text-sm" : size === "large" ? "p-4  text-[1.9rem]" : "p-2.5"
@@ -46,7 +46,7 @@ const TextInput = ({ fullWidth, id, baseClassName, label, labelClassName, iconCl
                 {iconPosition === "start" && <div className="absolute  inset-y-0 start-0 top-0 flex items-center  pointer-events-none">
                     {renderIcon()}
                 </div>}
-                <input {...props} className={inputFieldClassName} placeholder="12345 or 12345-6789" />
+                <input ref={ref}  {...props} className={inputFieldClassName}  />
                 {iconPosition === "end" && <div className="absolute inset-y-0 end-0 top-0 flex items-center pointer-events-none">
                     {renderIcon()}
                 </div>}
@@ -54,6 +54,6 @@ const TextInput = ({ fullWidth, id, baseClassName, label, labelClassName, iconCl
             {helperText && <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>}
         </div>
     )
-}
+})
 
 export default TextInput
