@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
   const handleFormRegistrationForm = (e: React.FormEvent) => {
@@ -16,7 +17,7 @@ const LoginPage = () => {
         </div>
         <div className="group-help-authorization text-base">
           <span>If you have not created an account with us</span>
-          <span className='ml-1'><a href="/signup" className=' underline underline-offset-1 font-semibold'>sign up</a></span>
+          <span className='ml-1'><Link to="/signup" className=' underline underline-offset-1 font-semibold'>sign up</Link></span>
         </div>
         <div className='form-group'>
           <form onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
