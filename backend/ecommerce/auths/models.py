@@ -17,6 +17,12 @@ class BusinessType(models.TextChoices):
     PARTNERSHIP = "P", "Partnership"
     LIMITED_LIABILITY_COMPANY = "LLC", "Limited liability company"
 
+class FeedBackRating(models.TextChoices):
+    ONE = "1", "1"
+    TWO = "2", "2"
+    THREE = "3", "3"
+    FOUR = "4", "4"
+    FIVE = "5", "5"
 
 class AuthUserQueryset(QuerySet):
     # make sure to use raw
@@ -110,7 +116,8 @@ class PersonalBusinessInfo(models.Model):
         verbose_name=_("Last name"),
         validators=[MinLengthValidator(2)],
     )
-
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     class Meta:
         unique_together = [["first_name", "last_name"]]
         abstract = True
@@ -151,9 +158,7 @@ class BusinessInfo(PersonalBusinessInfo):
     business_social_B = models.URLField(blank=True, help_text="(If Applicable)")
     business_social_C = models.URLField(blank=True, help_text="(If Applicable)")
     business_social_D = models.URLField(blank=True, help_text="(If Applicable)")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    
+
     def save(self, *args, **kwargs):
         if not self.first_name:
             self.first_name = self.user.name
@@ -163,6 +168,14 @@ class BusinessInfo(PersonalBusinessInfo):
         return self.user.name
 
 class BusinessFeedback(models.Model):
-    pass
+    business = models.ForeignKey(BusinessInfo, related_name="business_info")
+    user= models.ManyToManyField(AuthUser, related_name="user")
+    rating = models.CharField(max_length=1, choices=FeedBackRating, blank=True)
+    verified_purchase = models.BooleanField(default=False)
+    comment = models.TextField()
+    is_valid = models.BooleanField(default=True)
+    def __str__(self):
+        return f"{self.comment[0:20]}...." if len(self.comment.strip()) > 20 else self.comment
+    
 class BusinessFinancialInfo(models.Model):
     business = models.ForeignKey(BusinessInfo, related_name="business_info")
