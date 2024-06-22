@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "products.apps.ProductsConfig",
     "sales.apps.SalesConfig",
     "corsheaders",
+
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
