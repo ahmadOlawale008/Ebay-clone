@@ -1,13 +1,32 @@
-import React, { useRef, useState } from 'react'
+import React, { FormEvent, useReducer, useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
+type FormType = {
+  first_name: string,
+  last_name: string,
+  email: string,
+  password: string,
+  confirm_password: string,
+  rememberMe?: boolean
+}
 const SignUpPage = () => {
-  // const authToast = toast("signupSonner")
+  const [formState, setFormState] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
+  const [rememberMe, setRememberMe] = useState(true)
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
-    const toast = "String"
+    const formData = new FormData()
+    formData.append("first_name", formState.first_name.trim())
+    formData.append("last_name", formState.last_name.trim())
+    formData.append("password", formState.password.trim())
+    formData.append("confirm_password", formState.confirm_password.trim())
+  }
+  const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
+    const element = (e.target as HTMLInputElement)
+    const element_name = element.name
+    setFormState({ ...formState, [element_name.substring(5)]: element.value })
+
   }
   const [showPassword, setPasswordState] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
@@ -21,40 +40,44 @@ const SignUpPage = () => {
         <span className='ml-1'><Link to="/login" className=' underline underline-offset-1 font-semibold'>sign in</Link></span>
       </div>
       <div className='form-group' >
-        <form onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
+        <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid-cols-2 mt-2 mb-6 grid items-center justify-center gap-x-2 gap-y-0 grid-rows-3'>
             <div className="">
-              <TextInput required type='text' baseClassName='text-sm' label='First Name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput value={formState.first_name} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput required type='text' baseClassName='text-sm' label='Last Name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput value={formState.last_name} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput required label='Email' baseClassName='text-sm' variant='outlined' id='email_input' placeholder='Email' type='email' />
+              <TextInput value={formState.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
+              <TextInput name='form_password' value={formState.password} required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg> : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-              </svg>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
                 } />
               <div onClick={() => {
-                if(showPassword){
+                if (showPassword) {
                   passwordRef.current?.setAttribute("type", "password")
-                }else{
+                } else {
                   passwordRef.current?.setAttribute("type", "text")
                 }
                 setPasswordState(!showPassword)
               }} className='float-right'>
                 <span className='underline select-none text-sm underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
-                </div>
+              </div>
             </div>
             <div className="col-span-2">
-              <TextInput required label='Confirm password' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
+              <TextInput required label='Confirm password' name='formzz' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
             </div>
+          </div>
+          <div className="inline-flex flex-nowrap items-center">
+            <input checked={rememberMe} type="checkbox" name="form_remember_me" id="login-checkbox516" className='size-4' />
+            <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
             <Button variant='filled' fullWidth color='primary'>Submit</Button>

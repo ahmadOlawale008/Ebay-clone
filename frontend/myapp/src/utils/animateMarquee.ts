@@ -38,6 +38,9 @@ export const animateMarquee = ({ element, elementId, current = 0, speed = 0.08, 
     const pauseMarquee = () => {
         if (pause) {
             cancelAnimationFrame(elementId.current)
+            //@ts-ignore
+            element.current.style.transform = `translateX(${lp.current * direction} %)`
+
         }
     }
     moveMarquee()

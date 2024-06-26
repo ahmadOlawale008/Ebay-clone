@@ -4,6 +4,8 @@ import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterP
 import Navbar from './components/Navbar/Navbar';
 import { ClipLoader } from 'react-spinners';
 import AuthenticationWrapper from './pages/authenticationPages/authentication';
+import CheckAuthenticated from './provider/checkAuthenticated';
+import UserSettings from './pages/userSettingsPage/userSettings';
 const HomePageExport = lazy(() => import("./pages/homePage/home-page"))
 const SignUpPageExport = lazy(() => import("./pages/authenticationPages/registerPage/signUp"))
 const SignInPageExport = lazy(() => import("./pages/authenticationPages/loginPage/login"))
@@ -12,6 +14,9 @@ const router = createBrowserRouter(createRoutesFromElements(
   <Route>
     <Route path='/' element={<Navbar />}>
       <Route index element={<HomePageExport />} />
+      <Route path='special' element={<CheckAuthenticated />}>
+        <Route index element={<UserSettings />} />
+      </Route>
     </Route>
     <Route path="*" element={<NotFound />} />
     <Route element={<AuthenticationWrapper />}>

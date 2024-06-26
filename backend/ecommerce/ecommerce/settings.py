@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "auths.apps.AuthsConfig",
-    "core.apps.CoreConfig",
     "payment.apps.PaymentConfig",
     "products.apps.ProductsConfig",
     "sales.apps.SalesConfig",
+    "categories.apps.CategoriesConfig",
     "corsheaders",
 
 ]
@@ -170,7 +170,7 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Africa/Lagos"
 
 USE_I18N = True
 

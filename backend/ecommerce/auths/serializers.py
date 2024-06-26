@@ -14,6 +14,7 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         token['email'] = user.email
+        token['account_type'] = user.account_type
         return token
 class UserSerializer(serializers.ModelSerializer):
     def validate_password(value):
