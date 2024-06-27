@@ -34,3 +34,5 @@ def google_callback(redirect_uri, auth_uri):
         client_secret=settings.GOOGLE_CLIENT_SECRET,
         authorization_response=auth_uri,
     )
+    user_info = session.get("https://www.googleapis.com/oauth2/v1/userinfo")
+    return user_info
