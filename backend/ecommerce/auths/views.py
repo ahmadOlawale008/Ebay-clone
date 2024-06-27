@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +12,11 @@ from rest_framework_simplejwt.tokens import AccessToken
 from .models import AuthUser
 from django.contrib.auth import get_user_model
 
+class GoogleAuth2SignUpView(APIView):
+    def get(self, request):
+        redirect_uri = request.build_absolute_uri(reverse("google_sign_up_callback"))
+        
+        print(redirect_uri)
 def get_tokens_for_admin(user):
     access = AccessToken.for_user(user)
     return access

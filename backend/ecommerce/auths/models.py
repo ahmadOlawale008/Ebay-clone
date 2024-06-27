@@ -177,7 +177,7 @@ class BusinessInfo(PersonalBusinessInfo):
     tax_identification_number = models.CharField(
         max_length=50, blank=True, help_text="(If applicable)", unique=True
     )
-    postal_code = models.CharField(max_length=10)
+    postal_code = models.CharField(max_length=10, default="")
     # region 
     website = models.URLField(blank=True, help_text="(If applicable)", unique=True)
     business_social_A = models.URLField(blank=True, help_text="(If applicable)")
