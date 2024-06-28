@@ -1,11 +1,10 @@
-import { HTMLAttributes, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import NotificationIcon from '../../assets/icons/notificationicon'
 import UserIcon from '../../assets/icons/userIcon'
 import AccountMenu from '../Menu/accountMenu'
 import { motion } from "framer-motion"
 import Button from '../Button/button'
 import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
-
 const NavbarInto = () => {
     const [accountMenuState, setOpenAccountMenuState] = useState(false)
     const accountMenuRef = useRef<HTMLDivElement | null>(null)
@@ -31,14 +30,14 @@ const NavbarInto = () => {
                         <hr className='w-[1px] h-4 bg-gray-500' />
                         <span>
                             <a href="/login">
-                                <Button size='small' baseClassName='!shadow-none text-[12px]'  color='primary'>
+                                <Button size='small' baseClassName='!shadow-none text-[12px] font-medium' color='primary'>
                                     Sign in
                                 </Button>
                             </a>
                         </span>
                         <span>
                             <a href="/signup">
-                                <Button size='small' baseClassName='!shadow-none text-[12px]'  color='primary'>
+                                <Button size='small' baseClassName='!shadow-none text-[12px] font-medium' color='primary'>
                                     Sign up
                                 </Button>
                             </a>
@@ -60,10 +59,8 @@ const NavbarInto = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </nav>
     )
 }
-
 export default NavbarInto

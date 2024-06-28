@@ -11,12 +11,15 @@ from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.tokens import AccessToken
 from .models import AuthUser
 from django.contrib.auth import get_user_model
+from utils.google_setup import google_callback
 
 class GoogleAuth2SignUpView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(reverse("google_sign_up_callback"))
+        auth_uri = request.build_absolute_uri()
+        user_data = google_callback(redirect_uri, auth_uri)
+        user, _ = get_user_model().objects.create(username=user_data["email"])
         
-        print(redirect_uri)
 def get_tokens_for_admin(user):
     access = AccessToken.for_user(user)
     return access
