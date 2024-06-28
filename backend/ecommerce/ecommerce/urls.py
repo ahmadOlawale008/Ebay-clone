@@ -21,9 +21,7 @@ from django.urls import path, include
 # from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("auths.urls", namespace="authentication")),
-    # path("api/token", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    # path("api/token/refresh", TokenRefreshView.as_view(), name="refresh_token"),
+    path("auth", include("auths.urls", namespace="authentication")),
     # path("api/token/blacklist", TokenBlacklistView.as_view(), name="token_blacklist"),
     path("api-auth/", include("rest_framework.urls", namespace="rest framework")),
 ]

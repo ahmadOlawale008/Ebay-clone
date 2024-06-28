@@ -5,17 +5,28 @@ import string
 from django.core.validators import validate_email as django_validate_email
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from .models import AccountType, BusinessInfo, PersonalInfo
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
 class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        try:
+            if user.account_type == AccountType.BUYER and PersonalInfo.objects.get(user=user):
+                personal_info = PersonalInfo.objects.get(user=user)
+                token["first_name"] = personal_info.first_name
+                token["last_name"] = personal_info.last_name
+                token["created"] = personal_info.created
+        except Exception as e:
+            pass
+        token['id'] = user.id
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         token['email'] = user.email
         token['account_type'] = user.account_type
         return token
+    
 class UserSerializer(serializers.ModelSerializer):
     def validate_password(value):
         if not any(char in string.ascii_uppercase for char in value):

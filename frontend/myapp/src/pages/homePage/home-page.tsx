@@ -3,6 +3,7 @@ import TopCategories from './sections/topCategories/topcategories'
 import RecentlyViewed from './sections/recentlyViewed/recently-viewed'
 import ImageScrolll from './sections/advertisement/imageScrolll'
 import AdvertisementCategory from './sections/topCategories/advertisement/advertisement-category'
+
 // const validator = require('validator');
 const HomePage = () => {
   return (
@@ -21,7 +22,7 @@ const HomePage = () => {
       </div>
       <div className="main-content container mx-auto">
         <TopCategories />
-      </div>
+      </div>4
     </div>
   )
 }

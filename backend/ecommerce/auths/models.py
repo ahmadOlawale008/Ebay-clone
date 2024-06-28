@@ -69,7 +69,6 @@ class AuthUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_staff=True."))
         if kwargs.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
-        
         user = self.create_user(email, phoneNumber, password, **kwargs)
         return user
 
@@ -117,13 +116,19 @@ class PersonalBusinessInfo(models.Model):
         verbose_name=_("Last name"),
         validators=[MinLengthValidator(2)],
     )
+    google_id = models.CharField(max_length=256, unique=True, null=True)
+    github_id = models.CharField(max_length=256, unique=True, null=True)
+    twitter_id = models.CharField(max_length=256, unique=True, null=True)
     """
     By limiting the storage of customers' full date of birth and opting for storing only the year of birth, 
     organizations can enhance security, comply with regulations, and still derive valuable insights for business purposes. 
     """
     year_of_birth = models.PositiveIntegerField()
     profile_image = models.ImageField(
-        upload_to="media/profile", default="user-svgrepo-com.svg", blank=True, null=True,
+        upload_to="media/profile",
+        default="user-svgrepo-com.svg",
+        blank=True,
+        null=True,
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -150,7 +155,8 @@ class PersonalInfo(PersonalBusinessInfo):
 
 class BusinessInfo(PersonalBusinessInfo):
     user = models.OneToOneField(
-        AuthUser, on_delete=models.CASCADE, related_name="business_info")
+        AuthUser, on_delete=models.CASCADE, related_name="business_info"
+    )
     business_name = models.CharField(
         unique=True,
         max_length=30,
@@ -164,7 +170,9 @@ class BusinessInfo(PersonalBusinessInfo):
         blank=True, null=True, help_text="(If applicable)"
     )
     business_type = models.CharField(
-        max_length=3, choices=BusinessType.choices, default=BusinessType.SOLE_PROPRIETORSHIP
+        max_length=3,
+        choices=BusinessType.choices,
+        default=BusinessType.SOLE_PROPRIETORSHIP,
     )
     business_description = models.CharField(max_length=300, blank=True)
     business_custom_care_phone_number = models.CharField(
@@ -178,7 +186,7 @@ class BusinessInfo(PersonalBusinessInfo):
         max_length=50, blank=True, help_text="(If applicable)", unique=True
     )
     postal_code = models.CharField(max_length=10, default="")
-    # region 
+    # region
     website = models.URLField(blank=True, help_text="(If applicable)", unique=True)
     business_social_A = models.URLField(blank=True, help_text="(If applicable)")
     business_social_B = models.URLField(blank=True, help_text="(If applicable)")
@@ -186,7 +194,7 @@ class BusinessInfo(PersonalBusinessInfo):
     business_social_D = models.URLField(blank=True, help_text="(If applicable)")
     business_confirmation = models.BooleanField(default=False)
     created_on = models.DateField(blank=True)
-    
+
     def save(self, *args, **kwargs):
         if not self.first_name:
             self.first_name = self.user.name
@@ -201,7 +209,9 @@ class BusinessFeedback(models.Model):
         BusinessInfo, on_delete=models.CASCADE, related_name="business_feedback"
     )
     feedback_from = models.ManyToManyField(AuthUser, related_name="business_from")
-    feedback_rating = models.CharField(max_length=1, choices=FeedBackRating.choices, blank=True)
+    feedback_rating = models.CharField(
+        max_length=1, choices=FeedBackRating.choices, blank=True
+    )
     feedback_has_verified_purchase = models.BooleanField(default=False)
     feedback_comment = models.TextField()
     feedback_is_valid = models.BooleanField(default=True)
@@ -212,6 +222,7 @@ class BusinessFeedback(models.Model):
             if len(self.feedback_comment.strip()) > 20
             else self.feedback_comment
         )
+
 
 # class BusinessFinancialInfo(models.Model):
 #     business = models.ForeignKey(BusinessInfo, related_name="business_info", on_delete=models.CASCADE)
