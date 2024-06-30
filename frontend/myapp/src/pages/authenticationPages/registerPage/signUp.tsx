@@ -3,16 +3,10 @@ import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
-type FormType = {
-  first_name: string,
-  last_name: string,
-  email: string,
-  password: string,
-  confirm_password: string,
-  rememberMe?: boolean
-}
+import { FormType } from '../auth'
+
 const SignUpPage = () => {
-  const [formState, setFormState] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
+  const [formState, setFormState] = useState<FormType>({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
   const [rememberMe, setRememberMe] = useState(true)
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()

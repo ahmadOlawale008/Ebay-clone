@@ -17,7 +17,7 @@ const AdvertisementPage = () => {
   return (
     <div>
       <div className="min-h-full items-start flex flex-col relative">
-        <div className="max-md:px-1 max-md:py-2 px-12 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col self-start gap-x-3  grid grid-cols-5  flex-auto w-full items-baseline ">
+        <div className="max-md:px-1 max-md:py-2 px-1 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col self-start gap-x-3  grid grid-cols-5  flex-auto w-full items-baseline ">
           <div className="flex flex-col max-md:gap-y-2 gap-y-3 max-md:mt-0  col-span-2 ">
             <h4 className="max-md:text[14px] text-md font-monospace font-medium">Lorem ipsum dolor sit amet.</h4>
             <h3 className="text-4xl leading-relaxed font-black tracking-tighter">Shop Online With Us.</h3>

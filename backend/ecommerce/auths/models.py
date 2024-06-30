@@ -152,6 +152,9 @@ class PersonalInfo(PersonalBusinessInfo):
             self.first_name = self.user.name
         return super().save(*args, **kwargs)
 
+    class Meta:
+        unique_together = [["first_name", "last_name", "middle_name"]]
+
 
 class BusinessInfo(PersonalBusinessInfo):
     user = models.OneToOneField(

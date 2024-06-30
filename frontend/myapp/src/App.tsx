@@ -4,7 +4,7 @@ import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterP
 import Navbar from './components/Navbar/Navbar';
 import { ClipLoader } from 'react-spinners';
 import AuthenticationWrapper from './pages/authenticationPages/authentication';
-import CheckAuthenticated from './provider/checkAuthenticated';
+import CheckAuthenticated from './provider/authProvider/checkAuthenticated';
 import UserSettings from './pages/userSettingsPage/userSettings';
 const HomePageExport = lazy(() => import("./pages/homePage/home-page"))
 const SignUpPageExport = lazy(() => import("./pages/authenticationPages/registerPage/signUp"))

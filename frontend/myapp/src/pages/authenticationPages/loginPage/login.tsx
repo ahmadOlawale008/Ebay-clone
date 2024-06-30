@@ -3,7 +3,7 @@ import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { Link } from 'react-router-dom'
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
-
+import { toast } from 'sonner'
 const LoginPage = () => {
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -13,8 +13,10 @@ const LoginPage = () => {
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse)
     },
+    onNonOAuthError: ({ type = "popup_failed_to_open" }) => { alert(type) },
     onError: (errorResponse) => {
-
+      console.log(errorResponse, "B")
+      toast.error(errorResponse.error, { position: "bottom-center", duration: 2000 })
     }
   })
   const [showPassword, setPasswordState] = useState(false)
@@ -22,8 +24,8 @@ const LoginPage = () => {
   return (
     <div>
       <div>
-        <div className="text-2xl my-1 font-semibold text-start">
-          <h4>Login Page</h4>
+        <div className="text-start">
+          <h4 className='text-2xl my-1 font-black'>Login Page</h4>
         </div>
         <div className="group-help-authorization text-base">
           <span>If you have not created an account with us</span>
@@ -45,9 +47,13 @@ const LoginPage = () => {
           </form>
         </div>
         <div className='continue-with-googlea9oa flex flex-col items-center justify-center'>
-          <span>or</span>
+          <div className='continu-with-divider w-full'>
+            <div className="">
+              <span className='bg-white'>or</span>
+            </div>
+          </div>
           <div className="inline-flex gap-x-3 items-center justify-center w-full">
-            <Button baseClassName='continue-with-googlebtn' variant='outlined' onClick={()=>loginWithGoogle()} color='primary'>
+            <Button baseClassName='continue-with-googlebtn' variant='outlined' onClick={() => loginWithGoogle()} color='primary'>
               <svg className='size-6' width="800px" height="800px" viewBox="0 -31.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
                 <g>
                   <path d="M58.1818182,192.049515 L58.1818182,93.1404244 L27.5066233,65.0770089 L0,49.5040608 L0,174.59497 C0,184.253152 7.82545455,192.049515 17.4545455,192.049515 L58.1818182,192.049515 Z" fill="#4285F4">
