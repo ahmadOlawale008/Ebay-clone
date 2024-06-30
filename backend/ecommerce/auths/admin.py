@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import AuthUser, PersonalInfo, BusinessInfo, BusinessFeedback
+from .models import AuthUser, Buyer, Seller, BusinessFeedback
 def listFilter():
     pass
 class AuthUserAdmin(UserAdmin):
@@ -21,6 +21,6 @@ class AuthUserAdmin(UserAdmin):
 
 # Register your models here.
 admin.site.register(AuthUser, AuthUserAdmin)
-admin.site.register(PersonalInfo)
-admin.site.register(BusinessInfo)
+admin.site.register(Buyer)
+admin.site.register(Seller)
 admin.site.register(BusinessFeedback)

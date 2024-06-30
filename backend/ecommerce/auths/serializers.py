@@ -5,7 +5,7 @@ import string
 from django.core.validators import validate_email as django_validate_email
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from .models import AccountType, BusinessInfo, PersonalInfo
+from .models import AccountType, Seller, Buyer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
 
@@ -19,14 +19,14 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["account_type"] = user.account_type
         try:
             if user.account_type == AccountType.BUYER:
-                personal_info = PersonalInfo.objects.get(user=user)
+                personal_info = Buyer.objects.get(user=user)
                 token.update(
                     first_name=personal_info.first_name,
                     last_name=personal_info.last_name,
                     created=personal_info.created,
                 )
             elif user.account_type == AccountType.SELLER:
-                business_info = BusinessInfo.objects.get(user=user)
+                business_info = Seller.objects.get(user=user)
                 token.update(
                     business_name=business_info.business_name,
                     first_name=business_info.first_name,
@@ -34,7 +34,7 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
                     created=business_info.created,
                 )
 
-        except (PersonalInfo.DoesNotExist, BusinessInfo.DoesNotExist):
+        except (Buyer.DoesNotExist, Seller.DoesNotExist):
             pass
         return token
 

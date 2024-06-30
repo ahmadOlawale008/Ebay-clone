@@ -102,7 +102,11 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class PersonalBusinessInfo(models.Model):
+class BusinessAddress(models.Model):
+    address = models.CharField(max_length=100)
+
+
+class AbstractPersonalSeller(models.Model):
     first_name = models.CharField(
         max_length=30,
         verbose_name=_("First name"),
@@ -138,14 +142,12 @@ class PersonalBusinessInfo(models.Model):
         abstract = True
 
 
-class PersonalInfo(PersonalBusinessInfo):
+class Buyer(AbstractPersonalSeller):
     user = models.OneToOneField(
         AuthUser, on_delete=models.CASCADE, related_name="personal_info"
     )
     middle_name = models.CharField(max_length=20, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    address = models.CharField(max_length=150, blank=True, null=True)
-    country = models.CharField(max_length=30)
 
     def save(self, *args, **kwargs):
         if not self.first_name:
@@ -156,7 +158,29 @@ class PersonalInfo(PersonalBusinessInfo):
         unique_together = [["first_name", "last_name", "middle_name"]]
 
 
-class BusinessInfo(PersonalBusinessInfo):
+class Address(models.Model):
+    buyer = models.OneToOneField(Buyer, related_name="buyer_address")
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state_province_region = models.CharField(max_length=150)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True
+    )
+    address_type = models.CharField(
+        max_length=50,
+        choices=(("billing", "Billing"), ("shipping", "Shipping")),
+        blank=True,
+        null=True,
+    )
+
+
+class Seller(AbstractPersonalSeller):
     user = models.OneToOneField(
         AuthUser, on_delete=models.CASCADE, related_name="business_info"
     )
@@ -167,8 +191,6 @@ class BusinessInfo(PersonalBusinessInfo):
         error_messages="Business Name already exists",
         validators=[MinLengthValidator(3)],
     )
-    business_location = models.CharField(max_length=150)
-    business_country_id = models.CharField(max_length=20)
     business_started_since = models.DateField(
         blank=True, null=True, help_text="(If applicable)"
     )
@@ -177,7 +199,7 @@ class BusinessInfo(PersonalBusinessInfo):
         choices=BusinessType.choices,
         default=BusinessType.SOLE_PROPRIETORSHIP,
     )
-    business_description = models.CharField(max_length=300, blank=True)
+    business_description = models.CharField(max_length=800, blank=True)
     business_custom_care_phone_number = models.CharField(
         max_length=15,
         unique=True,
@@ -207,9 +229,34 @@ class BusinessInfo(PersonalBusinessInfo):
         return self.user.name
 
 
+class BusinessAddress(models.Model):
+    # user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name="address")
+    business = models.ForeignKey(
+        Seller, on_delete=models.CASCADE, related_name="business_address"
+    )
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state_province_region = models.CharField(max_length=150)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True
+    )
+    address_type = models.CharField(
+        max_length=50,
+        choices=(("billing", "Billing"), ("shipping", "Shipping")),
+        blank=True,
+        null=True,
+    )
+
+
 class BusinessFeedback(models.Model):
     business = models.ForeignKey(
-        BusinessInfo, on_delete=models.CASCADE, related_name="business_feedback"
+        Seller, on_delete=models.CASCADE, related_name="business_feedback"
     )
     feedback_from = models.ManyToManyField(AuthUser, related_name="business_from")
     feedback_rating = models.CharField(
@@ -228,4 +275,4 @@ class BusinessFeedback(models.Model):
 
 
 # class BusinessFinancialInfo(models.Model):
-#     business = models.ForeignKey(BusinessInfo, related_name="business_info", on_delete=models.CASCADE)
+#     business = models.ForeignKey(Seller, related_name="business_info", on_delete=models.CASCADE)

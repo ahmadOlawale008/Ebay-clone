@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
 from .serializers import UserSerializer
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
-from .models import AuthUser, PersonalInfo, BusinessInfo
+from .models import AuthUser, Buyer, Seller
 from django.contrib.auth import get_user_model
 from utils.google_setup import google_callback, google_setup
 from django.http import JsonResponse
@@ -38,7 +38,7 @@ class GoogleOAuth2SignUpCallbackView(APIView):
         user, _ = get_user_model().objects.get_or_create(email=user_data["email"])
         
         try:
-            PersonalInfo.objects.get_or_create(user=user, first_name=user_data["first_name"], last_name=user_data["last_name"], middle_name=user_data["middle_name"])
+            Buyer.objects.get_or_create(user=user, first_name=user_data["given_name"], last_name=user_data["family_name"], middle_name=user_data["middle_name"])
         except user.DoesNotExist:
             print('An exception occurred')     
         refresh_token = RefreshToken.for_user(user=user)
