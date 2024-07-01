@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager,
@@ -83,6 +84,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("Phone number"),
         unique=True,
         blank=True,
+        null=True,
         help_text="Email. If your account is of a business type i.e. seller, please drop your business phone number instead",
     )
     account_type = models.CharField(
@@ -130,7 +132,7 @@ class AbstractPersonalSeller(models.Model):
     By limiting the storage of customers' full date of birth and opting for storing only the year of birth, 
     organizations can enhance security, comply with regulations, and still derive valuable insights for business purposes. 
     """
-    year_of_birth = models.PositiveIntegerField()
+    year_of_birth = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(
         upload_to="media/profile",
         default="user-svgrepo-com.svg",
@@ -181,7 +183,8 @@ class Address(models.Model):
         blank=True,
         null=True,
     )
-
+    def save(self, force_insert: bool = ..., force_update: bool = ..., using: str | None = ..., update_fields: Iterable[str] | None = ...) -> None:
+        return super().save(force_insert, force_update, using, update_fields)
 
 class Seller(AbstractPersonalSeller):
     user = models.OneToOneField(
@@ -274,4 +277,3 @@ class BusinessFeedback(models.Model):
             if len(self.feedback_comment.strip()) > 20
             else self.feedback_comment
         )
-
