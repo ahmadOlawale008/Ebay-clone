@@ -15,11 +15,17 @@ from utils.google_setup import google_callback, google_setup
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
-
+import requests
+from django.core.files.base import ContentFile
+def handle_image(url):
+    res = requests.get(url)
+    if res.status_code == 200:
+        image_name = url.split("/")[-1]
+        return ContentFile(res.content)
 class SignUpWithGoogleView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
-            reverse("authentication.google_signup_callback")
+            reverse("authentication:google_signup_callback")
         )
         return redirect(google_setup(redirect_uri))
 
@@ -32,18 +38,28 @@ class GoogleOAuth2SignUpView(APIView):
 
 class GoogleOAuth2SignUpCallbackView(APIView):
     def get(self, request):
-        redirect_uri = request.build_absolute_uri(reverse("google_sign_up_callback"))
+        redirect_uri = request.build_absolute_uri(
+            reverse("authentication:google_signup_callback")
+        )
         auth_uri = request.build_absolute_uri()
         user_data = google_callback(redirect_uri, auth_uri)
-        user, _ = get_user_model().objects.get_or_create(email=user_data["email"])
-        
-        try:
-            Buyer.objects.get_or_create(user=user, first_name=user_data["given_name"], last_name=user_data["family_name"], middle_name=user_data["middle_name"])
-        except user.DoesNotExist:
-            print('An exception occurred')     
-        refresh_token = RefreshToken.for_user(user=user)
-        return Response(refresh_token, status=status.HTTP_201_CREATED)
-    
+        user_picture = user_data.get("picture")
+        print("----------------------------------------------------")
+        print(user_data)
+        print("----------------------------------------------------")
+        if user_data.get("verified_email"):
+            user, _ = get_user_model().objects.get_or_create(email=user_data["email"])
+            buyer = Buyer.objects.get_or_create(user=user, first_name=user_data["given_name"], last_name=user_data["family_name"], google_id=user_data["id"])
+            if user_picture:
+                resp = requests.get(user_picture)
+                if resp.status_code == 200:
+                    buyer.profile_image.image.save(
+                        user_picture.split("/")[-1], ContentFile(resp.content), save=True
+                    )
+            refresh_token = RefreshToken.for_user(user=user)
+            return Response(refresh_token, status=status.HTTP_201_CREATED)
+        return Response({"error": "Email verification was not sucessfull."}, status=status.HTTP_403_FORBIDDEN)
+
 def get_tokens_for_admin(user):
     access = AccessToken.for_user(user)
     return access

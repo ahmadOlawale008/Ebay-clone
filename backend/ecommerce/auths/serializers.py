@@ -38,8 +38,21 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
             pass
         return token
 
-
+from django.core.validators import MinLengthValidator
 class UserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(
+        max_length=30,
+        help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
+        validators=[MinLengthValidator(2)],
+    )
+    last_name = serializers.CharField(
+        max_length=30,
+        help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
+        validators=[MinLengthValidator(2)],
+    )
+    password = serializers.CharField()
+    confirm_password = serializers.CharField()
+
     def validate_password(value):
         if not any(char in string.ascii_uppercase for char in value):
             return serializers.ValidationError(
@@ -80,9 +93,6 @@ class UserSerializer(serializers.ModelSerializer):
                 {"email": "Email Address Already in Use."}
             )
 
-    password = serializers.CharField()
-    confirm_password = serializers.CharField()
-
     def validate_first_name(self, value):
         if value.strip() == "" or len(value.strip()) == 0:
             return serializers.ValidationError(
@@ -116,7 +126,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ["id", "first_name", "last_name", "email", "phoneNumber", "password"]
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "email",
+            "phoneNumber",
+            "account_type",
+            "password",
+            "confirm_password",
+        ]
         extra_fields = {
             "read_only": [
                 "id",

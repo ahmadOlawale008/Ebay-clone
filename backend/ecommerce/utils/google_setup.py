@@ -10,7 +10,7 @@ def google_setup(redirect_uri: str):
     session = OAuth2Session(
         settings.GOOGLE_CLIENT_ID, redirect_uri=redirect_uri, scope=scope
     )
-    authorization_url = session.authorization_url(
+    authorization_url, state = session.authorization_url(
         settings.GOOGLE_AUTH_URI,
         access_type="offline",
         prompt="select_account",

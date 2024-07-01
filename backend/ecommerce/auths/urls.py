@@ -12,7 +12,7 @@ urlpatterns = [
     path("signup/", CreateUser.as_view(), name="sign_up_auth"),
     path("signup/google", SignUpWithGoogleView.as_view(), name="sign_up_google"),
     path(
-        "signup/callback",
+        "google/callback/signup",
         GoogleOAuth2SignUpCallbackView.as_view(),
         name="google_signup_callback",
     ),

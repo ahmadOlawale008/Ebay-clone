@@ -82,6 +82,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         max_length=15,
         verbose_name=_("Phone number"),
         unique=True,
+        blank=True,
         help_text="Email. If your account is of a business type i.e. seller, please drop your business phone number instead",
     )
     account_type = models.CharField(
@@ -89,6 +90,8 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    verified_email = models.BooleanField(default=False)
+    verified_phone_number = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["phoneNumber"]
     objects = AuthUserManager()
@@ -120,9 +123,9 @@ class AbstractPersonalSeller(models.Model):
         verbose_name=_("Last name"),
         validators=[MinLengthValidator(2)],
     )
-    google_id = models.CharField(max_length=256, unique=True, null=True)
-    github_id = models.CharField(max_length=256, unique=True, null=True)
-    twitter_id = models.CharField(max_length=256, unique=True, null=True)
+    google_id = models.CharField(max_length=255, unique=True, null=True)
+    github_id = models.CharField(max_length=255, unique=True, null=True)
+    twitter_id = models.CharField(max_length=255, unique=True, null=True)
     """
     By limiting the storage of customers' full date of birth and opting for storing only the year of birth, 
     organizations can enhance security, comply with regulations, and still derive valuable insights for business purposes. 
@@ -159,7 +162,7 @@ class Buyer(AbstractPersonalSeller):
 
 
 class Address(models.Model):
-    buyer = models.OneToOneField(Buyer, related_name="buyer_address")
+    buyer = models.OneToOneField(Buyer, on_delete=models.CASCADE, related_name="buyer_address")
     address_line_1 = models.CharField(max_length=255)
     address_line_2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
@@ -199,24 +202,24 @@ class Seller(AbstractPersonalSeller):
         choices=BusinessType.choices,
         default=BusinessType.SOLE_PROPRIETORSHIP,
     )
-    business_description = models.CharField(max_length=800, blank=True)
+    business_description = models.CharField(max_length=800, null=True, blank=True)
     business_custom_care_phone_number = models.CharField(
         max_length=15,
         unique=True,
     )
     registration_number = models.CharField(
-        max_length=50, blank=True, help_text="(If applicable)", unique=True
+        max_length=50, null=True, blank=True, help_text="(If applicable)", unique=True
     )
     tax_identification_number = models.CharField(
-        max_length=50, blank=True, help_text="(If applicable)", unique=True
+        max_length=50, blank=True, null=True, help_text="(If applicable)", unique=True
     )
-    postal_code = models.CharField(max_length=10, default="")
+    postal_code = models.CharField(max_length=10, blank=True)
     # region
-    website = models.URLField(blank=True, help_text="(If applicable)", unique=True)
-    business_social_A = models.URLField(blank=True, help_text="(If applicable)")
-    business_social_B = models.URLField(blank=True, help_text="(If applicable)")
-    business_social_C = models.URLField(blank=True, help_text="(If applicable)")
-    business_social_D = models.URLField(blank=True, help_text="(If applicable)")
+    website = models.URLField(blank=True, null=True, help_text="(If applicable)", unique=True)
+    business_social_A = models.URLField(blank=True, null=True, help_text="(If applicable)")
+    business_social_B = models.URLField(blank=True, null=True, help_text="(If applicable)")
+    business_social_C = models.URLField(blank=True, null=True, help_text="(If applicable)")
+    business_social_D = models.URLField(blank=True, null=True, help_text="(If applicable)")
     business_confirmation = models.BooleanField(default=False)
     created_on = models.DateField(blank=True)
 
@@ -229,8 +232,7 @@ class Seller(AbstractPersonalSeller):
         return self.user.name
 
 
-class BusinessAddress(models.Model):
-    # user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name="address")
+class SellerAddress(models.Model):
     business = models.ForeignKey(
         Seller, on_delete=models.CASCADE, related_name="business_address"
     )
@@ -273,6 +275,3 @@ class BusinessFeedback(models.Model):
             else self.feedback_comment
         )
 
-
-# class BusinessFinancialInfo(models.Model):
-#     business = models.ForeignKey(Seller, related_name="business_info", on_delete=models.CASCADE)

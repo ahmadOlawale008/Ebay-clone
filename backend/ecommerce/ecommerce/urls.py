@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
-# from django.conf.urls.static import static
-# from django.conf import settings
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("auth", include("auths.urls", namespace="authentication")),
+    path("auth/", include("auths.urls", namespace="authentication")),
     # path("api/token/blacklist", TokenBlacklistView.as_view(), name="token_blacklist"),
     path("api-auth/", include("rest_framework.urls", namespace="rest framework")),
 ]
-# urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

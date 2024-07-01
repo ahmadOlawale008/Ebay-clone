@@ -8,8 +8,18 @@ class AuthUserAdmin(UserAdmin):
     fieldsets = [
         ("Personal Info", {"fields": ["email", "phoneNumber"]}),
         ("Account Type", {"fields": ["account_type"]}),
-        ("Status", {"fields": ["is_staff", "is_superuser", "is_active"]}),
-        ("Dates", {"fields": ["created",]}),
+        (
+            "Status",
+            {
+                "fields": [
+                    "is_staff",
+                    "is_superuser",
+                    "is_active",
+                    "verified_email",
+                    "verified_phone_number",
+                ]
+            },
+        ),
         ("Last Login", {"fields": ["last_login"]}),
     ]
     list_display = ["email", "phoneNumber", "is_staff", "is_superuser", "last_login"]
