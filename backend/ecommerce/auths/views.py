@@ -19,8 +19,6 @@ import requests
 from django.core.files.base import ContentFile
 
 
-
-
 class SignUpWithGoogleView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
@@ -29,12 +27,12 @@ class SignUpWithGoogleView(APIView):
         return redirect(google_setup(redirect_uri))
 
 
-class GoogleOAuth2SignUpView(APIView):
+class LoginWithGoogleView(APIView):
     def get(self, request):
-        redirect_uri = request.build_absolute_uri(reverse("google_sign_up_callback"))
-        auth_uri = request.build_absolute_uri()
-        user_data = google_callback(redirect_uri, auth_uri)
-        user, _ = get_user_model().objects.create(username=user_data["email"])
+        redirect_uri = request.build_absolute_uri(
+            reverse("authentication:google_login_callback")
+        )
+        return redirect(google_setup(redirect_uri))
 
 
 class GoogleOAuth2SignUpCallbackView(APIView):
@@ -66,11 +64,40 @@ class GoogleOAuth2SignUpCallbackView(APIView):
                     )
             buyer.save()
             refresh_token = RefreshToken.for_user(user=user)
-            return refresh_token
+            return Response(
+                {
+                    "refresh_token": str(refresh_token),
+                    "access_token": str(refresh_token.access_token),
+                }
+            )
         return Response(
             {"error": "Email verification was not sucessfull."},
             status=status.HTTP_403_FORBIDDEN,
         )
+
+
+class GoogleOAuth2LoginCallbackView(APIView):
+    def get(self, request):
+        redirect_uri = request.build_absolute_uri(
+            reverse("authentication:google_login_callback")
+        )
+        auth_uri = request.build_absolute_uri()
+        user_data = google_callback(redirect_uri, auth_uri)
+        try:
+            user = get_user_model().objects.get(email=user_data.get("email"))
+            refresh_token = RefreshToken.for_user(user=user)
+            return Response(
+                {
+                    "refresh_token": str(refresh_token),
+                    "access_token": str(refresh_token.access_token),
+                },
+                status=status.HTTP_200_OK,
+            )
+        except AuthUser.DoesNotExist:
+            return Response(
+                {"error": "User not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
