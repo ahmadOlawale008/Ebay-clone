@@ -134,6 +134,7 @@ DATABASES = {
         "CHARSET": "utf8mb4",
     }
 }
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
@@ -195,8 +196,8 @@ CELERY_BACKEND_URL = "redis://redis:127.0.0.1:6479/0"
 # CELERY_RESULT_BACKEND = "amqp:rabbitmq/guests"
 
 
-CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=False, cast=bool)
-CORS_ALLOWED_ORIGIN = config("CORS_ALLOWED_ORIGIN").split(",")
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS").split(",")
 CORS_ALLOW_CREDENTIALS = config("CORS_ALLOW_CREDENTIALS", cast=bool)
 
 GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")

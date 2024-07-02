@@ -9,7 +9,7 @@ type ColorType = "secondary" | "primary"
 type RoundedType = "sm" | "md" | "lg" | "xl" | "full" | "none"
 type ChildrenType = ReactNode | string
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
-    children: ChildrenType
+    children?: ChildrenType
     /**
      * @default text
      */

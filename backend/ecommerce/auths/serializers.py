@@ -53,7 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField()
     confirm_password = serializers.CharField()
 
-    def validate_password(value):
+    def validate_password(self, value):
         if not any(char in string.ascii_uppercase for char in value):
             return serializers.ValidationError(
                 {
@@ -83,7 +83,7 @@ class UserSerializer(serializers.ModelSerializer):
                 {"message": _("Ensure your password has a minimum length of 8")}
             )
 
-    def validate_email(value):
+    def validate_email(self, value):
         try:
             django_validate_email(value)
         except:
@@ -116,6 +116,10 @@ class UserSerializer(serializers.ModelSerializer):
             )
 
     def validate(self, attrs):
+        print("--------------------------->>>>>")
+        print(attrs)
+        print("--------------------------->>>>>")
+        
         password = attrs.get("password", "")
         confirm_password = attrs.get("confirm_password", "")
         if confirm_password != password:

@@ -47,7 +47,9 @@ class GoogleOAuth2SignUpCallbackView(APIView):
         print(user_data)
         print("----------------------------------------------------")
         if user_data.get("verified_email"):
-            user, _ = get_user_model().objects.get_or_create(email=user_data["email"])
+            user, _ = get_user_model().objects.get_or_create(
+                email=user_data["email"], verified_email=True
+            )
             buyer = Buyer(
                 user=user,
                 first_name=user_data["given_name"],

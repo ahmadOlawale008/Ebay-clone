@@ -18,13 +18,13 @@ const NavbarInto = () => {
                 </div>
                 <div className='nav-links'>
                     <div className='flex flex-row items-center relative flex-nowrap gap-x-3'>
-                        <span className='text-xs font-medium'>
+                        <span className='text-xs'>
                             <a href="">About</a>
                         </span>
-                        <span className='text-xs font-medium'>
+                        <span className='text-xs'>
                             <a href="">Categories</a>
                         </span>
-                        <span className='text-xs font-medium'>
+                        <span className='text-xs'>
                             <a href="">Products</a>
                         </span>
                         <hr className='w-[1px] h-4 bg-gray-500' />
@@ -45,7 +45,7 @@ const NavbarInto = () => {
                         <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-secondary after:absolute after:right-1 after:top-1 relative'>
                             <NotificationIcon className='size-5 inline-flex items-center font-bold hover:fill-slate-700  fill-slate-500' />
                         </span>
-                        <div className="">
+                        <div className="relative">
                             <motion.div ref={accountMenuRef} onMouseEnter={() => setOpenAccountMenuState(true)} className='flex cursor-pointer gap-x-1 text-sm relative items-center'>
                                 <span className='border inline-flex items-center justify-center m-auto size-6 rounded-full bg-primary-dark p-1 '>
                                     <UserIcon className='size-6 content-[1] relative cursor-pointer fill-white' />
@@ -55,7 +55,9 @@ const NavbarInto = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                 </svg>
                             </motion.div>
-                            {accountMenuState && <AccountMenu setOpen={setOpenAccountMenuState} anchorOrigin={accountMenuRef.current} />}
+                            <div className='absolute account-menu top-full left-[calc(100 * -1)] rounded-md bg-white shadow-md w-[280px] h-[500px]'>
+
+                            </div>
                         </div>
                     </div>
                 </div>

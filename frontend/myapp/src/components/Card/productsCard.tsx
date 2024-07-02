@@ -20,20 +20,20 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
     const iconRef = useRef<Player>(null)
     return (
         <div className="block relative">
-            <a href="#" className=''>
+            <a href="#">
                 <div className='bg-white'>
                     <div className="card-img select-none rounded-2xl overflow-hidden">
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
                     </div>
                     <div className="card-text flex gap-y-[0.1rem] flex-col">
-                        <div className="prod-category"><span className='text-xs font-normal tracking-wide'>Fashion{" > "}Men{" > "}Clothes</span></div>
-                        <div className="prod-name"> <span className='text-base hover:underline font-medium'>{product_name.substring(0, 150)}</span></div>
-                        <div className="prod-price inline-flex text-nowrap space-x-2 items-center text-xl leading-snug font-semibold">
+                        <div className="prod-category"><span className='text-xs font-normal'>Fashion{" > "}Men{" > "}Clothes</span></div>
+                        <div className="prod-name"> <span className='text-base hover:underline font-semibold'>{product_name.substring(0, 150)}</span></div>
+                        <div className="prod-price inline-flex text-nowrap space-x-2 items-center text-lg leading-snug font-medium">
                             <div className="card-discount">
-                                <span className=' text-[#0f743b] font-bold text-base tracking-wide'>Now <span>₦{price}</span></span>
+                                <span className=' text-[#0f743b] text-base'>Now <span>₦{price}</span></span>
                             </div>
                             <div className="card-price">
-                                <small className='line-through font-normal text-slate-800 text-sm'>₦{price - 100}</small>
+                                <small className='line-through font-semibold text-slate-800 text-sm'>₦{price - 100}</small>
                             </div>
                             <div className="product-discount">
                                 <small className='text-sm text-zinc-800 font-normal'>(50% off)</small>
@@ -53,12 +53,12 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         <span className='text-xs'>(1.3k) Reviews</span>
                     </div>
                     <div className="">
-                        <span className='text-neutral-800 text-sm font-medium'>
+                        <span className='text-neutral-800 tracking-tight text-[0.8rem] font-normal'>
                             out of 60 products
                         </span>
                     </div>
                     <div className="">
-                        <span className='text-neutral-600 font-medium text-xs'>
+                        <span className='text-neutral-600 tracking-tight font-normal text-[0.8rem]'>
                             12 quantitities are available
                         </span>
                     </div>

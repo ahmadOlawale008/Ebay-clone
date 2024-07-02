@@ -4,13 +4,13 @@ import { Outlet } from 'react-router-dom'
 const AuthenticationWrapper = () => {
     return (
         <div className='authentication-wra8ai p-1'>
-            <div className="auth-card grid grid-cols-2 max-lg:flex max-lg:items-center max-lg:justify-center w-full rounded-xl overflow-hidden max-lg:bg-none bg-slate-50 max-lg:min-h-fit min-h-screen">
-                <div className="card-part-group-1 max-lg:hidden block col-span-1">
+            <div className="auth-card max-md:max-w-full h-fit min-h-[600px] container m-auto grid grid-cols-2 max-lg:flex max-lg:items-center max-lg:justify-center w-full rounded-xl overflow-hidden max-lg:bg-none ">
+                <div className="card-part-group-1 rounded-xl max-lg:hidden block col-span-1">
                 </div>
                 <div className="card-part-group-2 col-span-1 p-8 max-lg:p-3 max-lg:w-full">
                     <div className="web-icon inline-flex justify-end w-full">
                         <a href="/">
-                            {<EazeSalesLogo className='size-6' />}
+                            {<EazeSalesLogo className='size-7' />}
                         </a>
                     </div>
                     <div className="page-greetings">

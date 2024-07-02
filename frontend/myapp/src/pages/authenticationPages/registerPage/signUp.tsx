@@ -1,13 +1,16 @@
-import React, { FormEvent, useReducer, useRef, useState } from 'react'
+import React, { FormEvent, useEffect, useReducer, useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
 import { FormType } from '../auth'
+import { axiosInstance } from '../../../api/axiosInstance'
+import axios, { Axios, AxiosError, isAxiosError } from 'axios'
 
 const SignUpPage = () => {
-  const [formState, setFormState] = useState<FormType>({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
-  const [rememberMe, setRememberMe] = useState(true)
+  const [formState, setFormState] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
+  const [formErrors, setFormErrorsState] = useState<FormType>({})
+
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -15,7 +18,24 @@ const SignUpPage = () => {
     formData.append("last_name", formState.last_name.trim())
     formData.append("password", formState.password.trim())
     formData.append("confirm_password", formState.confirm_password.trim())
+    axiosInstance.post("/auth/signup/", formData).then(response => {
+      console.log(response, "Login successful")
+      if (response.status === 400 && response.hasOwnProperty("response")) {
+
+      }
+    }).catch((error) => {
+      if(isAxiosError(error)){
+        const responseData = error.response?.data
+        let updatedFormErrors: FormType = {}
+        Object.keys(responseData).forEach((field)=>{
+          updatedFormErrors[field as keyof FormType] = responseData[field]
+        })
+        setFormErrorsState(updatedFormErrors)
+
+      }
+    })
   }
+useEffect(()=>{console.log(formErrors)})
   const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
@@ -25,27 +45,27 @@ const SignUpPage = () => {
   const passwordRef = useRef<HTMLInputElement | null>(null)
   return (
     <div>
-      <div className="text-2xl my-1 font-semibold text-start">
-        <h4>Sign Up Page</h4>
+      <div className="text-start">
+        <h4 className='text-3xl text-neutral-900 my-1 font-bold'>Sign Up Page</h4>
       </div>
-      <div className="group-help-authorization">
-        <span>If you have an account</span>
-        <span className='ml-1'><Link to="/login" className=' underline underline-offset-1 font-semibold'>sign in</Link></span>
+      <div className="group-help-authorization text-base font-normal">
+        <span>If you have an account with us</span>
+        <span className='ml-1'><Link to="/login" className=' underline text-blue-600 underline-offset-1 font-bold'>sign in</Link></span>
       </div>
       <div className='form-group'>
         <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
-          <div className='grid-cols-2 mt-2 mb-6 grid items-center justify-center gap-x-2 gap-y-0 grid-rows-3'>
+          <div className='grid-cols-2 mt-2 mb-6 grid  justify-center gap-x-2 gap-y-0 grid-rows-3'>
             <div className="">
-              <TextInput required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput error={!!formErrors.first_name} helperText={formErrors?.first_name} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput error={!!formErrors.last_name} helperText={formErrors?.last_name} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput error={!!formErrors.email} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
+              <TextInput error={!!formErrors.password} helperText={formErrors?.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='last_name_input' placeholder='First Name' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -65,21 +85,20 @@ const SignUpPage = () => {
               </div>
             </div>
             <div className="col-span-2">
-              <TextInput required label='Confirm password' name='formzz' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
+              <TextInput error={!!formErrors.confirm_password} helperText={formErrors?.confirm_password} required label='Confirm password' name='form_confirm_password' type='password' baseClassName='text-sm' variant='outlined' id='last_name_input' placeholder='First Name' />
             </div>
           </div>
           <div className="inline-flex flex-nowrap items-center">
-            <input checked={rememberMe} type="checkbox" name="form_remember_me" id="login-checkbox516" className='size-4' />
+            <input type="checkbox" name="form_remember_me" id="login-checkbox516" className='size-4' />
             <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
             <Button variant='filled' fullWidth color='primary'>Submit</Button>
           </div>
         </form>
-        <div className="relative">
-          <div className="inline-flex items-center justify-center w-full">
-            <hr className="w-64 h-px my-8 bg-gray-200 border-0 " />
-            <span className="absolute px-3 font-medium bg-slate-50 text-gray-900 -translate-x-1/2  left-1/2">or</span>
+        <div className='continue-with-divider my-7 relative w-full'>
+          <div className="horizontal-text-divider">
+            <span className='max-lg:bg-white bg-slate-50 px-1'>or</span>
           </div>
         </div>
         <div className="inline-flex gap-x-3 items-center justify-center w-full">
@@ -105,7 +124,7 @@ const SignUpPage = () => {
               <desc>Created with Sketch.</desc>
               <defs>
               </defs>
-              <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Color-" transform="translate(-300.000000, -164.000000)" fill="#00AAEC">
                   <path d="M348,168.735283 C346.236309,169.538462 344.337383,170.081618 342.345483,170.324305 C344.379644,169.076201 345.940482,167.097147 346.675823,164.739617 C344.771263,165.895269 342.666667,166.736006 340.418384,167.18671 C338.626519,165.224991 336.065504,164 333.231203,164 C327.796443,164 323.387216,168.521488 323.387216,174.097508 C323.387216,174.88913 323.471738,175.657638 323.640782,176.397255 C315.456242,175.975442 308.201444,171.959552 303.341433,165.843265 C302.493397,167.339834 302.008804,169.076201 302.008804,170.925244 C302.008804,174.426869 303.747139,177.518238 306.389857,179.329722 C304.778306,179.280607 303.256911,178.821235 301.9271,178.070061 L301.9271,178.194294 C301.9271,183.08848 305.322064,187.17082 309.8299,188.095341 C309.004402,188.33225 308.133826,188.450704 307.235077,188.450704 C306.601162,188.450704 305.981335,188.390033 305.381229,188.271578 C306.634971,192.28169 310.269414,195.2026 314.580032,195.280607 C311.210424,197.99061 306.961789,199.605634 302.349709,199.605634 C301.555203,199.605634 300.769149,199.559408 300,199.466956 C304.358514,202.327194 309.53689,204 315.095615,204 C333.211481,204 343.114633,188.615385 343.114633,175.270495 C343.114633,174.831347 343.106181,174.392199 343.089276,173.961719 C345.013559,172.537378 346.684275,170.760563 348,168.735283" id="Twitter">
                   </path>
@@ -115,7 +134,7 @@ const SignUpPage = () => {
           </Button>
           <Button variant='outlined' color='primary'>
             <svg className='size-6' width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#3B5998" fill-rule="evenodd" d="M9.94474914,22 L9.94474914,13.1657526 L7,13.1657526 L7,9.48481614 L9.94474914,9.48481614 L9.94474914,6.54006699 C9.94474914,3.49740494 11.8713513,2 14.5856738,2 C15.8857805,2 17.0033128,2.09717672 17.3287076,2.13987558 L17.3287076,5.32020466 L15.4462767,5.32094085 C13.9702212,5.32094085 13.6256856,6.02252733 13.6256856,7.05171716 L13.6256856,9.48481614 L17.306622,9.48481614 L16.5704347,13.1657526 L13.6256856,13.1657526 L13.6845806,22" />
+              <path fill="#3B5998" fillRule="evenodd" d="M9.94474914,22 L9.94474914,13.1657526 L7,13.1657526 L7,9.48481614 L9.94474914,9.48481614 L9.94474914,6.54006699 C9.94474914,3.49740494 11.8713513,2 14.5856738,2 C15.8857805,2 17.0033128,2.09717672 17.3287076,2.13987558 L17.3287076,5.32020466 L15.4462767,5.32094085 C13.9702212,5.32094085 13.6256856,6.02252733 13.6256856,7.05171716 L13.6256856,9.48481614 L17.306622,9.48481614 L16.5704347,13.1657526 L13.6256856,13.1657526 L13.6845806,22" />
             </svg>
           </Button>
         </div>

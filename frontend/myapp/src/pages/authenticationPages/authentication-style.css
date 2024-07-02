@@ -4,11 +4,13 @@
 
 @layer base{
     .card-part-group-1{
-        background: url("../../assets/images/rupixen-pbgYcq3_Zx0-unsplash.jpg");
+        background: linear-gradient(to right,
+        rgba(95, 56, 9, 0.101),
+        rgba(118, 42, 1, 0.142)), url("../../assets/images/kevin-grieve-h0ZzaDrOLfU-unsplash.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         width: 100%;
-        height: 100%;
+        height: auto;
     }
 }

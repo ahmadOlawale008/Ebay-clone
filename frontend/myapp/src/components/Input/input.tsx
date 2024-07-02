@@ -7,11 +7,12 @@ import IconType from "../../assets/icons/icons";
 type InputPropsWithoutSize = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'>;
 interface TextInputProps extends Omit<ButtonProps, keyof ButtonHTMLAttributes<HTMLButtonElement>>, InputPropsWithoutSize {
     helperText?: string,
+    error?: boolean,
     helperTextClassName?: string,
     label?: string,
     labelClassName?: string
 }
-const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, id, baseClassName, label, labelClassName, iconClassName, helperText, ringEffect = true, rounded = "md", icon, iconPosition = "start", variant = "text", size = "medium", ...props }, ref) => {
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, error, id, helperTextClassName, baseClassName, label, labelClassName, iconClassName, helperText, ringEffect = true, rounded = "md", icon, iconPosition = "start", variant = "text", size = "medium", ...props }, ref) => {
     const inputVariant = variant === "outlined" ? " bg-neutral-200/70 ring-1 ring-neutral-500 outline-none focus:ring-neutral-800 focus:ring-2" :
         variant === "filled" ? "bg-neutral-200 outline-none border-b border-b-stone-800 focus:border-b-stone-300" : "ring-0 border-b border-b-stone-700 active:outline-none ease-in-out transition focus:border-b-secondary-light outline-none"
     const inputSizeState = size == "small" ? "p-1 text-sm" : size === "large" ? "p-4  text-[1.9rem]" : "p-2.5"
@@ -37,8 +38,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, id,
         }
         return null;
     };
-    // Label
-    const defaultLabelClassName = twMerge(labelClassName, "text-xs font-normal text-neutral-800")
+    const baseHelperTextClassName: Record<string, string> = {
+        true: "mt-2 text-sm text-red-700",
+        false: "mt-2 text-sm text-gray-400 "
+    }
+    const defaultLabelClassName = twMerge(labelClassName, "text-xs font-normal text-neutral-800 ")
+    const defaultHelperTextClassName = twMerge(helperTextClassName, baseHelperTextClassName[String(error)])
+
     return (
         <div className="">
             {label && <div className="mb-1"><label htmlFor={id} className={defaultLabelClassName}>{label}</label></div>}
@@ -51,7 +57,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, id,
                     {renderIcon()}
                 </div>}
             </div>
-            {helperText && <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>}
+            {helperText && <p id="helper-text-explanation" className={defaultHelperTextClassName}>{helperText}</p>}
         </div>
     )
 })

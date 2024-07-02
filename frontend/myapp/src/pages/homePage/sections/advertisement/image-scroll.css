@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  .maniquee-container::before{
+  /* .maniquee-container::before{
     content:"";
     background: linear-gradient(45deg  #fcfeff27, #fbfdff18);
     @apply  absolute top-0 left-0 w-1/12 h-full;
@@ -16,6 +16,9 @@
     background: linear-gradient(-45deg, rgb(241 241 241 / 82%), rgb(228 228 228));
     filter: blur(10px);
 
-  }
+  } */
+   .marquee-link:hover .marquee-btn{
+    @apply bg-gray-300 
+   }
 
 }

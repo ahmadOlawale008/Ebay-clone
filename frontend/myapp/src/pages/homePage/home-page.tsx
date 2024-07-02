@@ -8,7 +8,7 @@ import AdvertisementCategory from './sections/topCategories/advertisement/advert
 const HomePage = () => {
   return (
     <div className='main-content'>
-      <div className="ads091k-content bg-gray-100">
+      <div className="ads091k-content bg-slate-50/50">
         <div className="suv-ciiq container mx-auto">
           <AdvertisementPage />
         </div>

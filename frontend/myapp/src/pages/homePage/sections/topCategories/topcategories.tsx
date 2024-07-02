@@ -13,9 +13,9 @@ const TopCategories = () => {
     const [availableCardControllerB, setCardDirectionB] = useState<AvailableCardController>("right")
     return (
         <div className="top-categories">
-            <div className="mt-4 mb-3 px-0 ">
-                <div className="recently-headoai flex items-center justify-between">
-                    <div className="content-name"><h1 className='text-xl my-4 font-semibold'>Categorized by Fashion</h1></div>
+            <div className="mt-1 mb-3 px-0 ">
+                <div className="recently-headoai flex items-center justify-between font-medium">
+                    <div className="content-name"><h1 className='text-xl font-serif font-medium my-4'>Categorized by Fashion</h1></div>
                     <div className="content-link"><a className='underline text-base underline-offset-2 hover:text-neutral-600' href="" target='_blank'>See all</a></div>
                 </div>
                 <div className="relative w-full">
@@ -41,8 +41,8 @@ const TopCategories = () => {
                 </div>
             </div>
             <div className="mt-4 mb-3 px-0 ">
-                <div className="recently-headoai flex items-center justify-between">
-                    <div className="content-name"><h1 className='text-xl my-4 font-semibold'>Electronics, Cars and Computer Gadgets</h1></div>
+                <div className="recently-headoai flex items-center font-medium justify-between">
+                    <div className="content-name"><h1 className='text-xl font-serif font-medium my-4'>Electronics, Cars and Computer Gadgets</h1></div>
                     <div className="content-link"><a className='underline text-base underline-offset-2 hover:text-neutral-600' href="" target='_blank'>See all</a></div>
                 </div>
                 <div className="relative w-full">
