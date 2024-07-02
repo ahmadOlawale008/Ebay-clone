@@ -6,7 +6,7 @@ def listFilter():
 class AuthUserAdmin(UserAdmin):
     model = AuthUser
     fieldsets = [
-        ("Personal Info", {"fields": ["email", "phoneNumber"]}),
+        ("Personal Info", {"fields": ["email", "phone_number"]}),
         ("Account Type", {"fields": ["account_type"]}),
         (
             "Status",
@@ -22,8 +22,8 @@ class AuthUserAdmin(UserAdmin):
         ),
         ("Last Login", {"fields": ["last_login"]}),
     ]
-    list_display = ["email", "phoneNumber", "is_staff", "is_superuser", "last_login"]
-    search_fields = ["email", "phoneNumber", "account_type"]
+    list_display = ["email", "phone_number", "is_staff", "is_superuser", "last_login"]
+    search_fields = ["email", "phone_number", "account_type"]
     ordering = ["last_login"]
     @admin.display(description="Name")
     def full_name(self, obj):

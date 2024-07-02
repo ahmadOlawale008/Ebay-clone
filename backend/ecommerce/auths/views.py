@@ -43,9 +43,6 @@ class GoogleOAuth2SignUpCallbackView(APIView):
         auth_uri = request.build_absolute_uri()
         user_data = google_callback(redirect_uri, auth_uri)
         user_picture = user_data.get("picture")
-        print("----------------------------------------------------")
-        print(user_data)
-        print("----------------------------------------------------")
         if user_data.get("verified_email"):
             user, _ = get_user_model().objects.get_or_create(
                 email=user_data["email"], verified_email=True
@@ -119,7 +116,5 @@ class CreateUser(generics.CreateAPIView):
 
     def get_permissions(self):
         return super().get_permissions()
-
-
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

@@ -48,21 +48,21 @@ class AuthUserManager(BaseUserManager):
     def get_queryset(self) -> QuerySet:
         return AuthUserQueryset(model=self.model, using=self._db)
 
-    def create_user(self, email, phoneNumber, password=None, **kwargs):
+    def create_user(self, email, phone_number, password=None, **kwargs):
         email = self.normalize_email(email)
         if not email:
             raise ValueError("Please provide a valid email")
         kwargs.setdefault("is_active", True)
         user = self.model(
             email=email,
-            phoneNumber=phoneNumber,
+            phone_number=phone_number,
             **kwargs,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, phoneNumber, password=None, **kwargs):
+    def create_superuser(self, email, phone_number, password=None, **kwargs):
         kwargs.setdefault("is_superuser", True)
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("account_type", AccountType.BOTH)
@@ -70,7 +70,7 @@ class AuthUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_staff=True."))
         if kwargs.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
-        user = self.create_user(email, phoneNumber, password, **kwargs)
+        user = self.create_user(email, phone_number, password, **kwargs)
         return user
 
 
@@ -79,7 +79,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         unique=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business email instead",
     )
-    phoneNumber = models.CharField(
+    phone_number = models.CharField(
         max_length=15,
         verbose_name=_("Phone number"),
         unique=True,
@@ -95,7 +95,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     verified_email = models.BooleanField(default=False)
     verified_phone_number = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["phoneNumber"]
+    REQUIRED_FIELDS = ["phone_number"]
     objects = AuthUserManager()
     created = models.DateTimeField(default=timezone.now, editable=False)
     updated = models.DateTimeField(auto_now=True)
