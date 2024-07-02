@@ -2,15 +2,12 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import MinimumLengthValidator
 import string
-from django.core.validators import validate_email as django_validate_email
+from django.core.validators import validate_email as django_email_valid
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from .models import AccountType, Seller, Buyer
+from .models import AccountType, Seller, Buyer, AuthUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
-from django import forms
-
-
 class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -34,37 +31,41 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
                     last_name=business_info.last_name,
                     created=business_info.created,
                 )
-
         except (Buyer.DoesNotExist, Seller.DoesNotExist):
             pass
         return token
-
-
 from django.core.validators import MinLengthValidator
-
-
+UserModel = get_user_model()
+# def check_validate_email(value):
+#     try:
+#         django_email_valid(value)
+#     except Exception:
+#         raise serializers.ValidationError("Invalid email address.")
+#     if UserModel.objects.filter(email=value).exists():
+#         raise serializers.ValidationError("Email Address Already in Use.")
+#     return value
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=30,
-        help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
-        validators=[
-            MinLengthValidator(2),
-        ],
-    )
-    last_name = serializers.CharField(
-        max_length=30,
+        required=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
         validators=[MinLengthValidator(2)],
     )
+    last_name = serializers.CharField(
+        max_length=30,
+        required=True,
+        help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
+        validators=[MinLengthValidator(2)],
+    )
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(
         write_only=True, required=True, style={"input_type": "password"}
     )
     confirm_password = serializers.CharField(
         write_only=True, required=True, style={"input_type": "password"}
     )
-
     class Meta:
-        model = get_user_model()
+        model = UserModel
         fields = [
             "id",
             "first_name",
@@ -75,79 +76,54 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "confirm_password",
         ]
-        extra_kwargs = {
+        extra_fields = {
             "read_only": [
                 "id",
             ]
         }
-
     def validate(self, attrs):
-        print("--------------------------->>> >>")
-        print(attrs)
-        print("--------------------------->>>>>")
-
-        password = attrs.get("password", "")
-        confirm_password = attrs.get("confirm_password", "")
+        password = attrs.get("password")
+        confirm_password = attrs.get("confirm_password")
         if confirm_password != password:
             raise serializers.ValidationError(
-                {"confirm_password": "Ensure that both passwords are equal"}
+                {"confirm_password": _("Ensure that both passwords are equal")}
             )
-        return super().validate(attrs)
-
+        return attrs
+    def validate_email(self, value):
+        if UserModel.objects.filter(email=value).exists():
+            raise serializers.ValidationError(_("Email Address Already in Use."))
+        return value
+    def validate_first_name(self, value):
+        if len(value.strip()) == 0:
+            raise serializers.ValidationError(_("Please provide your first name."))
+        return value
+    def validate_last_name(self, value):
+        if len(value.strip()) == 0:
+            raise serializers.ValidationError(_("Please provide your last name."))
+        return value
     def validate_password(self, value):
-        if value:
-            return serializers.ValidationError({"password": value})
         if not any(char in string.ascii_uppercase for char in value):
-            raise serializers.ValidationError(
-                {
-                    "password": _(
-                        "Please ensure your password contains upper case for security reasons."
-                    )
-                }
-            )
+            raise serializers.ValidationError(_("Please ensure your password contains upper case for security reasons."))
         if not any(char in string.ascii_lowercase for char in value):
-            raise serializers.ValidationError(
-                {
-                    "password": _(
-                        "Please ensure your password contains lower case for security reasons."
-                    )
-                }
-            )
+            raise serializers.ValidationError(_("Please ensure your password contains lower case for security reasons."))
         if not any(char in string.punctuation for char in value):
-            raise serializers.ValidationError(
-                {
-                    "password": _(
-                        f"Please ensure your password contains atleast one punctuation of {string.punctuation}"
-                    )
-                }
-            )
+            raise serializers.ValidationError(_(f"Please ensure your password contains at least one punctuation of {string.punctuation}"))
         if len(value.strip()) < 8:
             raise serializers.ValidationError(
-                {"message": _("Ensure your password has a minimum length of 8")}
+                _("Ensure your password has a minimum length of 8")
             )
         return value
-
-    def validate_first_name(self, value):
+    def validate_phoneNumber(self, value):
+        if get_user_model().objects.filter(phoneNumber=value).exists():
+            raise serializers.ValidationError(_("A user with this phone number already exists."))
         if value.strip() == "" or len(value.strip()) == 0:
-            raise serializers.ValidationError(
-                {"first_name": "Please provide your first name."}
-            )
+            raise serializers.ValidationError(_("Please provide a valid phone number."))
         return value
-
-    def validate_last_name(self, value):
-        if value.strip() == "" or len(value.strip()) == 0:
-            raise serializers.ValidationError(
-                {"last_name": "Please provide your last name."}
-            )
-        return value
-
-    def validate_phone_number(self, value):
-        if get_user_model().objects.filter(phone_number=value).exists():
-            raise serializers.ValidationError(
-                {"phone_number": "A user with this username already exists."}
-            )
-        if value.strip() == "" or len(value.strip()) == 0:
-            raise serializers.ValidationError(
-                {"phone_number": "Please provide a valid phone number."}
-            )
-        return value
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        try:
+            user = UserModel.objects.create(**validated_data, is_active=False)
+            user.save()
+        except:
+            return serializers.ValidationError(_("Could not create user, please try again."))
+        return user

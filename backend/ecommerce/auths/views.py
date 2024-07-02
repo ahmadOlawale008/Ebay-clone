@@ -97,7 +97,7 @@ class GoogleOAuth2LoginCallbackView(APIView):
                 {"error": "User not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
+from rest_framework import serializers
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
 
@@ -113,8 +113,5 @@ class CreateUser(generics.CreateAPIView):
         AllowAny,
     ]
     queryset = AuthUser
-
-    def get_permissions(self):
-        return super().get_permissions()
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass
