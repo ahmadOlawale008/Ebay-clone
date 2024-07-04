@@ -19,6 +19,6 @@
     .account-menu{
         --position-container: 90px;
         z-index: 10;
-        left: calc(var(--position-container) * -2);
+        left: calc(var(--position-container) * -1);
     }
 }

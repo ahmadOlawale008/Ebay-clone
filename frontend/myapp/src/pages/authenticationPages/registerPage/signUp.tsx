@@ -5,12 +5,11 @@ import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
 import { FormType } from '../auth'
 import { axiosInstance } from '../../../api/axiosInstance'
-import axios, { Axios, AxiosError, isAxiosError } from 'axios'
+import  { isAxiosError } from 'axios'
 
 const SignUpPage = () => {
   const [formState, setFormState] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
   const [formErrors, setFormErrorsState] = useState<FormType>({})
-
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -19,25 +18,23 @@ const SignUpPage = () => {
     formData.append("email", formState.email.trim())
     formData.append("password", formState.password.trim())
     formData.append("confirm_password", formState.confirm_password.trim())
-    axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" }}).then(response => {
+    axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" } }).then(response => {
       console.log(response, "Login successful")
       if (response.status === 400 && response.hasOwnProperty("response")) {
-
       }
     }).catch((error) => {
       console.log(error, "Login failed");
-      if(isAxiosError(error)){
+      if (isAxiosError(error)) {
         const responseData = error.response?.data
         let updatedFormErrors: FormType = {}
-        Object.keys(responseData).forEach((field)=>{
+        Object.keys(responseData).forEach((field) => {
           updatedFormErrors[field as keyof FormType] = responseData[field]
         })
         setFormErrorsState(updatedFormErrors)
-
       }
     })
   }
-useEffect(()=>{console.log(formErrors)})
+  useEffect(() => { console.log(formErrors) })
   const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
@@ -64,10 +61,10 @@ useEffect(()=>{console.log(formErrors)})
               <TextInput size='small' error={!!formErrors.last_name} helperText={formErrors?.last_name} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput size='small' error={!!formErrors.email} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput error={!!formErrors.email} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput size='small' error={!!formErrors.password} helperText={formErrors?.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
+              <TextInput error={!!formErrors.password} helperText={formErrors?.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -83,11 +80,11 @@ useEffect(()=>{console.log(formErrors)})
                 }
                 setPasswordState(!showPassword)
               }} className='float-right'>
-                <span className='underline select-none text-sm underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
+                <span className='underline select-none text-xs underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
               </div>
             </div>
             <div className="col-span-2">
-              <TextInput size='small' error={!!formErrors.confirm_password} helperText={formErrors?.confirm_password} required label='Confirm password' name='form_confirm_password' type='password' baseClassName='text-sm' variant='outlined' id='confirm_password_input' placeholder='Confirm Password' />
+              <TextInput error={!!formErrors.confirm_password} helperText={formErrors?.confirm_password} required label='Confirm password' name='form_confirm_password' type='password' baseClassName='text-sm' variant='outlined' id='confirm_password_input' placeholder='Confirm Password' />
             </div>
           </div>
           <div className="inline-flex flex-nowrap items-center">
