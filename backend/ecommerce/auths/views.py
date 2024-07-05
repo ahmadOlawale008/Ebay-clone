@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
-from .serializers import UserSerializer
+from .serializers import UserSerializer, VALIDATION_MESSAGES
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from .models import AuthUser, Buyer, Seller
@@ -17,6 +17,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import requests
 from django.core.files.base import ContentFile
+
 
 
 class SignUpWithGoogleView(APIView):
@@ -125,7 +126,7 @@ def check_email_exists(request):
                 {
                     "valid": False,
                     "emailTaken": True,
-                    "error": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold font-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
+                    "error": VALIDATION_MESSAGES["EMAIL"]['DUPLICATE_ENTRY'],
                     "errorTextAriaLbl": "Your email address is already registered with eBay. Need help with your password?",
                 }
             )

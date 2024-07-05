@@ -8,6 +8,8 @@ from django.conf import settings
 from .models import AccountType, Seller, Buyer, AuthUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
+
+
 class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -34,16 +36,42 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
         except (Buyer.DoesNotExist, Seller.DoesNotExist):
             pass
         return token
+
+
 from django.core.validators import MinLengthValidator
+
 UserModel = get_user_model()
-# def check_validate_email(value):
-#     try:
-#         django_email_valid(value)
-#     except Exception:
-#         raise serializers.ValidationError("Invalid email address.")
-#     if UserModel.objects.filter(email=value).exists():
-#         raise serializers.ValidationError("Email Address Already in Use.")
-#     return value
+
+VALIDATION_MESSAGES = {
+    "NAME": {
+        "DUPLICATE_ENTRY": "A user with this name already exists.",
+        "EMPTY_VALUE": "Please enter a value for this field.",
+    },
+    "EMAIL": {
+        "INVALID_EMAIL": "Invalid email address.",
+        "DUPLICATE_ENTRY": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold  underline underline-offset-2 !text-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
+        "INVALID_DOMAIN": "Invalid email domain.",
+        "BLOCKED_DOMAIN": "Email domain is not allowed.",
+    },
+    "PHONE_NUMBER": {
+        "INVALID_PHONE_NUMBER": "Invalid phone number.",
+        "DUPLICATE_ENTRY": "A user with this phone number already exists.",
+    },
+    "PASSWORD": {
+        # code for password must include alphanumeric letters for security purposes.
+        "ALPHANUMERIC_NEEDED": "ALPHANUMERIC_NEEDED",
+        #   code for 'Password must have minimum length of 6.'
+        "MAXLENGTH_OF_SIX": "MAXLENGTH_OF_SIX",
+        # SPECIAL_CHARS_NEEDED Password must contain atleast one special characters {string.punctuation}
+        "SPECIAL_CHARS_NEEDED": "SPECIAL_CHARS_NEEDED",
+    },
+    "CONFIRM_PASSWORD": {
+        "NOT_EQUAL": "Ensure both passwords are the same.",
+    },
+    "INVALID": "Error signing up form. Please try again later.",
+}
+
+
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=30,
@@ -62,6 +90,7 @@ class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(
         write_only=True, required=True, style={"input_type": "password"}
     )
+
     class Meta:
         model = UserModel
         fields = [
@@ -75,10 +104,9 @@ class UserSerializer(serializers.ModelSerializer):
             "confirm_password",
         ]
         extra_fields = {
-            "read_only": [
-                "id",
-            ]
+            "id": {"readonly": True}
         }
+
     def validate(self, attrs):
         password = attrs.get("password")
         confirm_password = attrs.get("confirm_password")
@@ -87,41 +115,47 @@ class UserSerializer(serializers.ModelSerializer):
                 {"confirm_password": _("Ensure that both passwords are equal")}
             )
         return attrs
+
     def validate_email(self, value):
         if UserModel.objects.filter(email=value).exists():
             raise serializers.ValidationError(_("Email Address Already in Use."))
         return value
+
     def validate_first_name(self, value):
         if len(value.strip()) == 0:
-            raise serializers.ValidationError(_("Please provide your first name."))
-        return value
-    def validate_last_name(self, value):
-        if len(value.strip()) == 0:
-            raise serializers.ValidationError(_("Please provide your last name."))
-        return value
-    def validate_password(self, value):
-        if not any(char in string.ascii_uppercase for char in value):
-            raise serializers.ValidationError(_("Please ensure your password contains upper case for security reasons."))
-        if not any(char in string.ascii_lowercase for char in value):
-            raise serializers.ValidationError(_("Please ensure your password contains lower case for security reasons."))
-        if not any(char in string.punctuation for char in value):
-            raise serializers.ValidationError(_(f"Please ensure your password contains at least one punctuation of {string.punctuation}"))
-        if len(value.strip()) < 8:
             raise serializers.ValidationError(
-                _("Ensure your password has a minimum length of 8")
+                VALIDATION_MESSAGES["NAME"]["EMPTY_VALUE"]
             )
         return value
-    def validate_phoneNumber(self, value):
-        if get_user_model().objects.filter(phoneNumber=value).exists():
-            raise serializers.ValidationError(_("A user with this phone number already exists."))
-        if value.strip() == "" or len(value.strip()) == 0:
-            raise serializers.ValidationError(_("Please provide a valid phone number."))
+
+    def validate_last_name(self, value):
+        if len(value.strip()) == 0:
+            raise serializers.ValidationError(
+                VALIDATION_MESSAGES["NAME"]["EMPTY_VALUE"]
+            )
         return value
+
+    def validate_password(self, value):
+        if not any(char in string.ascii_uppercase for char in value):
+            raise serializers.ValidationError(_("ALPHANUMERIC_NEEDED"))
+        if not any(char in string.ascii_lowercase for char in value):
+            raise serializers.ValidationError(_("ALPHANUMERIC_NEEDED"))
+
+        # SPECIAL_CHARS_NEEDED Password must contain atleast one special characters {string.punctuation}
+        if not any(char in string.punctuation for char in value):
+            raise serializers.ValidationError(_("SPECIAL_CHARS_NEEDED"))
+        #   code for 'Password must have minimum length of 6.'
+        if len(value.strip()) < 6:
+            raise serializers.ValidationError(_("MAXLENGTH_OF_SIX"))
+        return value
+
     def create(self, validated_data):
         validated_data.pop("confirm_password")
         try:
             user = UserModel.objects.create(**validated_data, is_active=False)
             user.save()
         except:
-            return serializers.ValidationError(_("Could not create user, please try again."))
+            return serializers.ValidationError(
+                _(VALIDATION_MESSAGES["INVALID"])
+            )
         return user
