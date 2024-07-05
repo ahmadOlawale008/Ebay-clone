@@ -48,7 +48,7 @@ VALIDATION_MESSAGES = {
         "EMPTY_VALUE": "Please enter a value for this field.",
     },
     "EMAIL": {
-        "INVALID_EMAIL": "Invalid email address.",
+        "NOT_VALID_EMAIL": "Invalid email address.",
         "DUPLICATE_ENTRY": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold  underline underline-offset-2 !text-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
         "INVALID_DOMAIN": "Invalid email domain.",
         "BLOCKED_DOMAIN": "Email domain is not allowed.",
@@ -115,7 +115,6 @@ class UserSerializer(serializers.ModelSerializer):
                 {"confirm_password": _("Ensure that both passwords are equal")}
             )
         return attrs
-
     def validate_email(self, value):
         if UserModel.objects.filter(email=value).exists():
             raise serializers.ValidationError(_("Email Address Already in Use."))

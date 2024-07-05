@@ -19,7 +19,6 @@ import requests
 from django.core.files.base import ContentFile
 
 
-
 class SignUpWithGoogleView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
@@ -147,7 +146,5 @@ class CreateUser(generics.CreateAPIView):
         AllowAny,
     ]
     queryset = AuthUser
-
-
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass
