@@ -116,14 +116,12 @@ class AbstractPersonalSeller(models.Model):
         max_length=30,
         verbose_name=_("First name"),
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
-        validators=[MinLengthValidator(2)],
     )
     last_name = models.CharField(
         max_length=30,
         blank=None,
         help_text="Not required for business account",
         verbose_name=_("Last name"),
-        validators=[MinLengthValidator(2)],
     )
     google_id = models.CharField(max_length=255, unique=True, null=True)
     github_id = models.CharField(max_length=255, unique=True, null=True)

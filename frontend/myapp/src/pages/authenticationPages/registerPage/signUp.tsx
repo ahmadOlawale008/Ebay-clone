@@ -1,15 +1,42 @@
-import React, { FormEvent, useEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
-import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
 import { FormType } from '../auth'
 import { axiosInstance } from '../../../api/axiosInstance'
-import  { isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
+
+interface PasswordStateType {
+  isAlphanumeric: boolean,
+  hasMaxLength: boolean,
+  hasSpecialCharacters: boolean,
+  notValid: boolean
+}
+const specialCharactersPattern = '!@#$%^&*()_+-=[]{};:\'"\\|,.<>/?`~'
+const pattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*$/;
 
 const SignUpPage = () => {
   const [formState, setFormState] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" })
+  const [passwordInGoodState, setPasswordInGoodState] = useState<PasswordStateType>({ isAlphanumeric: false, hasMaxLength: false, hasSpecialCharacters: false, notValid: true })
   const [formErrors, setFormErrorsState] = useState<FormType>({})
+  const customValidators = () => {
+    const password = formState.password.trim();
+    const hasMaxLength = password.length > 6;
+    const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
+    const notValid = /^(?!.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*).*$/.test(formState.password);
+    const hasSpecialCharacters = /(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~])/.test(formState.password);
+    setPasswordInGoodState(prevState => ({
+      ...prevState,
+      hasMaxLength,
+      isAlphanumeric,
+      hasSpecialCharacters,
+      notValid
+    }));
+  };
+
+  useEffect(() => {
+    customValidators();
+  }, [formState.password]);
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -34,7 +61,19 @@ const SignUpPage = () => {
       }
     })
   }
-  useEffect(() => { console.log(formErrors) })
+  const checkIfUserExists = () => {
+    axiosInstance.post("auth/check_email_exists", {
+      email: formState.email,
+    }, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded", }
+    }).then((response) => {
+      setFormErrorsState(prev => ({ ...prev, email: !response.data.valid ? response.data.error : ""}))
+    }).catch((error) => {
+      alert("Error")
+    })
+  }
+  console.log(formState)
+
   const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
@@ -53,7 +92,7 @@ const SignUpPage = () => {
       </div>
       <div className='form-group'>
         <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
-          <div className='grid-cols-2 mt-2 mb-6 grid  justify-center gap-x-2 gap-y-0 grid-rows-3'>
+          <div className='grid auto-cols-auto mt-2 mb-3 gap-2'>
             <div className="">
               <TextInput size='small' error={!!formErrors.first_name} helperText={formErrors?.first_name} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
@@ -61,10 +100,10 @@ const SignUpPage = () => {
               <TextInput size='small' error={!!formErrors.last_name} helperText={formErrors?.last_name} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput error={!!formErrors.email} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput error={!!formErrors.email} onBlur={() => checkIfUserExists()} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput error={!!formErrors.password} helperText={formErrors?.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
+              <TextInput error={passwordInGoodState.notValid} helperText={formErrors?.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -82,17 +121,29 @@ const SignUpPage = () => {
               }} className='float-right'>
                 <span className='underline select-none text-xs underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
               </div>
+              <br />
+              <div>
+                <div>
+                  <span className={`text-xs inline-flex ${!passwordInGoodState.hasMaxLength && "text-red-500 font-medium"} gap-x-2 items-center`}><span className={`size-2 block ${passwordInGoodState.hasMaxLength ? "bg-green-500" : "bg-red-500"} rounded-full`}></span>Max 6</span>
+                </div>
+                <div>
+                  <span className={`text-xs inline-flex ${!passwordInGoodState.isAlphanumeric && "text-red-500 font-medium"} gap-x-2 items-center`}><span className={`size-2 block ${passwordInGoodState.isAlphanumeric ? "bg-green-500" : "bg-red-500"} rounded-full`}></span>{!passwordInGoodState.isAlphanumeric && "! "}Contains Alphanumeric</span>
+                </div>
+                <div>
+                  <span className={`text-xs inline-flex ${!passwordInGoodState.hasSpecialCharacters && "text-red-500 font-medium"} gap-x-2 items-center`}><span className={`size-2 block ${passwordInGoodState.hasSpecialCharacters ? "bg-green-500" : "bg-red-500"} rounded-full`}></span>Contains atleast one special character</span>
+                </div>
+              </div>
             </div>
             <div className="col-span-2">
               <TextInput error={!!formErrors.confirm_password} helperText={formErrors?.confirm_password} required label='Confirm password' name='form_confirm_password' type='password' baseClassName='text-sm' variant='outlined' id='confirm_password_input' placeholder='Confirm Password' />
             </div>
           </div>
           <div className="inline-flex flex-nowrap items-center">
-            <input type="checkbox" name="form_remember_me" id="login-checkbox516" className='size-4' />
+            <input type="checkbox" name="form_remember_me" id="login-checkbox516" className='size-4 ' />
             <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
-            <Button variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button disabled variant='filled' fullWidth color='primary'>Submit</Button>
           </div>
         </form>
         <div className='continue-with-divider my-7 relative w-full'>

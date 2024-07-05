@@ -97,7 +97,11 @@ class GoogleOAuth2LoginCallbackView(APIView):
                 {"error": "User not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
 from rest_framework import serializers
+
+
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
 
@@ -107,11 +111,42 @@ class UserCreatePermission(BasePermission):
         return super().has_object_permission(request, view, obj)
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def check_email_exists(request):
+    if request.method == "POST":
+        email = request.POST.get("email", None)
+        print(request.POST.get)
+        if AuthUser.objects.filter(email=email).exists():
+            return JsonResponse(
+                {
+                    "valid": False,
+                    "emailTaken": True,
+                    "error": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold font-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
+                    "errorTextAriaLbl": "Your email address is already registered with eBay. Need help with your password?",
+                }
+            )
+        return JsonResponse(
+            {
+                "valid": True,
+                "emailTaken": False,
+            }
+        )
+    return JsonResponse(
+        {"unauthorized": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED
+    )
+
+
 class CreateUser(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [
         AllowAny,
     ]
     queryset = AuthUser
+
+
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

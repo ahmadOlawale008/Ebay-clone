@@ -49,13 +49,11 @@ class UserSerializer(serializers.ModelSerializer):
         max_length=30,
         required=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
-        validators=[MinLengthValidator(2)],
     )
     last_name = serializers.CharField(
         max_length=30,
         required=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
-        validators=[MinLengthValidator(2)],
     )
     email = serializers.EmailField(required=True)
     password = serializers.CharField(

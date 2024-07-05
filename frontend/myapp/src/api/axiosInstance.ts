@@ -6,7 +6,7 @@ export const axiosInstance = axios.create({
     baseURL,
     timeout: 3000,
     headers: {
-        "Content-Type": "application/json"
+        // "Content-Type": "application/json"
         // Authorization: ""
     }
 })
@@ -22,12 +22,10 @@ axiosInstance.interceptors.response.use((res) => {
     console.log("Response received", res)
     return res
 }, (error: AxiosError) => {
-    if (error.hasOwnProperty("code") && error.code === "ERR_NETWORK") {
-        toast.error("Network error occured.", { position: "bottom-center", duration: 2000, description: "Error signing up user request. This might be due to server error" })
-
-    }
-    if (error.response?.status === 404 && error.response.statusText === "Not Found") {
+    if ((error.response?.status === 404 && error.response.statusText === "Not Found" )|| (error.message === "Network Error" && error.code === "ERR_NETWORK")) {
         toast.error("Server Error", { position: "bottom-center", duration: 2000, description: "Error signing up user request. This might be due to server error" })
+        return
     }
+
     return Promise.reject(error)
 })
