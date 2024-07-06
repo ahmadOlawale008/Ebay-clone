@@ -7,7 +7,7 @@ import { axiosInstance } from '../../../api/axiosInstance'
 import { AxiosError, isAxiosError } from 'axios'
 import validator from 'validator'
 
-type FormFieldsType = "first_name" | "last_name" | "email" | "password" | "confirm_password"
+type FormFieldsType = "first_name" | "last_name" | "email" | "password"
 
 // Common validation interfaces
 interface CustomFieldValidations {
@@ -18,7 +18,6 @@ interface CustomFieldValidations {
   hasMaxLength?: boolean;
   hasSpecialCharacters?: boolean;
   hasInvalidChars?: boolean;
-  confirmPasswordEquals?: boolean;
 }
 
 enum ValidationMessages {
@@ -33,21 +32,20 @@ enum ValidationMessages {
 
 interface ValidationResult<T> {
   validity: T;
+  fetchedErrorMessage?: string;
   valid: () => boolean;
 }
 
 type FirstNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
 type LastNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
 type EmailValidation = ValidationResult<Pick<CustomFieldValidations, 'notValid' | 'alreadyExists'>>;
-type PasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'hasInvalidChars' | 'notValid'>>;
-type ConfirmPasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'confirmPasswordEquals'>>;
+type PasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'hasInvalidChars'>>;
 
 interface CustomValidation {
   first_name: FirstNameValidation;
   last_name: LastNameValidation;
   email: EmailValidation;
   password: PasswordValidation;
-  confirm_password: ConfirmPasswordValidation;
 }
 
 const defaultValidationState: CustomValidation = Object.freeze(
@@ -68,16 +66,48 @@ const defaultValidationState: CustomValidation = Object.freeze(
       validity: {},
       valid: () => false,
     },
-    confirm_password: {
-      validity: {},
-      valid: ()=>false,
-    },
   }
 )
+
+const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
+  const notValid = !validator.isEmail(_email)
+
+  return {
+    validity: { ..._val.validity, notValid }, valid: () => {
+      return notValid && !!_val?.fetchedErrorMessage
+    }, fetchedErrorMessage: ""
+  }
+}
+
+
+const customNameValidator = (_name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
+  const name = _name.trim();
+  const hasChars = name.length > 0
+  return {
+    validity: { hasChars }, valid: () => {
+      return hasChars && !!_val?.fetchedErrorMessage
+    }, fetchedErrorMessage: _val.fetchedErrorMessage
+  }
+}
+
+const customPasswordValidators = (_password: string, _val: PasswordValidation): PasswordValidation => {
+  const hasMaxLength = _password.length > 6;
+  const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(_password);
+  const notValid = /^(?!.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*).*$/.test(_password);
+  const hasSpecialCharacters = /(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~])/.test(_password);
+  const hasInvalidChars = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*$/.test(_password);
+
+  return {
+    validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters, hasInvalidChars }, valid() {
+      return hasMaxLength && isAlphanumeric && hasSpecialCharacters && hasInvalidChars && !!_val.fetchedErrorMessage
+    }, fetchedErrorMessage: _val.fetchedErrorMessage
+  }
+};
+
+
 const SignUpPage = () => {
   // const [formErrorMessages, setFormErrorMessages] = useState(defaultValidationState) // previously named setFormErrorsState
-
-  const [formContent, setFormContent] = useState({ first_name: "", last_name: "", email: "", password: "", confirm_password: "" }) //previously named formState
+  const [formContent, setFormContent] = useState({ first_name: "", last_name: "", email: "", password: "" }) //previously named formState
   const [formValidations, setFormValidations] = useState(defaultValidationState)
 
   // Refs
@@ -90,66 +120,64 @@ const SignUpPage = () => {
     const element_name = element.name
     const _field = element_name.substring(5) as keyof CustomValidation
 
-    setFormContent(prev=>({ ...prev, [_field]: element.value.trimStart() }))
-    setFormValidations(prev => ({ ...prev, [_field]: { ...defaultValidationState[_field], valid: ()=>false } }))
-    // custom_validator()
+    setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
+    setFormValidations(prev => ({ ...prev, [_field]: { ...defaultValidationState[_field], valid: () => true } }))
   }
+
   // Blur
-  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>)=>{
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
     const _field = element_name.substring(5) as keyof CustomValidation
-    setFormContent(prev=>({...prev, [_field]: element.ariaValueMax}))
+    setFormContent(prev => ({ ...prev, [_field]: element.ariaValueMax }))
   }
-  const customPasswordValidators = () => {
-    const password = formContent.password.trim();
-    const hasMaxLength = password.length > 6;
-    const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
-    const notValid = /^(?!.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*).*$/.test(formContent.password);
-    const hasSpecialCharacters = /(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~])/.test(formContent.password);
-    const pattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*$/;
-  };
-  // const custom_validator = () => {
-  //   return formState.first_name.trim().length > 0 && formState.last_name.trim().length > 0 && validator.isEmail(formState.email) && passwordInGoodState.hasMaxLength && passwordInGoodState.isAlphanumeric && passwordInGoodState.hasSpecialCharacters && !passwordInGoodState.notValid
-  // }
-  // const handleFormRegistrationForm = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   const formData = new FormData()
-  //   formData.append("first_name", formState.first_name.trim())
-  //   formData.append("last_name", formState.last_name.trim())
-  //   formData.append("email", formState.email.trim())
-  //   formData.append("password", formState.password.trim())
-  //   formData.append("confirm_password", formState.confirm_password.trim())
-  //   axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" } }).then(response => {
-  //     console.log(response, "Login successful")
-  //     if (response.status === 400 && response.hasOwnProperty("response")) {
-  //     }
-  //   }).catch((error) => {
-  //     console.log(error)
-  //     if (isAxiosError(error)) {
-  //       const responseData = error.response?.data
-  //       let updatedFormErrors: FormType = {}
-  //       Object.keys(responseData).forEach((field) => {
-  //         updatedFormErrors[field as keyof FormType] = responseData[field]
-  //       })
-  //       setFormErrorsState(updatedFormErrors)
-  //     }
-  //   })
-  // }
+
+  // Check if a user with email already exists onBlur
+  const checkIfUserWithEmailExists = () => {
+    axiosInstance.post("auth/check_email_exists", {
+      email: formContent.email,
+    }, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded", }
+    }).then((response) => {
+      setFormValidations(prev => ({ ...prev, email: { validity: { ...defaultValidationState.email.validity, alreadyExists: true }, valid: prev.email.valid } }))
+    }).catch((error: AxiosError) => {
+      console.log(error)
+    })
+  }
+  const customValidator = () => {
+    const { first_name, last_name, email, password } = formContent
+    const validated_first_name = customNameValidator(first_name, formValidations.first_name)
+    const validated_last_name = customNameValidator(first_name, formValidations.last_name)
+    const validated_email = customEmailValidator(first_name, formValidations.email)
+    const validated_password = customPasswordValidators(first_name, formValidations.password)
+    setFormValidations({ first_name: validated_first_name, last_name: validated_last_name, email: validated_email, password: validated_password })
+  }
+  const handleFormRegistrationForm = (e: React.FormEvent) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append("first_name", formContent.first_name.trim())
+    formData.append("last_name", formContent.last_name.trim())
+    formData.append("email", formContent.email.trim())
+    formData.append("password", formContent.password.trim())
+    axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" } }).then(response => {
+      console.log(response, "Login successful")
+      if (response.status === 400 && response.hasOwnProperty("response")) {
+      }
+    }).catch((error) => {
+      console.log(error)
+      if (isAxiosError(error)) {
+        const responseData = error.response?.data
+        let updatedFormErrors: FormType = {}
+        Object.keys(responseData).forEach((field) => {
+          updatedFormErrors[field as keyof FormType] = responseData[field]
+        })
+        setFormValidations(prev => ({ ...prev, }))
+      }
+    })
+  }
 
 
-  // // Blurs
-  // const checkIfUserrWithEmailExists = () => {
-  //   axiosInstance.post("auth/check_email_exists", {
-  //     email: formState.email,
-  //   }, {
-  //     headers: { "Content-Type": "application/x-www-form-urlencoded", }
-  //   }).then((response) => {
-  //     setFormErrorsState(prev => ({ ...prev, email: !response.data.valid ? response.data.error : "" }))
-  //   }).catch((error: AxiosError) => {
-  //     console.log(error)
-  //   })
-  // }
+
 
 
   // useEffect(() => {
@@ -163,22 +191,25 @@ const SignUpPage = () => {
       </div>
       <div className="group-help-authorization text-base font-normal">
         <span>If you have an account with us</span>
-        <span  className='ml-1'><Link to="/login" className=' underline text-blue-600 underline-offset-1 font-bold'>sign in</Link></span>
+        <span className='ml-1'><Link to="/login" className=' underline text-blue-600 underline-offset-1 font-bold'>sign in</Link></span>
       </div>
-      {/* <div className='form-group'>
+      <div className='form-group'>
         <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid auto-cols-auto mt-2 mb-3 gap-2'>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formState.first_name} size='small' autoComplete='first-name' aria-required="true" error={!!formErrors.first_name} helperText={formErrors?.first_name} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='first-name' aria-required="true" error={formValidations.first_name.valid()} helperText={formValidations.first_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formState.last_name} autoComplete='family-name' aria-required="true" size='small' error={!!formErrors.last_name} helperText={formErrors?.last_name} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='family-name' aria-required="true" size='small' error={formValidations.last_name.valid()} helperText={formValidations.last_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formState.email} error={!!formErrors.email} autoComplete='email' aria-required="true" onBlur={(e) => handleInputBlur(e)} helperText={formErrors?.email} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput value={formContent.email} error={formValidations.email.valid()} autoComplete='email' aria-required="true" onBlur={(e) => handleInputBlur(e)} helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage :
+                formValidations.email.validity.alreadyExists ? ValidationMessages.ALREADY_EXISTS : formValidations.email.validity.notValid ? ValidationMessages.NOT_VALID_EMAIL : ""} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formState.password} aria-required="true" data-required="true" error={passwordInGoodState.notValid} helperText={(formErrors.password && Object.values(formErrors.password)) ? "" : passwordInGoodState.notValid ? PasswordMessage.INVALID : formErrors.password} name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
+              <TextInput value={formContent.password} aria-required="true" data-required="true" error={formValidations.password.valid()} helperText={
+                formValidations.password.fetchedErrorMessage && formValidations.password.validity.hasOwnProperty(formValidations.password.fetchedErrorMessage) ? "" : ""
+              } name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -199,18 +230,15 @@ const SignUpPage = () => {
               <br />
               <div>
                 <div>
-                  <span className={`text-xs inline-flex ${!passwordInGoodState.hasMaxLength && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${passwordInGoodState.hasMaxLength ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{PasswordMessage.MAXLENGTH_OF_SIX}</span>
+                  <span className={`text-xs inline-flex ${!formValidations.password.validity.hasMaxLength && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${formValidations.password.validity.hasMaxLength ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{ValidationMessages.MAXLENGTH_OF_SIX}</span>
                 </div>
                 <div>
-                  <span className={`text-xs inline-flex ${!passwordInGoodState.isAlphanumeric && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${passwordInGoodState.isAlphanumeric ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{PasswordMessage.ALPHANUMERIC_NEEDED}</span>
+                  <span className={`text-xs inline-flex ${!formValidations.password.validity.isAlphanumeric && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${formValidations.password.validity.isAlphanumeric ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{ValidationMessages.ALPHANUMERIC_NEEDED}</span>
                 </div>
                 <div>
-                  <span className={`text-xs inline-flex ${!passwordInGoodState.hasSpecialCharacters && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${passwordInGoodState.hasSpecialCharacters ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{PasswordMessage.SPECIAL_CHARS_NEEDED}</span>
+                  <span className={`text-xs inline-flex ${!formValidations.password.validity.hasSpecialCharacters && "text-red-500 font-medium"} gap-x-2 items-center`}><i className={`fa-solid ${formValidations.password.validity.hasSpecialCharacters ? "text-green-600" : "text-red-600"} text-base fa-square-check`}></i>{ValidationMessages.SPECIAL_CHARS_NEEDED}</span>
                 </div>
               </div>
-            </div>
-            <div className="col-span-2">
-              <TextInput onBlur={() => { setFormErrorsState(prev => ({ ...prev, confirm_password: formState.confirm_password != formState.password ? "Ensure both passwords are the same" : "" })) }} value={formState.confirm_password} aria-required="true" data-required="true" error={!!formErrors.confirm_password} helperText={formErrors?.confirm_password} required label='Confirm password' name='form_confirm_password' type='password' baseClassName='text-sm' variant='outlined' id='confirm_password_input' placeholder='Confirm Password' />
             </div>
           </div>
           <div className="inline-flex flex-nowrap items-center">
@@ -218,7 +246,7 @@ const SignUpPage = () => {
             <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
-            <Button disabled={custom_validator()} variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button disabled={false} variant='filled' fullWidth color='primary'>Submit</Button>
           </div>
         </form>
         <div className='continue-with-divider my-7 relative w-full'>
@@ -263,7 +291,7 @@ const SignUpPage = () => {
             </svg>
           </Button>
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }

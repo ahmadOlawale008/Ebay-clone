@@ -25,7 +25,7 @@ const NavbarInto = () => {
                     </a>
                 </div>
                 <div className='nav-links'>
-                    <div className='flex flex-row items-center relative flex-nowrap gap-x-3'>
+                    <div className='flex flex-row items-center relative flex-nowrap gap-x-2'>
                         <span className='text-xs'>
                             <a href="">About</a>
                         </span>
@@ -38,14 +38,14 @@ const NavbarInto = () => {
                         <hr className='w-[1px] h-4 bg-gray-500' />
                         <span>
                             <a href="/login">
-                                <Button size='small' baseClassName='!shadow-none text-[12px] font-medium' color='primary'>
+                                <Button size='small' baseClassName='!shadow-none mx-0 px-2 py-1 text-[12px] font-medium' color='primary'>
                                     Sign in
                                 </Button>
                             </a>
                         </span>
                         <span>
                             <a href="/signup">
-                                <Button size='small' baseClassName='!shadow-none text-[12px] font-medium' color='primary'>
+                                <Button size='small' baseClassName='!shadow-none mx-0 px-2 py-1 text-[12px] font-medium' color='primary'>
                                     Sign up
                                 </Button>
                             </a>

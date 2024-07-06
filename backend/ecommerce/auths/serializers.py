@@ -48,7 +48,7 @@ VALIDATION_MESSAGES = {
         "EMPTY_VALUE": "Please enter a value for this field.",
     },
     "EMAIL": {
-        "NOT_VALID_EMAIL": "Invalid email address.",
+        "INVALID_EMAIL": "Invalid email address.",
         "DUPLICATE_ENTRY": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold  underline underline-offset-2 !text-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
         "INVALID_DOMAIN": "Invalid email domain.",
         "BLOCKED_DOMAIN": "Email domain is not allowed.",
@@ -64,9 +64,6 @@ VALIDATION_MESSAGES = {
         "MAXLENGTH_OF_SIX": "MAXLENGTH_OF_SIX",
         # SPECIAL_CHARS_NEEDED Password must contain atleast one special characters {string.punctuation}
         "SPECIAL_CHARS_NEEDED": "SPECIAL_CHARS_NEEDED",
-    },
-    "CONFIRM_PASSWORD": {
-        "NOT_EQUAL": "Ensure both passwords are the same.",
     },
     "INVALID": "Error signing up form. Please try again later.",
 }
@@ -87,9 +84,6 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, style={"input_type": "password"}
     )
-    confirm_password = serializers.CharField(
-        write_only=True, required=True, style={"input_type": "password"}
-    )
 
     class Meta:
         model = UserModel
@@ -101,20 +95,11 @@ class UserSerializer(serializers.ModelSerializer):
             "phone_number",
             "account_type",
             "password",
-            "confirm_password",
         ]
         extra_fields = {
             "id": {"readonly": True}
         }
 
-    def validate(self, attrs):
-        password = attrs.get("password")
-        confirm_password = attrs.get("confirm_password")
-        if confirm_password != password:
-            raise serializers.ValidationError(
-                {"confirm_password": _("Ensure that both passwords are equal")}
-            )
-        return attrs
     def validate_email(self, value):
         if UserModel.objects.filter(email=value).exists():
             raise serializers.ValidationError(_("Email Address Already in Use."))
@@ -149,7 +134,6 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        validated_data.pop("confirm_password")
         try:
             user = UserModel.objects.create(**validated_data, is_active=False)
             user.save()
