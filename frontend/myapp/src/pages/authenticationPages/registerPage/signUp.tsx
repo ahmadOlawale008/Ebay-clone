@@ -10,16 +10,25 @@ import validator from 'validator'
 type FormFieldsType = "first_name" | "last_name" | "email" | "password"
 
 // Common validation interfaces
+// interface CustomFieldValidations {
+//   hasChars?: boolean;
+//   notValid?: boolean;
+//   alreadyExists?: boolean;
+//   isAlphanumeric?: boolean;
+//   hasMaxLength?: boolean;
+//   hasSpecialCharacters?: boolean;
+//   hasInvalidChars?: boolean;
+// }
+
 interface CustomFieldValidations {
   hasChars?: boolean;
-  notValid?: boolean;
-  alreadyExists?: boolean;
+  isValid?: boolean;
+  doesNotAlreadyExists?: boolean;
   isAlphanumeric?: boolean;
   hasMaxLength?: boolean;
   hasSpecialCharacters?: boolean;
-  hasInvalidChars?: boolean;
+  doesNotHaveInvalidChars?: boolean;
 }
-
 enum ValidationMessages {
   CHARS_NEEDED = 'This field must contain at least one character.',
   NOT_VALID_EMAIL = 'Please enter a valid email address.',
@@ -38,8 +47,8 @@ interface ValidationResult<T> {
 
 type FirstNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
 type LastNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
-type EmailValidation = ValidationResult<Pick<CustomFieldValidations, 'notValid' | 'alreadyExists'>>;
-type PasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'hasInvalidChars'>>;
+type EmailValidation = ValidationResult<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>;
+type PasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'doesNotHaveInvalidChars'>>;
 
 interface CustomValidation {
   first_name: FirstNameValidation;
@@ -50,10 +59,10 @@ interface CustomValidation {
 
 
 const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
-  const notValid = !validator.isEmail(_email)
+  const isValid = validator.isEmail(_email)
   const fetchedErrorMessage = _val.fetchedErrorMessage || '';
   return {
-    validity: { ..._val.validity, notValid }, valid: () => notValid && Boolean(fetchedErrorMessage), fetchedErrorMessage: ""
+    validity: { ..._val.validity, isValid }, valid: () => isValid && (fetchedErrorMessage && false || true), fetchedErrorMessage
   }
 }
 
@@ -64,21 +73,22 @@ const customNameValidator = (name: string, _val: FirstNameValidation | LastNameV
 
   return {
     validity: { hasChars },
-    valid: () => hasChars && Boolean(fetchedErrorMessage),
+    valid: () => hasChars && (fetchedErrorMessage && false || true),
     fetchedErrorMessage,
   };
 };
-const customPasswordValidators = (password: string, validation: PasswordValidation): PasswordValidation => {
+const customPasswordValidators = (password: string, _val: PasswordValidation): PasswordValidation => {
   const hasMaxLength = password.length > 6;
   const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
   const hasSpecialCharacters = /[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]/.test(password);
+  const fetchedErrorMessage = _val.fetchedErrorMessage || '';
 
-  const hasInvalidChars = hasMaxLength && isAlphanumeric && hasSpecialCharacters;
+  // const hasInvalidChars = hasMaxLength && isAlphanumeric && hasSpecialCharacters;
 
   return {
-    validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters, hasInvalidChars },
-    valid: () => hasMaxLength && isAlphanumeric && hasSpecialCharacters && hasInvalidChars && Boolean(validation.fetchedErrorMessage),
-    fetchedErrorMessage: validation.fetchedErrorMessage
+    validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters },
+    valid: () => hasMaxLength && isAlphanumeric && hasSpecialCharacters && (fetchedErrorMessage && false || true),
+    fetchedErrorMessage
   };
 };
 
@@ -91,10 +101,25 @@ const createDefaultState = <T extends CustomFieldValidations>(): ValidationResul
 const defaultValidationState: CustomValidation = Object.freeze({
   first_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
   last_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
-  email: customEmailValidator("", createDefaultState<Pick<CustomFieldValidations, 'notValid' | 'alreadyExists'>>()),
-  password: customPasswordValidators("", createDefaultState<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'hasInvalidChars'>>()),
+  email: customEmailValidator("", createDefaultState<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>()),
+  password: customPasswordValidators("", createDefaultState<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'doesNotHaveInvalidChars'>>()),
 });
 
+
+const parse_validations = (validation: string, name: keyof CustomValidation): FirstNameValidation | LastNameValidation | EmailValidation | PasswordValidation   =>{
+  switch (name) {
+    case 'first_name':
+      return customNameValidator(validation, createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>());
+    case 'last_name':
+      return customNameValidator(validation, createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>());
+    case 'email':
+      return customEmailValidator(validation, createDefaultState<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>());
+    case 'password':
+      return customPasswordValidators(validation, createDefaultState<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'doesNotHaveInvalidChars'>>())
+    default:
+      return defaultValidationState[name];
+  }
+}
 const SignUpPage = () => {
   // const [formErrorMessages, setFormErrorMessages] = useState(defaultValidationState) // previously named setFormErrorsState
   const [formContent, setFormContent] = useState({ first_name: "", last_name: "", email: "", password: "" }) //previously named formState
@@ -111,7 +136,8 @@ const SignUpPage = () => {
     const _field = element_name.substring(5) as keyof CustomValidation
     formValidations[_field].valid();
     setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
-    setFormValidations(prev => ({ ...prev, [_field]: { ...defaultValidationState[_field] } }))
+    setFormValidations(prev => ({ ...prev, [_field]: parse_validations(element.value, _field) }))
+    console.log(formValidations, formValidations[_field], _field, formValidations[_field].valid())
   }
 
   // Blur
@@ -134,14 +160,7 @@ const SignUpPage = () => {
       console.log(error)
     })
   }
-  const customValidator = () => {
-    const { first_name, last_name, email, password } = formContent
-    const validated_first_name = customNameValidator(first_name, formValidations.first_name)
-    const validated_last_name = customNameValidator(first_name, formValidations.last_name)
-    const validated_email = customEmailValidator(first_name, formValidations.email)
-    const validated_password = customPasswordValidators(first_name, formValidations.password)
-    setFormValidations({ first_name: validated_first_name, last_name: validated_last_name, email: validated_email, password: validated_password })
-  }
+
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -187,17 +206,17 @@ const SignUpPage = () => {
         <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid auto-cols-auto mt-2 mb-3 gap-2'>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='first-name' aria-required="true" error={formValidations.first_name.valid()} helperText={formValidations.first_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='first-name' aria-required="true" error={!formValidations.first_name.valid()} helperText={!formValidations.first_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='family-name' aria-required="true" size='small' error={formValidations.last_name.valid()} helperText={formValidations.last_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='family-name' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={!formValidations.last_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formContent.email} error={formValidations.email.valid()} autoComplete='email' aria-required="true" onBlur={(e) => handleInputBlur(e)} helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage :
-                formValidations.email.validity.alreadyExists ? ValidationMessages.ALREADY_EXISTS : formValidations.email.validity.notValid ? ValidationMessages.NOT_VALID_EMAIL : ""} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput value={formContent.email} error={!formValidations.email.valid()} autoComplete='email' aria-required="true" onBlur={(e) => handleInputBlur(e)} helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage :
+                !formValidations.email.validity.doesNotAlreadyExists ? ValidationMessages.ALREADY_EXISTS : !formValidations.email.validity.isValid ? ValidationMessages.NOT_VALID_EMAIL : ""} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formContent.password} aria-required="true" data-required="true" error={formValidations.password.valid()} helperText={
+              <TextInput value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
                 formValidations.password.fetchedErrorMessage && formValidations.password.validity.hasOwnProperty(formValidations.password.fetchedErrorMessage) ? "" : ""
               } name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
