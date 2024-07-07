@@ -27,7 +27,7 @@ const AdvertisementPage = () => {
               <sub className="line-through">₦5700</sub>
             </span>
             <motion.div onHoverStart={() => shopRef.current?.playFromBeginning()}>
-              <Button variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
+              <Button size="small" variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
               </Button>
             </motion.div>
           </div>

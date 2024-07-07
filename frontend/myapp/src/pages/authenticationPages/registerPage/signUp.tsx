@@ -48,62 +48,52 @@ interface CustomValidation {
   password: PasswordValidation;
 }
 
-const defaultValidationState: CustomValidation = Object.freeze(
-  {
-    first_name: {
-      validity: {},
-      valid: () => false,
-    },
-    last_name: {
-      validity: {},
-      valid: () => false,
-    },
-    email: {
-      validity: {},
-      valid: () => false,
-    },
-    password: {
-      validity: {},
-      valid: () => false,
-    },
-  }
-)
 
 const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
   const notValid = !validator.isEmail(_email)
-
+  const fetchedErrorMessage = _val.fetchedErrorMessage || '';
   return {
-    validity: { ..._val.validity, notValid }, valid: () => {
-      return notValid && !!_val?.fetchedErrorMessage
-    }, fetchedErrorMessage: ""
+    validity: { ..._val.validity, notValid }, valid: () => notValid && Boolean(fetchedErrorMessage), fetchedErrorMessage: ""
   }
 }
 
-
-const customNameValidator = (_name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
-  const name = _name.trim();
-  const hasChars = name.length > 0
-  return {
-    validity: { hasChars }, valid: () => {
-      return hasChars && !!_val?.fetchedErrorMessage
-    }, fetchedErrorMessage: _val.fetchedErrorMessage
-  }
-}
-
-const customPasswordValidators = (_password: string, _val: PasswordValidation): PasswordValidation => {
-  const hasMaxLength = _password.length > 6;
-  const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(_password);
-  const notValid = /^(?!.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*).*$/.test(_password);
-  const hasSpecialCharacters = /(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~])/.test(_password);
-  const hasInvalidChars = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]).*$/.test(_password);
+const customNameValidator = (name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
+  const trimmedName = name.trim();
+  const hasChars = trimmedName.length > 0;
+  const fetchedErrorMessage = _val.fetchedErrorMessage || '';
 
   return {
-    validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters, hasInvalidChars }, valid() {
-      return hasMaxLength && isAlphanumeric && hasSpecialCharacters && hasInvalidChars && !!_val.fetchedErrorMessage
-    }, fetchedErrorMessage: _val.fetchedErrorMessage
-  }
+    validity: { hasChars },
+    valid: () => hasChars && Boolean(fetchedErrorMessage),
+    fetchedErrorMessage,
+  };
+};
+const customPasswordValidators = (password: string, validation: PasswordValidation): PasswordValidation => {
+  const hasMaxLength = password.length > 6;
+  const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
+  const hasSpecialCharacters = /[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]/.test(password);
+
+  const hasInvalidChars = hasMaxLength && isAlphanumeric && hasSpecialCharacters;
+
+  return {
+    validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters, hasInvalidChars },
+    valid: () => hasMaxLength && isAlphanumeric && hasSpecialCharacters && hasInvalidChars && Boolean(validation.fetchedErrorMessage),
+    fetchedErrorMessage: validation.fetchedErrorMessage
+  };
 };
 
+const createDefaultState = <T extends CustomFieldValidations>(): ValidationResult<T> => ({
+  validity: {} as T,
+  valid: () => false,
+  fetchedErrorMessage: '',
+});
+
+const defaultValidationState: CustomValidation = Object.freeze({
+  first_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
+  last_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
+  email: customEmailValidator("", createDefaultState<Pick<CustomFieldValidations, 'notValid' | 'alreadyExists'>>()),
+  password: customPasswordValidators("", createDefaultState<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'hasInvalidChars'>>()),
+});
 
 const SignUpPage = () => {
   // const [formErrorMessages, setFormErrorMessages] = useState(defaultValidationState) // previously named setFormErrorsState
@@ -119,9 +109,9 @@ const SignUpPage = () => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
     const _field = element_name.substring(5) as keyof CustomValidation
-
+    formValidations[_field].valid();
     setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
-    setFormValidations(prev => ({ ...prev, [_field]: { ...defaultValidationState[_field], valid: () => true } }))
+    setFormValidations(prev => ({ ...prev, [_field]: { ...defaultValidationState[_field] } }))
   }
 
   // Blur
@@ -129,7 +119,7 @@ const SignUpPage = () => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
     const _field = element_name.substring(5) as keyof CustomValidation
-    setFormContent(prev => ({ ...prev, [_field]: element.ariaValueMax }))
+    setFormContent(prev => ({ ...prev, [_field]: element.value.trim() }))
   }
 
   // Check if a user with email already exists onBlur
