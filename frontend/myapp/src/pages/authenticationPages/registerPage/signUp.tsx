@@ -41,7 +41,7 @@ enum ValidationMessages {
 
 interface ValidationResult<T> {
   validity: T;
-  fetchedErrorMessage?: string;
+  fetchedErrorMessage: string;
   valid: () => boolean;
 }
 
@@ -82,9 +82,7 @@ const customPasswordValidators = (password: string, _val: PasswordValidation): P
   const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
   const hasSpecialCharacters = /[!@#$%^&*()_+\-=\[\]{};:'"\\|,.<>\/?`~]/.test(password);
   const fetchedErrorMessage = _val.fetchedErrorMessage || '';
-
   // const hasInvalidChars = hasMaxLength && isAlphanumeric && hasSpecialCharacters;
-
   return {
     validity: { hasMaxLength, isAlphanumeric, hasSpecialCharacters },
     valid: () => hasMaxLength && isAlphanumeric && hasSpecialCharacters && (fetchedErrorMessage && false || true),
@@ -121,7 +119,6 @@ const parse_validations = (validation: string, name: keyof CustomValidation): Fi
   }
 }
 const SignUpPage = () => {
-  // const [formErrorMessages, setFormErrorMessages] = useState(defaultValidationState) // previously named setFormErrorsState
   const [formContent, setFormContent] = useState({ first_name: "", last_name: "", email: "", password: "" }) //previously named formState
   const [formValidations, setFormValidations] = useState(defaultValidationState)
 
@@ -137,7 +134,6 @@ const SignUpPage = () => {
     formValidations[_field].valid();
     setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
     setFormValidations(prev => ({ ...prev, [_field]: parse_validations(element.value, _field) }))
-    console.log(formValidations, formValidations[_field], _field, formValidations[_field].valid())
   }
 
   // Blur
@@ -155,11 +151,18 @@ const SignUpPage = () => {
     }, {
       headers: { "Content-Type": "application/x-www-form-urlencoded", }
     }).then((response) => {
-      setFormValidations(prev => ({ ...prev, email: { validity: { ...defaultValidationState.email.validity, alreadyExists: true }, valid: prev.email.valid } }))
+      const val = customEmailValidator(formContent.email, {...formValidations.email, fetchedErrorMessage: response.data.error, validity: {doesNotAlreadyExists: response.data.valid}}) as EmailValidation
+      setFormValidations(prev=>({ ...prev, email: val}))
     }).catch((error: AxiosError) => {
       console.log(error)
     })
   }
+  const isFormValid = () => {
+    return formValidations.first_name.valid() &&
+      formValidations.last_name.valid() &&
+      formValidations.email.valid() &&
+      formValidations.password.valid();
+  };
 
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -169,11 +172,9 @@ const SignUpPage = () => {
     formData.append("email", formContent.email.trim())
     formData.append("password", formContent.password.trim())
     axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" } }).then(response => {
-      console.log(response, "Login successful")
       if (response.status === 400 && response.hasOwnProperty("response")) {
       }
     }).catch((error) => {
-      console.log(error)
       if (isAxiosError(error)) {
         const responseData = error.response?.data
         let updatedFormErrors: FormType = {}
@@ -184,14 +185,14 @@ const SignUpPage = () => {
       }
     })
   }
-
-
-
-
-
-  // useEffect(() => {
-  //   customPasswordValidators();
-  // }, [formState.password]);
+  console.log(formValidations.first_name.valid(), "vals first name")
+  console.log(formValidations.last_name.valid(), "vals last name")
+  console.log(formValidations.email.valid(), "vals email")
+  console.log(formValidations.password.valid(), "vals password")
+console.log("------------------------------------")
+  useEffect(() => {
+    isFormValid()
+  }, [formValidations.first_name, formValidations.last_name, formValidations.email, formValidations.password])
 
   return (
     <div>
@@ -206,17 +207,19 @@ const SignUpPage = () => {
         <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid auto-cols-auto mt-2 mb-3 gap-2'>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='first-name' aria-required="true" error={!formValidations.first_name.valid()} helperText={!formValidations.first_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='firstname' aria-required="true" error={!formValidations.first_name.valid()} helperText={formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='family-name' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={!formValidations.last_name.validity.hasChars ? ValidationMessages.CHARS_NEEDED : formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='lastname' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formContent.email} error={!formValidations.email.valid()} autoComplete='email' aria-required="true" onBlur={(e) => handleInputBlur(e)} helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage :
-                !formValidations.email.validity.doesNotAlreadyExists ? ValidationMessages.ALREADY_EXISTS : !formValidations.email.validity.isValid ? ValidationMessages.NOT_VALID_EMAIL : ""} required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput aria-autocomplete='list' value={formContent.email} error={!formValidations.email.valid()} 
+                helperText={formValidations.email.validity.doesNotAlreadyExists == false && formValidations.email.fetchedErrorMessage  || ""}
+              autoComplete='email' aria-required="true" onBlur={(e) => {handleInputBlur(e) 
+              checkIfUserWithEmailExists()}}   required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
+              <TextInput autoComplete='new-password' value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
                 formValidations.password.fetchedErrorMessage && formValidations.password.validity.hasOwnProperty(formValidations.password.fetchedErrorMessage) ? "" : ""
               } name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
@@ -255,7 +258,7 @@ const SignUpPage = () => {
             <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
-            <Button disabled={false} variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button disabled={!isFormValid()} variant='filled' fullWidth color='primary'>Submit</Button>
           </div>
         </form>
         <div className='continue-with-divider my-7 relative w-full'>
