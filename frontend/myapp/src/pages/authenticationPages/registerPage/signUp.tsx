@@ -17,7 +17,6 @@ const customNameValidator = (name: string, _val: FirstNameValidation | LastNameV
     fetchedErrorMessage,
   };
 };
-
 const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
   const isValid = validator.isEmail(_email)
   const fetchedErrorMessage = _val.fetchedErrorMessage || '';
@@ -38,21 +37,17 @@ const customPasswordValidators = (password: string, _val: PasswordValidation): P
     fetchedErrorMessage
   };
 };
-
 const createDefaultState = <T extends CustomFieldValidations>(): ValidationResult<T> => ({
   validity: {} as T,
   valid: () => false,
   fetchedErrorMessage: '',
 });
-
 const defaultValidationState: SignUpCustomValidation = Object.freeze({
   first_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
   last_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
   email: customEmailValidator("", createDefaultState<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>()),
   password: customPasswordValidators("", createDefaultState<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'doesNotHaveInvalidChars'>>()),
 });
-
-
 const parse_validations = (validation: string, name: keyof SignUpCustomValidation): FirstNameValidation | LastNameValidation | EmailValidation | PasswordValidation => {
   switch (name) {
     case 'first_name':
@@ -75,53 +70,47 @@ const SignUpPage = () => {
   // Refs
   const [showPassword, setPasswordState] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
-
   // Handle Form Change events
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
     const _field = element_name.substring(5) as keyof SignUpCustomValidation
-
     setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
     setFormValidations(prev => ({ ...prev, [_field]: parse_validations(element.value, _field) }))
+    console.log("Form change before submission")
   }
-
   // Blur
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
     const _field = element_name.substring(5) as keyof SignUpCustomValidation
     setFormContent(prev => ({ ...prev, [_field]: element.value.trim() }))
+    console.log("Form blur before submission")
   }
-
-  // Check if a user with email already exists onBlur
-const checkIfUserWithEmailExists = () => {
-  axiosInstance.post("auth/check_email_exists", {
-    email: formContent.email,
-  }, {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" }
-  }).then((response) => {
-    const { data } = response;
-    const updatedEmailValidation = customEmailValidator(formContent.email, { ...formValidations.email, fetchedErrorMessage: data.error || '', validity: { ...formValidations.email.validity, doesNotAlreadyExists: data.valid || false, } })
-    setFormValidations(prev => ({
-      ...prev,
-      email: updatedEmailValidation,
-    }));
-    
-    // Check validity and update UI after state has been updated
-    console.log(formValidations.email.valid()); // Check validity here or trigger form validation logic
-  }).catch((error: AxiosError) => {
-    console.log(error);
-  });
-};
-
+  // To check if a user with email already exists onBlur
+  const checkIfUserWithEmailExists = () => {
+    axiosInstance.post("auth/check_email_exists", {
+      email: formContent.email,
+    }, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    }).then((response) => {
+      const { data } = response;
+      const updatedEmailValidation = customEmailValidator(formContent.email, { ...formValidations.email, fetchedErrorMessage: data.error || '', validity: { ...formValidations.email.validity, doesNotAlreadyExists: data.valid || false, } })
+      setFormValidations(prev => ({
+        ...prev,
+        email: updatedEmailValidation,
+      }));
+    }).catch((error: AxiosError) => {
+      console.log(error);
+    });
+  };
   const checkIfFormIsValidForSubmission = () => {
     return formValidations.first_name.valid() &&
       formValidations.last_name.valid() &&
       formValidations.email.valid() &&
       formValidations.password.valid();
   };
-
+  
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -133,28 +122,33 @@ const checkIfUserWithEmailExists = () => {
     }).catch((error) => {
       console.log(error)
       if (isAxiosError(error)) {
+        const responseData = error.response?.data;
+        console.log(responseData);
         let updatedFormValidations = { ...formValidations };
-        const responseData = error.response?.data
-
         Object.keys(responseData).forEach((field) => {
           const validationField = field as keyof SignUpCustomValidation;
-          updatedFormValidations[validationField] = {
-            ...formValidations[validationField],
-            fetchedErrorMessage: responseData[field][0]
-          };
-          console.log("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
-          console.log(updatedFormValidations, "Fields")
-
+          if (validationField === 'email') {
+            updatedFormValidations[validationField] = {
+              ...updatedFormValidations[validationField],
+              fetchedErrorMessage: responseData[field][0]
+            };
+          } else {
+            updatedFormValidations[validationField] = {
+              ...updatedFormValidations[validationField],
+              fetchedErrorMessage: responseData[field][0]
+            };
+          }
+          console.log(formValidations, "Forms")
         });
+        // Set state once after the loop
         setFormValidations(updatedFormValidations);
-        console.log(formValidations.email, "Email")
-        console.log(updatedFormValidations)
       }
     })
   }
   useEffect(() => {
+    console.log('formValidations updated:', formValidations);
     setIsFormValid(checkIfFormIsValidForSubmission())
-  }, [formValidations.email, formValidations.first_name, formValidations.last_name, formValidations.password])
+  }, [formValidations])
   return (
     <div>
       <div className="text-start">
@@ -174,9 +168,8 @@ const checkIfUserWithEmailExists = () => {
               <TextInput onChange={(e) => handleFormChange(e)} onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='lastname' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput onChange={(e) => handleFormChange(e)} value={formContent.email} error={!formValidations.email.valid()} size='small' helperText={!formValidations.email.validity.isValid ? ValidationMessages.NOT_VALID_EMAIL : (formValidations.email.validity.doesNotAlreadyExists === false && formValidations.email.fetchedErrorMessage) || ""} autoComplete='email' aria-required="true" onBlur={(e) => { handleInputBlur(e); checkIfUserWithEmailExists(); }} required baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput onChange={(e) => handleFormChange(e)} value={formContent.email} error={!formValidations.email.valid()} size='small' helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage : !formValidations.email.valid() ?  "Please enter a valid email address." : ""} autoComplete='email' aria-required="true" onBlur={(e) => { handleInputBlur(e); checkIfUserWithEmailExists(); }} required baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
-
             <div className="col-span-2">
               <TextInput onChange={(e) => handleFormChange(e)} autoComplete='new-password' size='small' value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
                 formValidations.password.fetchedErrorMessage && formValidations.password.validity.hasOwnProperty(formValidations.password.fetchedErrorMessage) ? "" : ""
