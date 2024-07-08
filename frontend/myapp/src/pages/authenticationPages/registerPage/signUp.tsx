@@ -133,16 +133,25 @@ const checkIfUserWithEmailExists = () => {
     }).catch((error) => {
       console.log(error)
       if (isAxiosError(error)) {
+        let updatedFormValidations = { ...formValidations };
         const responseData = error.response?.data
-        let updatedFormErrors: FormType = {}
+
         Object.keys(responseData).forEach((field) => {
-          updatedFormErrors[field as keyof FormType] = responseData[field]
-        })
-        // setFormValidations()
+          const validationField = field as keyof SignUpCustomValidation;
+          updatedFormValidations[validationField] = {
+            ...formValidations[validationField],
+            fetchedErrorMessage: responseData[field][0]
+          };
+          console.log("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+          console.log(updatedFormValidations, "Fields")
+
+        });
+        setFormValidations(updatedFormValidations);
+        console.log(formValidations.email, "Email")
+        console.log(updatedFormValidations)
       }
     })
   }
-  console.log(formValidations.email, formValidations.email.valid(), formValidations.email.validity)
   useEffect(() => {
     setIsFormValid(checkIfFormIsValidForSubmission())
   }, [formValidations.email, formValidations.first_name, formValidations.last_name, formValidations.password])
