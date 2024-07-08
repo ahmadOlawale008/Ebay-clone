@@ -92,8 +92,6 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            "phone_number",
-            "account_type",
             "password",
         ]
         extra_fields = {
@@ -134,9 +132,13 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
+        first_name = validated_data.get("first_name", None)
+        last_name = validated_data.get("last_name", None)
+        email = validated_data.get("email", None)
+        password = validated_data.get("password", None)
         try:
-            user = UserModel.objects.create(**validated_data, is_active=False)
-            user.save()
+            user = UserModel.objects.create(email=email, password=password, is_active=False)
+            user.save(commit=False)
         except:
             return serializers.ValidationError(
                 _(VALIDATION_MESSAGES["INVALID"])

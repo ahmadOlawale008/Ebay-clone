@@ -145,6 +145,6 @@ class CreateUser(generics.CreateAPIView):
     permission_classes = [
         AllowAny,
     ]
-    queryset = AuthUser
+    queryset = AuthUser.objects.all()
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass
