@@ -2,69 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { Link } from 'react-router-dom'
-import { FormType } from '../auth'
+import { CustomFieldValidations, FormType, ValidationMessages, ValidationResult, FirstNameValidation, LastNameValidation, EmailValidation, PasswordValidation, SignUpCustomValidation } from '../auth'
 import { axiosInstance } from '../../../api/axiosInstance'
 import { AxiosError, isAxiosError } from 'axios'
 import validator from 'validator'
 
-type FormFieldsType = "first_name" | "last_name" | "email" | "password"
-
-// Common validation interfaces
-// interface CustomFieldValidations {
-//   hasChars?: boolean;
-//   notValid?: boolean;
-//   alreadyExists?: boolean;
-//   isAlphanumeric?: boolean;
-//   hasMaxLength?: boolean;
-//   hasSpecialCharacters?: boolean;
-//   hasInvalidChars?: boolean;
-// }
-
-interface CustomFieldValidations {
-  hasChars?: boolean;
-  isValid?: boolean;
-  doesNotAlreadyExists?: boolean;
-  isAlphanumeric?: boolean;
-  hasMaxLength?: boolean;
-  hasSpecialCharacters?: boolean;
-  doesNotHaveInvalidChars?: boolean;
-}
-enum ValidationMessages {
-  CHARS_NEEDED = 'This field must contain at least one character.',
-  NOT_VALID_EMAIL = 'Please enter a valid email address.',
-  ALREADY_EXISTS = 'Email address already exists.',
-  ALPHANUMERIC_NEEDED = 'Password must include alphanumeric letters for security purposes.',
-  MAXLENGTH_OF_SIX = 'Password must have a minimum length of 6.',
-  SPECIAL_CHARS_NEEDED = 'Password must contain at least one special character !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~.',
-  INVALID_PASSWORD = 'Password is not valid.'
-}
-
-interface ValidationResult<T> {
-  validity: T;
-  fetchedErrorMessage: string;
-  valid: () => boolean;
-}
-
-type FirstNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
-type LastNameValidation = ValidationResult<Pick<CustomFieldValidations, 'hasChars'>>;
-type EmailValidation = ValidationResult<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>;
-type PasswordValidation = ValidationResult<Pick<CustomFieldValidations, 'isAlphanumeric' | 'hasMaxLength' | 'hasSpecialCharacters' | 'doesNotHaveInvalidChars'>>;
-
-interface CustomValidation {
-  first_name: FirstNameValidation;
-  last_name: LastNameValidation;
-  email: EmailValidation;
-  password: PasswordValidation;
-}
-
-
-const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
-  const isValid = validator.isEmail(_email)
-  const fetchedErrorMessage = _val.fetchedErrorMessage || '';
-  return {
-    validity: { ..._val.validity, isValid }, valid: () => isValid && (fetchedErrorMessage && false || true), fetchedErrorMessage
-  }
-}
 
 const customNameValidator = (name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
   const trimmedName = name.trim();
@@ -77,6 +19,15 @@ const customNameValidator = (name: string, _val: FirstNameValidation | LastNameV
     fetchedErrorMessage,
   };
 };
+
+const customEmailValidator = (_email: string, _val: EmailValidation): EmailValidation => {
+  const isValid = validator.isEmail(_email)
+  const fetchedErrorMessage = _val.fetchedErrorMessage || '';
+  const doesNotAlreadyExists = _val.validity.doesNotAlreadyExists || ""
+  return {
+    validity: { ..._val.validity, isValid }, valid: () => isValid && (fetchedErrorMessage && false || true) && (doesNotAlreadyExists && false || true), fetchedErrorMessage
+  }
+}
 const customPasswordValidators = (password: string, _val: PasswordValidation): PasswordValidation => {
   const hasMaxLength = password.length > 6;
   const isAlphanumeric = /(?=.*\d)(?=.*[a-zA-Z])/.test(password);
@@ -96,7 +47,7 @@ const createDefaultState = <T extends CustomFieldValidations>(): ValidationResul
   fetchedErrorMessage: '',
 });
 
-const defaultValidationState: CustomValidation = Object.freeze({
+const defaultValidationState: SignUpCustomValidation = Object.freeze({
   first_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
   last_name: customNameValidator("", createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>()),
   email: customEmailValidator("", createDefaultState<Pick<CustomFieldValidations, 'isValid' | 'doesNotAlreadyExists'>>()),
@@ -104,7 +55,7 @@ const defaultValidationState: CustomValidation = Object.freeze({
 });
 
 
-const parse_validations = (validation: string, name: keyof CustomValidation): FirstNameValidation | LastNameValidation | EmailValidation | PasswordValidation   =>{
+const parse_validations = (validation: string, name: keyof SignUpCustomValidation): FirstNameValidation | LastNameValidation | EmailValidation | PasswordValidation   =>{
   switch (name) {
     case 'first_name':
       return customNameValidator(validation, createDefaultState<Pick<CustomFieldValidations, 'hasChars'>>());
@@ -121,17 +72,18 @@ const parse_validations = (validation: string, name: keyof CustomValidation): Fi
 const SignUpPage = () => {
   const [formContent, setFormContent] = useState({ first_name: "", last_name: "", email: "", password: "" }) //previously named formState
   const [formValidations, setFormValidations] = useState(defaultValidationState)
+  const [isFormValid, setIsFormValid] = useState(false);
 
   // Refs
   const [showPassword, setPasswordState] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
 
   // Handle Form Change events
-  const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
-    const _field = element_name.substring(5) as keyof CustomValidation
-    formValidations[_field].valid();
+    const _field = element_name.substring(5) as keyof SignUpCustomValidation
+
     setFormContent(prev => ({ ...prev, [_field]: element.value.trimStart() }))
     setFormValidations(prev => ({ ...prev, [_field]: parse_validations(element.value, _field) }))
   }
@@ -140,7 +92,7 @@ const SignUpPage = () => {
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const element = (e.target as HTMLInputElement)
     const element_name = element.name
-    const _field = element_name.substring(5) as keyof CustomValidation
+    const _field = element_name.substring(5) as keyof SignUpCustomValidation
     setFormContent(prev => ({ ...prev, [_field]: element.value.trim() }))
   }
 
@@ -157,7 +109,10 @@ const SignUpPage = () => {
       console.log(error)
     })
   }
-  const isFormValid = () => {
+
+  const checkIfFormIsValidForSubmission = () => {
+    console.log(formValidations.email)
+
     return formValidations.first_name.valid() &&
       formValidations.last_name.valid() &&
       formValidations.email.valid() &&
@@ -173,8 +128,10 @@ const SignUpPage = () => {
     formData.append("password", formContent.password.trim())
     axiosInstance.post("/auth/signup/", formData, { headers: { "Content-Type": "application/json" } }).then(response => {
       if (response.status === 400 && response.hasOwnProperty("response")) {
+
       }
     }).catch((error) => {
+      console.log(error)
       if (isAxiosError(error)) {
         const responseData = error.response?.data
         let updatedFormErrors: FormType = {}
@@ -185,15 +142,10 @@ const SignUpPage = () => {
       }
     })
   }
-  console.log(formValidations.first_name.valid(), "vals first name")
-  console.log(formValidations.last_name.valid(), "vals last name")
-  console.log(formValidations.email.valid(), "vals email")
-  console.log(formValidations.password.valid(), "vals password")
-console.log("------------------------------------")
-  useEffect(() => {
-    isFormValid()
-  }, [formValidations.first_name, formValidations.last_name, formValidations.email, formValidations.password])
 
+  useEffect(()=>{
+    setIsFormValid(checkIfFormIsValidForSubmission())
+  }, [formValidations.email, formValidations.first_name, formValidations.last_name, formValidations.password])
   return (
     <div>
       <div className="text-start">
@@ -204,22 +156,22 @@ console.log("------------------------------------")
         <span className='ml-1'><Link to="/login" className=' underline text-blue-600 underline-offset-1 font-bold'>sign in</Link></span>
       </div>
       <div className='form-group'>
-        <form onChange={(e) => handleFormChange(e)} onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
+        <form onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
           <div className='grid auto-cols-auto mt-2 mb-3 gap-2'>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='firstname' aria-required="true" error={!formValidations.first_name.valid()} helperText={formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
+              <TextInput onChange={(e) => handleFormChange(e)} onBlur={(e) => handleInputBlur(e)} value={formContent.first_name} size='small' autoComplete='firstname' aria-required="true" error={!formValidations.first_name.valid()} helperText={formValidations.first_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='First Name' name='form_first_name' variant='outlined' id='first_name_input' placeholder='First Name' />
             </div>
             <div className="">
-              <TextInput onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='lastname' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
+              <TextInput onChange={(e) => handleFormChange(e)} onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='lastname' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' label='Last Name' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput aria-autocomplete='list' value={formContent.email} error={!formValidations.email.valid()} 
+              <TextInput onChange={(e) => handleFormChange(e)} aria-autocomplete='list' value={formContent.email} error={!formValidations.email.valid()} 
                 helperText={formValidations.email.validity.doesNotAlreadyExists == false && formValidations.email.fetchedErrorMessage  || ""}
               autoComplete='email' aria-required="true" onBlur={(e) => {handleInputBlur(e) 
               checkIfUserWithEmailExists()}}   required label='Email' baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
-              <TextInput autoComplete='new-password' value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
+              <TextInput onChange={(e) => handleFormChange(e)} autoComplete='new-password' value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
                 formValidations.password.fetchedErrorMessage && formValidations.password.validity.hasOwnProperty(formValidations.password.fetchedErrorMessage) ? "" : ""
               } name='form_password' required ref={passwordRef} label='Password' baseClassName='text-sm' type='password' variant='outlined' id='password_input' placeholder='Password' iconPosition='end'
                 icon={!showPassword ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-6 cursor-pointer">
@@ -258,7 +210,7 @@ console.log("------------------------------------")
             <label htmlFor="login-checkbox516" className='ml-2 text-sm'>Remember me</label>
           </div>
           <div className="form-signup-submit">
-            <Button disabled={!isFormValid()} variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button disabled={!isFormValid} variant='filled' fullWidth color='primary'>Submit</Button>
           </div>
         </form>
         <div className='continue-with-divider my-7 relative w-full'>
