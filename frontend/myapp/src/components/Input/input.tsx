@@ -34,8 +34,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, err
     const inputRoundedState = rounded ? `rounded-${roundedStyleState[rounded]} ` : defaultRoundedState
     const defaultIconState = "size-4  text-gray-500 dark:text-gray-400 " + (iconPosition == "end" ? "mr-3" : "ml-3");
     const baseHelperTextClassName: Record<string, string> = {
-        true: "mt-2 text-sm text-red-700",
-        false: "mt-2 text-sm text-gray-400 "
+        true: "mt-2 text-xs text-red-700",
+        false: "mt-2 text-xs text-gray-400 "
     }
 
     // Merged Css
