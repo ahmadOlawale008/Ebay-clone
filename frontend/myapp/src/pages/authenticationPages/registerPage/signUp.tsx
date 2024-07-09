@@ -3,9 +3,11 @@ import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { Link } from 'react-router-dom'
 import { CustomFieldValidations, FormType, ValidationMessages, ValidationResult, FirstNameValidation, LastNameValidation, EmailValidation, PasswordValidation, SignUpCustomValidation } from '../auth'
-import { axiosInstance } from '../../../api/axiosInstance'
+import { axiosInstance, SignUpResponseErrors } from '../../../api/axiosInstance'
 import { AxiosError, isAxiosError } from 'axios'
 import validator from 'validator'
+import {  ClipLoader, DotLoader } from 'react-spinners'
+import { toast } from 'sonner'
 
 const customNameValidator = (name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
   const trimmedName = name.trim();
@@ -113,6 +115,7 @@ const SignUpPage = () => {
   
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
+    setIsFormLoading(true)
     const formData = new FormData()
     formData.append("first_name", formContent.first_name.trim())
     formData.append("last_name", formContent.last_name.trim())
@@ -123,26 +126,31 @@ const SignUpPage = () => {
       console.log(error)
       if (isAxiosError(error)) {
         const responseData = error.response?.data;
-        console.log(responseData);
         let updatedFormValidations = { ...formValidations };
-        Object.keys(responseData).forEach((field) => {
-          const validationField = field as keyof SignUpCustomValidation;
-          if (validationField === 'email') {
-            updatedFormValidations[validationField] = {
-              ...updatedFormValidations[validationField],
-              fetchedErrorMessage: responseData[field][0]
-            };
-          } else {
-            updatedFormValidations[validationField] = {
-              ...updatedFormValidations[validationField],
-              fetchedErrorMessage: responseData[field][0]
-            };
-          }
-          console.log(formValidations, "Forms")
-        });
-        // Set state once after the loop
-        setFormValidations(updatedFormValidations);
+        console.log(responseData, error)
+        if(typeof responseData === 'object'){
+          Object.keys(responseData).forEach((field) => {
+            const validationField = field as keyof SignUpCustomValidation;
+            if (validationField === 'email') {
+              updatedFormValidations[validationField] = {
+                ...updatedFormValidations[validationField],
+                fetchedErrorMessage: responseData[field][0]
+              };
+            } else {
+              updatedFormValidations[validationField] = {
+                ...updatedFormValidations[validationField],
+                fetchedErrorMessage: responseData[field][0]
+              };
+            }
+          });
+          // Set state once after the loop
+          setFormValidations(updatedFormValidations);
+        }else{
+          toast.error(SignUpResponseErrors.SERVER_ERROR)
+        }
       }
+    }).finally(()=>{
+      setIsFormLoading(false)
     })
   }
   useEffect(() => {
@@ -189,7 +197,7 @@ const SignUpPage = () => {
                 }
                 setPasswordState(!showPassword)
               }} className='float-right'>
-                <span className='underline select-none text-xs underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
+                <span className='underline  select-none text-xs underline-offset-2 cursor-pointer'>{showPassword ? "Hide" : "Show"}</span>
               </div>
               <br />
               <div>
@@ -206,7 +214,9 @@ const SignUpPage = () => {
             </div>
           </div>
           <div className="form-signup-submit">
-            <Button baseClassName='text-base' disabled={!isFormValid} variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button baseClassName='text-base' disabled={!isFormValid} variant='filled' fullWidth color='primary'>
+              {formIsLoading && <ClipLoader size={15} color='white' />}
+              Submit</Button>
           </div>
         </form>
         <div className='continue-with-divider my-4 relative w-full'>

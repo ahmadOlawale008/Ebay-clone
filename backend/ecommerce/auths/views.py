@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
-from .serializers import UserSerializer, VALIDATION_MESSAGES
+from .serializers import UserSerializer, VALIDATION_MESSAGES, UserModel
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from .models import AuthUser, Buyer, Seller
@@ -17,6 +17,15 @@ from rest_framework.response import Response
 from rest_framework import status
 import requests
 from django.core.files.base import ContentFile
+from django.middleware import csrf
+
+def get_user_token(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
+    }
+
 
 
 class SignUpWithGoogleView(APIView):
@@ -84,24 +93,45 @@ class GoogleOAuth2LoginCallbackView(APIView):
         user_data = google_callback(redirect_uri, auth_uri)
         try:
             user = get_user_model().objects.get(email=user_data.get("email"))
-            refresh_token = RefreshToken.for_user(user=user)
-            return Response(
-                {
-                    "refresh_token": str(refresh_token),
-                    "access_token": str(refresh_token.access_token),
-                },
-                status=status.HTTP_200_OK,
-            )
+            token = get_user_token(user)
+            return Response(token, status=status.HTTP_200_OK)
         except AuthUser.DoesNotExist:
             return Response(
                 {"error": "User not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
-from rest_framework import serializers
-
-
+from django.contrib.auth import authenticate
+from django.conf import settings
+class LoginView(APIView):
+    def post(self, request):
+        data = request.POST.get('data')
+        email = data.get("email", None)
+        password = data.get("password", None)
+        user = authenticate(email=email, password=password)
+        response = Response()
+        if user is not None:
+            if user.is_active():
+                response.set_cookie(
+                    key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+                    value=data["access"],
+                    expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                    secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                    httponly=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                    samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
+                )
+                token = get_user_token(user)
+                csrf.get_token(request)
+                response.data = {"Authentication_status": "Successfull", "data": data}
+                response.status_code = 200
+                return response
+            else:
+                response.data = {"Authentication_status": "Failed", "error": "Invalid email or password"}
+                response.status_code = status.HTTP_401_UNAUTHORIZED
+                return response               
+        else:
+            response.data = {"Authentication_status": "Failed", "error": "Invalid email or password"}
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return response
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
 
@@ -125,7 +155,7 @@ def check_email_exists(request):
                 {
                     "valid": False,
                     "emailTaken": True,
-                    "error": VALIDATION_MESSAGES["EMAIL"]['DUPLICATE_ENTRY'],
+                    "error": VALIDATION_MESSAGES["EMAIL"]["DUPLICATE_ENTRY"],
                     "errorTextAriaLbl": "Your email address is already registered with eBay. Need help with your password?",
                 }
             )
@@ -141,10 +171,12 @@ def check_email_exists(request):
 
 
 class CreateUser(generics.CreateAPIView):
+    queryset = UserModel.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
         AllowAny,
     ]
-    queryset = AuthUser.objects.all()
+
+
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

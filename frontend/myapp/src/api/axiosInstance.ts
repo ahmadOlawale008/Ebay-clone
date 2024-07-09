@@ -10,7 +10,9 @@ export const axiosInstance = axios.create({
         // Authorization: ""
     }
 })
-
+export enum SignUpResponseErrors{
+    SERVER_ERROR = "Error signing up user request. This might be due to server error"
+}
 axiosInstance.interceptors.request.use((config)=>{
     console.log("config: ", config)
     return config

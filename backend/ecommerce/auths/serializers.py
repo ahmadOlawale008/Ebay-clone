@@ -40,7 +40,6 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 from django.core.validators import MinLengthValidator
 
-UserModel = get_user_model()
 
 VALIDATION_MESSAGES = {
     "NAME": {
@@ -68,14 +67,17 @@ VALIDATION_MESSAGES = {
     "INVALID": "Error signing up form. Please try again later.",
 }
 
+UserModel = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=30,
+        write_only=True,
         required=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
     )
     last_name = serializers.CharField(
+        write_only=True,
         max_length=30,
         required=True,
         help_text="If your account is of a business type i.e. seller, then please drop your business name instead",
@@ -137,8 +139,9 @@ class UserSerializer(serializers.ModelSerializer):
         email = validated_data.get("email", None)
         password = validated_data.get("password", None)
         try:
-            user = UserModel.objects.create(email=email, password=password, is_active=False)
-            user.save(commit=False)
+            user = UserModel.objects.create(email=email, is_active=False)
+            user.set_password(password)
+            user.save()
         except:
             return serializers.ValidationError(
                 _(VALIDATION_MESSAGES["INVALID"])

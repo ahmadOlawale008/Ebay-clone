@@ -6,7 +6,7 @@ def listFilter():
 class AuthUserAdmin(UserAdmin):
     model = AuthUser
     fieldsets = [
-        ("Personal Info", {"fields": ["email", "phone_number"]}),
+        ("Personal Info", {"fields": ["email", "phone_number", "password"]}),
         ("Account Type", {"fields": ["account_type"]}),
         (
             "Status",

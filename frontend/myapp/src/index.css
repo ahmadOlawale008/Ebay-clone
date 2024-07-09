@@ -24,9 +24,22 @@
   ::-moz-selection {
     @apply bg-orange-600 text-slate-100;
   }
+  
   * {
     box-sizing: border-box;
   }
+  .load-spinner {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(0, 0, 0) rgb(0, 0, 0) #858383;
+    border-image: initial;
+    display: inline-block;
+    animation: 0.75s linear 0s infinite normal both running react-spinners-ClipLoader-clip;
+}
+
   html {
     width: 100%;
     max-width: 100%;
