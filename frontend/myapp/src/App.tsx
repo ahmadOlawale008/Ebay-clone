@@ -6,9 +6,12 @@ import { ClipLoader } from 'react-spinners';
 import AuthenticationWrapper from './pages/authenticationPages/authentication';
 import CheckAuthenticated from './provider/authProvider/checkAuthenticated';
 import UserSettings from './pages/userSettingsPage/userSettings';
+import { getCookie } from './utils/cookies';
 const HomePageExport = lazy(() => import("./pages/homePage/home-page"))
 const SignUpPageExport = lazy(() => import("./pages/authenticationPages/registerPage/signUp"))
 const SignInPageExport = lazy(() => import("./pages/authenticationPages/loginPage/login"))
+console.log(getCookie("csrftoken"))
+console.log(getCookie("access"))
 const NotFound = (() => <Navigate to="./" replace />)
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>

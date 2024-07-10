@@ -1,14 +1,49 @@
 import React, { useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
-import { Link } from 'react-router-dom'
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { Link, useNavigate } from 'react-router-dom'
+import { useGoogleLogin } from '@react-oauth/google'
 import { toast } from 'sonner'
-import { title } from 'process'
 import { axiosInstance } from '../../../api/axiosInstance'
+import { SignInFormType } from '../auth'
+import { isAxiosError } from 'axios'
+import { ClipLoader } from 'react-spinners'
 const LoginPage = () => {
+  const [formContent, setFormContent] = useState<SignInFormType>({email: "", password: ""})
+  const [errorMessage, setErrorMessage] = useState("")
+  const [formIsLoading, setIsFormLoading] = useState(false)
+  const navigate = useNavigate()
+
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
+    setIsFormLoading(true)
+    const formData = new FormData()
+    formData.append("email", formContent.email.trim())
+    formData.append("password", formContent.password)
+
+    axiosInstance.post("auth/login/", formData).then(res=>{
+      if (res.status === 200){
+        toast.success("Login successful")
+        setTimeout(()=>{
+          navigate("/")
+        }, 3000)
+      }
+    }).catch((error)=>{
+      console.log(error, "Login Error")
+      if(isAxiosError(error)){
+        if (error.response?.data.hasOwnProperty("Authentication_status") && error.response?.data.Authentication_status === "Failed"){
+          setErrorMessage(error.response.data.error)
+        }
+      }
+    }).finally(() => {
+      setIsFormLoading(false)
+    })
+  }
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const element = (e.target as HTMLInputElement)
+    const element_name = element.name
+    setFormContent(prev => ({...prev, [element_name.substring(5)]: element.value.trim() }))
+    setErrorMessage("")
   }
   const loginWithGoogle = useGoogleLogin({
     scope: "openid profile email",
@@ -28,29 +63,30 @@ const LoginPage = () => {
       toast.error(errorResponse.error, { position: "bottom-center", duration: 2000 })
     }
   })
-  const [showPassword, setPasswordState] = useState(false)
-  const passwordRef = useRef<HTMLInputElement | null>(null)
   return (
     <div className='mt-4'>
       <div className="text-start">
         <h4 className='text-3xl text-neutral-900 my-1 font-bold'>Login Page</h4>
       </div>
-      <div className="group-help-authorization text-base font-normal">
-        <span>If you have don't have an EazeSales account</span>
-        <span className='ml-1'><Link to="/signup" className='underline text-blue-600 underline-offset-1 font-bold'>sign up</Link></span>
+      <div className="group-help-authorization text-[15px] font-normal">
+        <span>Don't have an account with us?</span>
+        <span className='ml-1'><Link to="/signup" className=' underline text-blue-600 underline-offset-1 font-bold'>sign up</Link></span>
       </div>
       <div className='form-group'>
-        <form className='space-y-6 mt-6' onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
-          <div className='space-y-6'>
+        {!!errorMessage && <div>
+          <span className='text-red-500 text-sm'><i className="fa-solid mr-1 fa-circle-exclamation"></i>{errorMessage}</span>
+        </div>}
+        <form className='*:mt-3 mt-3' onSubmit={(e) => handleFormRegistrationForm(e)} method='post' action="">
+          <div className='*:my-2'>
             <div className="">
-              <TextInput required baseClassName='text-sm' type='email' variant='outlined' id='first_name_input' placeholder='Email or Phone Number' />
+              <TextInput onChange={(e)=>handleFormChange(e)} value={formContent.email} name='form_email' label='Email' size='small' required baseClassName='text-sm' type='email' variant='outlined' id='first_name_input' placeholder='Email or Phone Number' />
             </div>
             <div className="">
-              <TextInput required baseClassName='text-sm' type='password' variant='outlined' id='first_name_input' placeholder='Password' />
+              <TextInput onChange={(e)=>handleFormChange(e)} value={formContent.password} name='form_password' label='Password' size='small' required baseClassName='text-sm' type='password' variant='outlined' id='first_name_input' placeholder='Password' />
             </div>
           </div>
           <div className="form-signup-submit">
-            <Button variant='filled' fullWidth color='primary'>Submit</Button>
+            <Button disabled={formIsLoading} variant='filled' fullWidth color='primary'> {formIsLoading && <ClipLoader size={15} color='black' />}Submit</Button>
           </div>
         </form>
         <div className='mt-3 forgotten-password-login'>

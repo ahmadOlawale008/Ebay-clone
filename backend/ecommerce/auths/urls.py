@@ -9,6 +9,7 @@ from .views import (
     check_email_exists
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .serializers import CookieObtainTokenPairView
 
 app_name = "authentication"
 urlpatterns = [
@@ -28,7 +29,7 @@ urlpatterns = [
     ),
     # path("signup/twitter", )
     # path("twitter/callback/signup",)
-    path("api/token", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token", CookieObtainTokenPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh", TokenRefreshView.as_view(), name="refresh_token"),
     path("check_email_exists", check_email_exists, name="check_email_exists"),
 ]

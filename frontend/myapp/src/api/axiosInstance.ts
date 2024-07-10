@@ -25,7 +25,8 @@ axiosInstance.interceptors.response.use((res) => {
     console.log("Response received", res)
     return res
 }, (error: AxiosError) => {
-    if ((error.response?.status === 404 && error.response.statusText === "Not Found" )|| (error.message === "Network Error" && error.code === "ERR_NETWORK")) {
+    if ((error.message === "Network Error" && error.code === "ERR_NETWORK")) {
+        console.log(error)
         toast.error("Server Error", { position: "bottom-center", duration: 2000, description: "Error signing up user request. This might be due to server error" })
         return
     }

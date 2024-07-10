@@ -5,9 +5,36 @@ import string
 from django.core.validators import validate_email as django_email_valid
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from rest_framework.request import Request
+from rest_framework.response import Response
 from .models import AccountType, Seller, Buyer, AuthUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
+from django.conf import settings
+
+class CookieObtainTokenPairView(TokenObtainPairView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        refresh_token = response.data.get("refresh") or None
+        if refresh_token is not None:
+            response.set_cookie(
+                key="refresh",
+                value=refresh_token,
+                expires=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+                httponly=True
+            )
+            del response.data["refresh"]
+        return super().finalize_response(request, response, *args, **kwargs)
+
+class CustomSerializer(serializers.ModelSerializer):
+    pass
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        try:
+            pass
+        except:
+            print('An exception occurred')
+        return super().post(request, *args, **kwargs)
 
 
 class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -40,7 +67,6 @@ class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 from django.core.validators import MinLengthValidator
 
-
 VALIDATION_MESSAGES = {
     "NAME": {
         "DUPLICATE_ENTRY": "A user with this name already exists.",
@@ -68,7 +94,6 @@ VALIDATION_MESSAGES = {
 }
 
 UserModel = get_user_model()
-
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=30,

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Button from '../../../components/Button/button'
 import TextInput from '../../../components/Input/input'
 import { Link } from 'react-router-dom'
-import { CustomFieldValidations, FormType, ValidationMessages, ValidationResult, FirstNameValidation, LastNameValidation, EmailValidation, PasswordValidation, SignUpCustomValidation } from '../auth'
+import { CustomFieldValidations, ValidationMessages, ValidationResult, FirstNameValidation, LastNameValidation, EmailValidation, PasswordValidation, SignUpCustomValidation } from '../auth'
 import { axiosInstance, SignUpResponseErrors } from '../../../api/axiosInstance'
 import { AxiosError, isAxiosError } from 'axios'
 import validator from 'validator'
@@ -153,6 +153,7 @@ const SignUpPage = () => {
       setIsFormLoading(false)
     })
   }
+
   useEffect(() => {
     console.log('formValidations updated:', formValidations);
     setIsFormValid(checkIfFormIsValidForSubmission())
@@ -214,7 +215,7 @@ const SignUpPage = () => {
             </div>
           </div>
           <div className="form-signup-submit">
-            <Button baseClassName='text-base' disabled={!isFormValid} variant='filled' fullWidth color='primary'>
+            <Button baseClassName='text-base' disabled={!isFormValid && !formIsLoading} variant='filled' fullWidth color='primary'>
               {formIsLoading && <ClipLoader size={15} color='white' />}
               Submit</Button>
           </div>

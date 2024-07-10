@@ -1,10 +1,9 @@
 import React from "react"
 // Sign Up Auth
-export type FormType = {
-    first_name?: string,
-    last_name?: string,
-    email?: string,
-    password?: string,
+
+export type SignInFormType = {
+    email: string
+    password: string
 }
 export interface CustomFieldValidations {
     hasChars?: boolean;

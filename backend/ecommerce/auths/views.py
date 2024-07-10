@@ -47,6 +47,7 @@ class LoginWithGoogleView(APIView):
         )
         return redirect(google_setup(redirect_uri))
 
+
 class GoogleOAuth2SignUpCallbackView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
@@ -102,40 +103,44 @@ class GoogleOAuth2LoginCallbackView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        data = request.POST
-        print(data, "DATA--------------->DATA--------------")
-        email = data.get("email", None)
-        password = data.get("password", None)
-        user = authenticate(email=email, password=password)
+        email = request.data.get("email", None)
+        password = request.data.get("password", None)
+        print(request.data, request.COOKIES, "Data saved")
         response = Response()
+        user = authenticate(email=email, password=password)
+        print(user, "usser")
         if user is not None:
-            if user.is_active():
+            print("User sure does exist cowboy,", user)
+            if user.is_active:
+                token =  get_user_token(user)
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-                    value=data["access"],
+                    value=token["access"],
                     expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                    httponly=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                    httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
                     samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 )
                 csrf.get_token(request)
-                response.data = {"Authentication_status": "Successfull", "data": data}
+                response.data = {"Authentication_status": "Successfull", "data": token}
                 response.status_code = 200
                 return response
             else:
-                response.data = {
+                return Response(
+                    {
+                        "Authentication_status": "Failed",
+                        "error": "Your account has been suspended.",
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        else:
+            return Response(
+                {
                     "Authentication_status": "Failed",
                     "error": "Invalid email or password",
-                }
-                response.status_code = status.HTTP_401_UNAUTHORIZED
-                return response
-        else:
-            response.data = {
-                "Authentication_status": "Failed",
-                "error": "Invalid email or password",
-            }
-            response.status_code = status.HTTP_404_NOT_FOUND
-            return response
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
 
 
 class UserCreatePermission(BasePermission):
@@ -178,6 +183,7 @@ class CreateUser(generics.CreateAPIView):
     permission_classes = [
         AllowAny,
     ]
+
 
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

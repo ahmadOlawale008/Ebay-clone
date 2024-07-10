@@ -1,30 +1,39 @@
-from typing import Tuple
-from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf import settings
 from rest_framework.authentication import CSRFCheck
 from rest_framework import exceptions as Rest_Exception
-from rest_framework_simplejwt.tokens import Token
+
+
+def enforce_csrf(request):
+    check = CSRFCheck()
+    check.process_request(request)
+    # process_view(request, view_func, view_args, view_kwargs)¶
+    reason = check.process_view(request, None, (), {})
+    if reason:
+        raise Rest_Exception.PermissionDenied("CSRF authentication failed: %s" % reason)
+
+
 class CustomAuthentication(JWTAuthentication):
-    def enforce_csrf(self, request):
-        def dummy_get_response(request):
-            return None
-        check = CSRFCheck(dummy_get_response)
-        check.process_request(request)
-        # process_view(request, view_func, view_args, view_kwargs)¶
-        reason = check.process_view(request, None, (), {})
-        if reason:
-            raise Rest_Exception.PermissionDenied(f"CSRF authentication failed: {reason}")
-    def authenticate(self, request: Request):
+    def authenticate(self, request):
         header = self.get_header(request)
+        print(header, "Yes Header")
         if header is None:
-            raw_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"], None)
+            raw_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"]) or None
         else:
             raw_token = self.get_raw_token(header)
-            if raw_token is None:
-                return None
-        print(raw_token,request.COOKIES, "TOkenssssssss")
-
+        if raw_token is None:
+            return None
+        print("Raw token %s" % raw_token)
         validated_token = self.get_validated_token(raw_token)
-        self.enforce_csrf(request)
+        enforce_csrf(request)
         return self.get_user(validated_token), validated_token
+from django.middleware.csrf import CsrfViewMiddleware
+
+class CustomCsrfMiddleware(CsrfViewMiddleware):
+    def process_view(self, request, callback, callback_args, callback_kwargs):
+        if 'HTTP_X_CSRFTOKEN' not in request.META:
+            csrf_token = request.COOKIES.get('csrftoken')
+            if csrf_token:
+                request.CSRF_COOKIE = csrf_token
+                request.META['HTTP_X_CSRFTOKEN'] = csrf_token
+        super().process_view(request, callback, callback_args, callback_kwargs)
