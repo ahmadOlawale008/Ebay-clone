@@ -47,7 +47,6 @@ class LoginWithGoogleView(APIView):
         )
         return redirect(google_setup(redirect_uri))
 
-
 class GoogleOAuth2SignUpCallbackView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
@@ -103,7 +102,8 @@ class GoogleOAuth2LoginCallbackView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        data = request.POST.get("data")
+        data = request.POST
+        print(data, "DATA--------------->DATA--------------")
         email = data.get("email", None)
         password = data.get("password", None)
         user = authenticate(email=email, password=password)
