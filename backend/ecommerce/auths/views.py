@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer, VALIDATION_MESSAGES, UserModel
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
@@ -18,6 +18,11 @@ from rest_framework import status
 import requests
 from django.core.files.base import ContentFile
 from django.middleware import csrf
+from django.contrib.auth import authenticate
+from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 
 def get_user_token(user):
     refresh = RefreshToken.for_user(user)
@@ -25,7 +30,6 @@ def get_user_token(user):
         "refresh": str(refresh),
         "access": str(refresh.access_token),
     }
-
 
 
 class SignUpWithGoogleView(APIView):
@@ -71,13 +75,8 @@ class GoogleOAuth2SignUpCallbackView(APIView):
                         save=True,
                     )
             buyer.save()
-            refresh_token = RefreshToken.for_user(user=user)
-            return Response(
-                {
-                    "refresh_token": str(refresh_token),
-                    "access_token": str(refresh_token.access_token),
-                }
-            )
+            refresh_token = get_user_token(user=user)
+            return Response(refresh_token)
         return Response(
             {"error": "Email verification was not sucessfull."},
             status=status.HTTP_403_FORBIDDEN,
@@ -100,11 +99,11 @@ class GoogleOAuth2LoginCallbackView(APIView):
                 {"error": "User not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-from django.contrib.auth import authenticate
-from django.conf import settings
+
+
 class LoginView(APIView):
     def post(self, request):
-        data = request.POST.get('data')
+        data = request.POST.get("data")
         email = data.get("email", None)
         password = data.get("password", None)
         user = authenticate(email=email, password=password)
@@ -117,21 +116,28 @@ class LoginView(APIView):
                     expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
                     httponly=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                    samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
+                    samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 )
-                token = get_user_token(user)
                 csrf.get_token(request)
                 response.data = {"Authentication_status": "Successfull", "data": data}
                 response.status_code = 200
                 return response
             else:
-                response.data = {"Authentication_status": "Failed", "error": "Invalid email or password"}
+                response.data = {
+                    "Authentication_status": "Failed",
+                    "error": "Invalid email or password",
+                }
                 response.status_code = status.HTTP_401_UNAUTHORIZED
-                return response               
+                return response
         else:
-            response.data = {"Authentication_status": "Failed", "error": "Invalid email or password"}
+            response.data = {
+                "Authentication_status": "Failed",
+                "error": "Invalid email or password",
+            }
             response.status_code = status.HTTP_404_NOT_FOUND
             return response
+
+
 class UserCreatePermission(BasePermission):
     message = "Only post method requests are accepted."
 
@@ -139,10 +145,6 @@ class UserCreatePermission(BasePermission):
         if request.method == "post":
             return True
         return super().has_object_permission(request, view, obj)
-
-
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
 
 @csrf_exempt
@@ -176,7 +178,6 @@ class CreateUser(generics.CreateAPIView):
     permission_classes = [
         AllowAny,
     ]
-
 
 class UserDetails(generics.RetrieveDestroyAPIView):
     pass

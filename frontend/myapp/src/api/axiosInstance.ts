@@ -5,9 +5,10 @@ export const baseURL = "http://127.0.0.1:8000/"
 export const axiosInstance = axios.create({
     baseURL,
     timeout: 3000,
+    withCredentials: true,
     headers: {
-        // "Content-Type": "application/json"
-        // Authorization: ""
+        "Content-Type": "application/json",
+        Accept: "application/json",
     }
 })
 export enum SignUpResponseErrors{
