@@ -29,7 +29,7 @@ urlpatterns = [
     ),
     # path("signup/twitter", )
     # path("twitter/callback/signup",)
-    path("api/token", CookieObtainTokenPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh", TokenRefreshView.as_view(), name="refresh_token"),
+    path("api/token/", CookieObtainTokenPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh_token"),
     path("check_email_exists", check_email_exists, name="check_email_exists"),
 ]

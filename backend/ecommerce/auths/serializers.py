@@ -1,40 +1,103 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import MinimumLengthValidator
 import string
-from django.core.validators import validate_email as django_email_valid
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from rest_framework.request import Request
 from rest_framework.response import Response
 from .models import AccountType, Seller, Buyer, AuthUser
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import Token
+from rest_framework_simplejwt import exceptions
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from django.conf import settings
+from django.middleware import csrf
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+
+def get_user_token(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
+    }
 
 class CookieObtainTokenPairView(TokenObtainPairView):
+    def post(self, request: Request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            # pass
+            email = request.data.get("email")
+            password = request.data.get("password")
+            user = authenticate(email=email, password=password)
+            request.user = user
+        return response
+
     def finalize_response(self, request, response, *args, **kwargs):
         refresh_token = response.data.get("refresh") or None
-        if refresh_token is not None:
-            response.set_cookie(
-                key="refresh",
-                value=refresh_token,
-                expires=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
-                httponly=True
-            )
-            del response.data["refresh"]
+        if response.status_code == 200 and request.user:
+            user = request.user
+            if user is not None:
+                if user.is_active:
+                    response.set_cookie(
+                        key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+                        value=response.data["access"],
+                        expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                        secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                        httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                        samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
+                    )
+                    response.set_cookie(
+                        key="refresh",
+                        value=response.data["refresh"],
+                        expires=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+                        secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                        httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                        samesite="Strict",
+                    )
+                    csrf.get_token(request)
+                    response.status_code = 200
+                    print(response.data, "Token Response")
+                    del response.data['refresh']
+                else:
+                    return Response(
+                        {
+                            "Authentication_status": "Failed",
+                            "error": "Your account has been suspended.",
+                        },
+                        status=status.HTTP_401_UNAUTHORIZED,
+                    )
+            else:
+                return Response(
+                    {
+                        "Authentication_status": "Failed",
+                        "error": "Invalid email or password",
+                    },
+                    status=status.HTTP_404_NOT_FOUND,
+                )
         return super().finalize_response(request, response, *args, **kwargs)
 
-class CustomSerializer(serializers.ModelSerializer):
-    pass
-class CustomTokenRefreshView(TokenRefreshView):
-    def post(self, request: Request, *args, **kwargs) -> Response:
-        try:
-            pass
-        except:
-            print('An exception occurred')
-        return super().post(request, *args, **kwargs)
+
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    # Refresh is None since its serializer.charfield by default.
+    refresh = None
+
+    def validate(self, attrs):
+        attrs["refresh"] = self.context["request"].COOKIES["refresh"]
+        if attrs["refresh"]:
+            return super().validate(attrs)
+        raise exceptions.InvalidToken("Invalid refresh token provided.", 404)
+
+
+class CookieTokenRefreshSerializer(TokenRefreshView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        refresh_token = response.data.get("refresh")
+        if refresh_token:
+            response.set_cookie("refresh", refresh_token)
+        return super().finalize_response(request, response, *args, **kwargs)
+    serializer_class = CustomTokenRefreshSerializer
 
 
 class EazeSalesTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -94,6 +157,8 @@ VALIDATION_MESSAGES = {
 }
 
 UserModel = get_user_model()
+
+
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=30,

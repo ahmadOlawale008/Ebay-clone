@@ -24,14 +24,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 
-def get_user_token(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        "refresh": str(refresh),
-        "access": str(refresh.access_token),
-    }
-
-
 class SignUpWithGoogleView(APIView):
     def get(self, request):
         redirect_uri = request.build_absolute_uri(
@@ -112,7 +104,7 @@ class LoginView(APIView):
         if user is not None:
             print("User sure does exist cowboy,", user)
             if user.is_active:
-                token =  get_user_token(user)
+                token = get_user_token(user)
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=token["access"],

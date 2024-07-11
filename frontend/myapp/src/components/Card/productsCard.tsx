@@ -19,50 +19,15 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
     const [likedPost, setLikedPost] = useState(false)
     const iconRef = useRef<Player>(null)
     return (
-        <div className="block relative">
+        <div className="block group/product-card relative">
             <a href="#">
                 <div className='bg-white'>
                     <div className="card-img select-none rounded-2xl overflow-hidden">
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
                     </div>
-                    <div className="card-text flex gap-y-[0.1rem] flex-col">
-                        {/* <div className="prod-category"><span className='text-xs font-normal'>Fashion{" > "}Men{" > "}Clothes</span></div> */}
-                        <div className="prod-name"> <span className='text-base hover:underline font-semibold'>{product_name.substring(0, 150)}</span></div>
-                        <div className="prod-price inline-flex text-nowrap space-x-2 items-center text-lg leading-snug font-medium">
-                            <div className="card-discount">
-                                <span className=' text-[#0f743b] text-base'>Now <span>₦{price}</span></span>
-                            </div>
-                            <div className="card-price">
-                                <small className='line-through font-semibold text-slate-800 text-sm'>₦{price - 100}</small>
-                            </div>
-                            <div className="product-discount">
-                                <small className='text-sm text-zinc-800 font-normal'>(50% off)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='ratingu7a block  text-sm font-medium'>
-                    <div className='inline-flex space-x-1 items-center'>
-                        <span>
-                            4.9
-                        </span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
-                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
-                        </svg>
-                        <span className='dot size-1 rounded-full bg-black'></span>
-                        <span className='text-xs'>(1.3k) Reviews</span>
-                    </div>
                     <div className="">
-                        <span className='text-neutral-800 tracking-tight text-[0.8rem] font-normal'>
-                            out of 60 products
-                        </span>
+
                     </div>
-                    <div className="">
-                        <span className='text-neutral-600 tracking-tight font-normal text-[0.8rem]'>
-                            12 quantitities are available
-                        </span>
-                    </div>
-                    
                 </div>
             </a>
             <div className="">

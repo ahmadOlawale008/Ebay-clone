@@ -21,7 +21,7 @@ const LoginPage = () => {
     formData.append("email", formContent.email.trim())
     formData.append("password", formContent.password)
 
-    axiosInstance.post("auth/login/", formData).then(res=>{
+    axiosInstance.post("auth/api/token/", formData).then(res=>{
       if (res.status === 200){
         toast.success("Login successful")
         setTimeout(()=>{

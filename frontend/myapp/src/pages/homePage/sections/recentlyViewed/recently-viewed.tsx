@@ -12,7 +12,7 @@ const RecentlyViewed = () => {
   return (
     <div className="mt-2 mb-3 px-0 ">
       <div className="recently-headoai font-medium flex items-center justify-between">
-        <div className="content-name"><h1 className='text-xl font-serif font-medium my-4'>Your Recently Viewed Products</h1></div>
+        <div className="content-name"><h1 className='text-xl font-medium my-4'>Your Recently Viewed Products</h1></div>
         <div className="content-link"><a className='underline text-text-xl my-4 font-semibold underline-offset-2 hover:text-neutral-600' href="" target='_blank'>See all</a></div>
       </div>
       <div className="relative w-full">
