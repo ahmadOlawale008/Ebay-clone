@@ -13,12 +13,12 @@ const NavbarSearch = () => {
         <div className='grid items-center px-8 py-3 border-b border-gray-400/45 grid-cols-5'>
             <div className="nav-icon justify-start col-span-1">
                 <a href="/" className='self-start'>
-                    {<EazeSalesLogo className='size-6' />}
+                    {<EazeSalesLogo className='w-24' />}
                 </a>
             </div>
             <div className='col-span-3 '>
                 <form className='h-fit rounded-md'>
-                    <div className="flex border border-neutral-600 rounded-lg items-stretch  p-1 flex-1">
+                    <div className="flex border border-neutral-400 rounded-lg items-stretch  p-1 flex-1">
                         <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
                             <div className="flex w-[110px] justify-between items-center gap-x-1">
                                 <span className='text-xs font-semibold truncate text-nowrap text-slate-700'>

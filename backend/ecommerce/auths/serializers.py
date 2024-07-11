@@ -137,7 +137,7 @@ VALIDATION_MESSAGES = {
     },
     "EMAIL": {
         "INVALID_EMAIL": "Invalid email address.",
-        "DUPLICATE_ENTRY": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold  underline underline-offset-2 !text-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
+        "DUPLICATE_ENTRY": 'Your email address is already registered with eazeSales. Need help with your password? <a class="font-bold text-sm underline underline-offset-2 !text-blue-700" target="_blank" title="Password Assistance. The link opens in a new window or tab." href="/login">Click here</a>.',
         "INVALID_DOMAIN": "Invalid email domain.",
         "BLOCKED_DOMAIN": "Email domain is not allowed.",
     },
@@ -192,7 +192,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         if UserModel.objects.filter(email=value).exists():
-            raise serializers.ValidationError(_("Email Address Already in Use."))
+            raise serializers.ValidationError(
+                _(VALIDATION_MESSAGES["EMAIL"]["DUPLICATE_ENTRY"])
+            )
         return value
 
     def validate_first_name(self, value):

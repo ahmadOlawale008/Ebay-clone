@@ -21,7 +21,7 @@ module.exports = {
         serif: ["Noto Serif", "serif"],
         monospace: ["Inconsolata", "monospace"],
         cursive: ["Great Vibes", "cursive"],
-        custom: ["Roboto", "sans-serif"],
+        custom: ["Calibri", "Open Sans", "sans-serif"],
       },
     },
   },

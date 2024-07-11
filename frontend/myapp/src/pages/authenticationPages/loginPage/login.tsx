@@ -31,8 +31,8 @@ const LoginPage = () => {
     }).catch((error)=>{
       console.log(error, "Login Error")
       if(isAxiosError(error)){
-        if (error.response?.data.hasOwnProperty("Authentication_status") && error.response?.data.Authentication_status === "Failed"){
-          setErrorMessage(error.response.data.error)
+        if (error.response?.data.hasOwnProperty("detail")){
+          setErrorMessage(error.response.data.detail)
         }
       }
     }).finally(() => {

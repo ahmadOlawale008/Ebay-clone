@@ -32,21 +32,34 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         </div>
                         <hr className='my-1' />
                         <div className='mt-2'>
-                            <div className='grid grid-cols-3  *:pl-2 *:w-full items-center justify-center'>
-                                <div>
+                            <div className='grid grid-cols-3 *:pl-2 first:p!-0 *:w-full items-center justify-center'>
+                                <div className='product_card_price !pl-0'>
                                     <h6 className='text-[14px]'>Price</h6>
                                     <span className='font-semibold'>{price}</span>
                                 </div>
-                                <div>
-                                    <h6 className='text-[14px]'>Price</h6>
+                                <div className='product_card_discount'>
+                                    <h6 className='text-[14px]'>Discount</h6>
                                     <span className='font-semibold'>{price}</span>
                                 </div>
-                                <div>
-                                    <h6 className='text-[14px]'>Price</h6>
-                                    <span className='font-semibold'>{price}</span>
+                                <div className='product_card_stock'>
+                                    <h6 className='text-[14px]'>InStock</h6>
+                                    <span className='font-semibold'>30</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="my-1 flex items-center justify-between">
+                        <div>
+                            <span className='text-base text-neutral-800'>By Jospeh sales</span>
+                        </div>
+                        <Button color='secondary' size='small' baseClassName='tracking-normal z-10 font-medium' variant='outlined'>
+                            <svg className='size-5 !stroke-red-800' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="1.6" d="M5.5 5.5H20.0539C21.0375 5.5 21.7549 6.43079 21.5044 7.38198L20.3194 11.882C20.1459 12.5408 19.5502 13 18.8689 13H7.75" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-width="1.6" d="M1.25 2H3.37908C4.04381 2 4.62926 2.43749 4.81761 3.07498L7.49958 12.1524C7.66305 12.7057 7.66351 13.2944 7.50091 13.848L6.575 17H17.5" />
+                                <circle cx="6.5" cy="19" r="2" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="17.5" cy="19" r="2" stroke="currentColor" stroke-width="1.6" />
+                            </svg>
+                        </Button>
                     </div>
                 </div>
             </a>
@@ -62,9 +75,7 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                     </svg>
                 </span>
             </div>
-            <div className="my-1">
-                <Button color='primary' baseClassName='text-white text-[14px] bg-secondary-dark tracking-normal font-medium' fullWidth variant='filled'>Add to cart</Button>
-            </div>
+
         </div >
     )
 }

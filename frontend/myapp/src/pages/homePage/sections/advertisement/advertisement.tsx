@@ -20,7 +20,7 @@ const AdvertisementPage = () => {
         <div className="max-md:px-1 max-md:py-2 px-1 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col self-start gap-x-8  grid grid-cols-5  flex-auto w-full items-baseline ">
           <div className="flex  text-pretty flex-col max-md:gap-y-2 gap-y-3 max-md:mt-0  col-span-2 ">
             <h4 className="max-md:text[14px] text-md font-monospace font-medium">Lorem ipsum dolor sit amet.</h4>
-            <h3 className="text-4xl font-bold">Explore millions of offerings tailored to your business needs.</h3>
+            <h3 className="text-4xl font-black">Explore millions of offerings tailored to your business needs.</h3>
             <p className="text-base">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo minus nobis sunt sapiente accusantium optio deleniti dolore odio, illum quidem excepturi soluta nostrum ipsam tenetur? Suscipit.</p>
             <span className="text-xl font-monospace font-normal">
               <span className="font-medium">₦2900</span>

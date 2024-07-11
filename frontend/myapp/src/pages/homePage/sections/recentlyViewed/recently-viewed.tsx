@@ -3,12 +3,13 @@ import image from "../../../../assets/images/sarah-dorweiler-gUPiTDBdRe4-unsplas
 import imageB from "../../../../assets/images/filip-mroz-gma1zfS3_6E-unsplash.jpg"
 import imageC from "../../../../assets/images/thomas-le-pRJhn4MbsMM-unsplash.jpg"
 import imageD from "../../../../assets/images//tobias-tullius-Fg15LdqpWrs-unsplash.jpg"
-import React, { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AvailableCardController, ScrollType, handleContainerScroll, handleScrollCardPosition } from "../../../../utils/scrollHorizontal"
 import "./recently-viewed.css"
 const RecentlyViewed = () => {
   const categoriesWrapperRef = useRef<HTMLDivElement>(null)
   const [availableCardController, setAvailableCardController] = useState<AvailableCardController>("right")
+
   return (
     <div className="mt-2 mb-3 px-0 ">
       <div className="recently-headoai font-medium flex items-center justify-between">
@@ -20,16 +21,18 @@ const RecentlyViewed = () => {
           <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={1} link='a' img={imageB} product_name="PUMA Men's Viz Runner Repeat Running Sneakers" price={3000.78}></ProductCard></div>
           <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={3} link='a' img={imageD} product_name="PUMA Men's Viz Runner Repeat Running Sneakers" price={3000.78}></ProductCard></div>
         </div>
-        <span onClick={(e) => handleScrollCardPosition(e, categoriesWrapperRef, availableCardController)} data-direction="left" className={`absolute top-1/3 ${availableCardController == "right" && "opacity-20 backdrop-blur-md"} -left-5 shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99]`}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-lg">
-            <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
-          </svg>
-        </span>
-        <span onClick={(e) => handleScrollCardPosition(e, categoriesWrapperRef, availableCardController)} data-direction="right" className={`absolute top-1/3  ${availableCardController == "left" && "opacity-20 backdrop-blur-md"}  -right-5  shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99] `}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-lg">
-            <path fillRule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clipRule="evenodd" />
-          </svg>
-        </span>
+        {(categoriesWrapperRef.current && categoriesWrapperRef.current?.scrollWidth > categoriesWrapperRef.current?.clientWidth) &&  <div>
+          <span onClick={(e) => handleScrollCardPosition(e, categoriesWrapperRef, availableCardController)} data-direction="left" className={`absolute top-1/3 ${availableCardController == "right" && "opacity-20 backdrop-blur-md"} -left-5 shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99]`}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-lg">
+              <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <span onClick={(e) => handleScrollCardPosition(e, categoriesWrapperRef, availableCardController)} data-direction="right" className={`absolute top-1/3  ${availableCardController == "left" && "opacity-20 backdrop-blur-md"}  -right-5  shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99] `}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-lg">
+              <path fillRule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clipRule="evenodd" />
+            </svg>
+          </span>
+          </div>}
       </div>
     </div>
   )
