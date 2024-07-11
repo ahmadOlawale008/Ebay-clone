@@ -21,12 +21,32 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
     return (
         <div className="block group/product-card relative">
             <a href="#">
-                <div className='bg-white'>
-                    <div className="card-img select-none rounded-2xl overflow-hidden">
-                        <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded-md h-auto block object-cover' />
+                <div className='font-customa p-2 tracking-tight'>
+                    <div className="card-img select-none rounded-xl overflow-hidden">
+                        <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded h-auto block object-cover' />
                     </div>
-                    <div className="">
-
+                    
+                    <div className='text-black flex flex-col mt-3'>
+                        <div className='product_name'>
+                            <h5 className='font-semibold leading-relaxed'>{product_name}</h5>
+                        </div>
+                        <hr className='my-1' />
+                        <div className='mt-2'>
+                            <div className='grid grid-cols-3  *:pl-2 *:w-full items-center justify-center'>
+                                <div>
+                                    <h6 className='text-[14px]'>Price</h6>
+                                    <span className='font-semibold'>{price}</span>
+                                </div>
+                                <div>
+                                    <h6 className='text-[14px]'>Price</h6>
+                                    <span className='font-semibold'>{price}</span>
+                                </div>
+                                <div>
+                                    <h6 className='text-[14px]'>Price</h6>
+                                    <span className='font-semibold'>{price}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </a>
@@ -43,7 +63,7 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                 </span>
             </div>
             <div className="my-1">
-                <Button color='secondary' baseClassName='text-white text-[14px] tracking-normal font-medium' fullWidth variant='filled'>Add to cart</Button>
+                <Button color='primary' baseClassName='text-white text-[14px] bg-secondary-dark tracking-normal font-medium' fullWidth variant='filled'>Add to cart</Button>
             </div>
         </div >
     )

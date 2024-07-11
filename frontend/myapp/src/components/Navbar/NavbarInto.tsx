@@ -16,54 +16,44 @@ const NavbarInto = () => {
         document.addEventListener("mousedown", closeMenu)
     })
     return (
-        <nav className='bg-white px-12 py-3 border-b border-gray-400/40'>
-            <div className='flex flex-row justify-between'>
-                <div className="nav-icon">
-                    <a href="/" className='self-start'>
-                        {<EazeSalesLogo className='size-6' />}
-                    </a>
+        <nav className='bg-white text-black px-12 py-1 border-b border-gray-400/40'>
+            <div className='flex items-center justify-between'>
+                <div>
+                    <div className='flex  *:cursor-pointer *:inline-flex *:items-center *:font-custom items-center gap-x-3'>
+                        <span><a className='text-[0.8rem]' href="">Home</a></span>
+                        <span><a className='text-[0.8rem]' href="">Shop</a></span>
+                        <span><span className='text-[0.8rem]'>Store</span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg></span>
+                        <span><a className='text-[0.8rem]' href="">Contact dev</a></span>
+                    </div>
                 </div>
-                <div className='nav-links'>
-                    <div className='flex flex-row items-center relative flex-nowrap gap-x-2'>
-                        <span className='text-xs'>
-                            <a href="">About</a>
-                        </span>
-                        <span className='text-xs'>
-                            <a href="">Categories</a>
-                        </span>
-                        <span className='text-xs'>
-                            <a href="">Products</a>
-                        </span>
-                        <hr className='w-[1px] h-4 bg-gray-500' />
-                        <span>
-                            <a href="/login">
-                                <Button size='small' baseClassName='!shadow-none mx-0 px-2 py-1 text-[12px] font-medium' color='primary'>
-                                    Sign in
-                                </Button>
-                            </a>
-                        </span>
-                        <span>
-                            <a href="/signup">
-                                <Button size='small' baseClassName='!shadow-none mx-0 px-2 py-1 text-[12px] font-medium' color='primary'>
-                                    Sign up
-                                </Button>
-                            </a>
-                        </span>
-                        <span className='after:content-[""]  cursor-pointer size-7 after:rounded-full  after:size-1 after:animate-ping after:bg-secondary after:absolute after:right-1 after:top-1 relative'>
-                            <NotificationIcon className='size-5 inline-flex items-center font-bold hover:fill-slate-700  fill-slate-500' />
-                        </span>
-                        <div className="relative">
-                            <motion.div onClick={() => setOpenAccountMenuState(true)} className='flex cursor-pointer hover:bg-slate-50 group/accountNavDisplay p-2 rounded-full gap-x-1 text-sm relative items-center'>
-                                <span className='border inline-flex items-center justify-center m-auto size-6 rounded-full bg-primary-dark p-1 '>
-                                    <UserIcon className='size-6 content-[1] relative cursor-pointer fill-white' />
+                <div className='basis-1/2'>
+                    <h3 className='font-black text-center text-lg'>Enjoy your Sales !</h3>
+                </div>
+                <div className='self-end'>
+                    <div className='flex  *:cursor-pointer *:inline-flex *:items-center *:font-custom items-center gap-x-4'>
+                        <span><a className='text-base' href="">Sell</a></span>
+                        <div className='inline-flex relative items-center justify-between'>
+                            <div className='mr-1'>
+                                <svg className='size-6' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="6" r="3.5" stroke="currentColor" stroke-width="1.4" />
+                                    <path stroke="currentColor" stroke-width="1.4" d="M7.96473 13.6977C9.13333 13.2367 10.3783 13 11.6346 13H12.3654C13.6217 13 14.8667 13.2367 16.0353 13.6977L16.7475 13.9787C17.4493 14.2556 18.097 14.6535 18.6612 15.1543L18.7766 15.2568C19.0745 15.5212 19.3406 15.8194 19.5694 16.1454C20.1751 17.0082 20.5 18.0367 20.5 19.0909V19.0909C20.5 19.8691 19.8691 20.5 19.0909 20.5H4.90913C4.13089 20.5 3.5 19.8691 3.5 19.0909V19.0909C3.5 18.0367 3.82494 17.0082 4.43057 16.1454C4.65941 15.8194 4.92547 15.5212 5.22335 15.2568L5.33878 15.1543C5.90299 14.6535 6.55073 14.2556 7.25252 13.9787L7.96473 13.6977Z" />
+                                </svg>
+                            </div>
+                            <div className='text-xs'>
+                                <span>
+                                    <h6 className='text-sm font-normal'>Welcome back</h6>
                                 </span>
-                                User
-                                <span className='group-hover/accountNavDisplay:bg-slate-100 group-hover/accountNavDisplay:rounded-full'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
-                                        <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
-                                    </svg>
+                                <span>
+                                    <b className='font-medium inline-flex items-center'>
+                                        <span className='text-sm'>Sign In/Register</span>
+                                        <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                        </svg></span>
+                                        </b>
                                 </span>
-                            </motion.div>
+                            </div>
                             <div ref={accountMenuRef} id='account_menu_' className={`absolute ${accountMenuState ? "block" : "hidden"} account-menu space-y-2 divide-y border-spacing-3 divide-neutral-200 px-1 py-2 top-full  shadow-2xl shadow-neutral-900 rounded-xl bg-white  w-[220px]`}>
                                 <ul className='text-sm flex flex-col  gap-y-2  font-medium *:px-3 *:flex *:items-center *:gap-x-2 *:cursor-pointer *:rounded-lg *:py-2.5'>
                                     <li className='hover:bg-neutral-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
@@ -103,4 +93,5 @@ const NavbarInto = () => {
         </nav>
     )
 }
+
 export default NavbarInto

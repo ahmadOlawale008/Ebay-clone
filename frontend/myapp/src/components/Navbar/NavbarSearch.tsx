@@ -1,6 +1,7 @@
 import React, { SelectHTMLAttributes, useEffect, useRef, useState } from 'react'
 import {SearchIcon} from '../../assets/icons/icons'
 import {ShoppingCartIcon} from '../../assets/icons/icons'
+import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
 const NavbarSearch = () => {
     const [menu, setMenu] = useState(1)
     const filterSelectRef = useRef<null | HTMLSelectElement>(null)
@@ -10,15 +11,17 @@ const NavbarSearch = () => {
     }, [menu, filterSelectRef])
     return (
         <div className='grid items-center px-8 py-3 border-b border-gray-400/45 grid-cols-5'>
-            <div className=' col-span-1'>
-                <h1 className='text-base font-semibold font-serif text-orange-600'>#1 Top Seller</h1>
+            <div className="nav-icon justify-start col-span-1">
+                <a href="/" className='self-start'>
+                    {<EazeSalesLogo className='size-6' />}
+                </a>
             </div>
             <div className='col-span-3 '>
                 <form className='h-fit rounded-md'>
-                    <div className="flex items-center flex-1">
-                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative cursor-pointer  ring-slate-400/10 ring-inset ring-2 rounded-md z-[1] bg-gray-200  py-3 px-1">
-                            <div className="flex items-center gap-x-1">
-                                <span className='text-xs font-semibold text-nowrap text-slate-700'>
+                    <div className="flex border border-neutral-600 rounded-lg items-stretch  p-1 flex-1">
+                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
+                            <div className="flex w-[110px] justify-between items-center gap-x-1">
+                                <span className='text-xs font-semibold truncate text-nowrap text-slate-700'>
                                     {selectedCategory}
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-3">
@@ -54,8 +57,8 @@ const NavbarSearch = () => {
                                 <option className="text-xs tracking-wide" value="24">Bags & Accessories</option>
                             </select>
                         </div>
-                        <div className='relative bg-gray-100 w-full'>
-                            <input type="search" name="" className='w-full bg-gray-100 focus:bg-slate-50  pl-10 outline-none bg-transparent relative py-2 px-1  tracking-wider text-base' placeholder='Search...' id="" />
+                        <div className='relative w-full'>
+                            <input type="search" name="" className='w-full pl-10 outline-none bg-transparent relative py-2 px-1  tracking-wider text-base' placeholder='Search...' id="" />
                             <div className="flex items-center left-2 top-0 absolute justify-center h-full w-fit">
                                 <SearchIcon className='text-2xl fill-gray-500 ' />
                             </div>

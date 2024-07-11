@@ -17,13 +17,8 @@ const RecentlyViewed = () => {
       </div>
       <div className="relative w-full">
         <div ref={categoriesWrapperRef} onScroll={(e) => handleContainerScroll(e, setAvailableCardController)} className="flex overflow-x-auto scr5a6 modal-scroll relative flex-nowrap w-full shrink-0 gap-x-2.5 flex-row">
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={1} link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={3} link='a' img={image} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4} link='a' img={imageB} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={5} link='a' img={imageC} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={2} link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4} link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
-          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={4} link='a' img={imageD} product_name='Sample Product' price={3000}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={1} link='a' img={imageB} product_name="PUMA Men's Viz Runner Repeat Running Sneakers" price={3000.78}></ProductCard></div>
+          <div className='grow-0 shrink-0 max-md:basis-1/3 basis-1/4'><ProductCard rate={3} link='a' img={imageD} product_name="PUMA Men's Viz Runner Repeat Running Sneakers" price={3000.78}></ProductCard></div>
         </div>
         <span onClick={(e) => handleScrollCardPosition(e, categoriesWrapperRef, availableCardController)} data-direction="left" className={`absolute top-1/3 ${availableCardController == "right" && "opacity-20 backdrop-blur-md"} -left-5 shadow-lg shadow-neutral-500 cursor-pointer  bg-white rounded-full inline-flex items-center justify-center p-2 hover:bg-gray-300 active:scale-[0.99]`}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-[1em] font-black text-lg">

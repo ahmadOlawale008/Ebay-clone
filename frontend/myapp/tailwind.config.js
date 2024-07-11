@@ -17,11 +17,11 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Open Sans", "Arial", "sans-serif"],
+        sans: ["Manrope", "Calbri", "Arial", "sans-serif"],
         serif: ["Noto Serif", "serif"],
         monospace: ["Inconsolata", "monospace"],
         cursive: ["Great Vibes", "cursive"],
-        custom: ["Montserrat", "sans-serif"],
+        custom: ["Roboto", "sans-serif"],
       },
     },
   },
