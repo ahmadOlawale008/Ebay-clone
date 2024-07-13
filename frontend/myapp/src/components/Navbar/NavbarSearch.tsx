@@ -2,6 +2,7 @@ import React, { SelectHTMLAttributes, useEffect, useRef, useState } from 'react'
 import {SearchIcon} from '../../assets/icons/icons'
 import {ShoppingCartIcon} from '../../assets/icons/icons'
 import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
+import TextInput from '../Input/input'
 const NavbarSearch = () => {
     const [menu, setMenu] = useState(1)
     const filterSelectRef = useRef<null | HTMLSelectElement>(null)
@@ -18,7 +19,7 @@ const NavbarSearch = () => {
             </div>
             <div className='col-span-3 '>
                 <form className='h-fit rounded-md'>
-                    <div className="flex border border-neutral-400 rounded-lg items-stretch  p-1 flex-1">
+                    <div className="flex border border-neutral-400 rounded-lg items-stretch flex-1">
                         <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
                             <div className="flex w-[110px] justify-between items-center gap-x-1">
                                 <span className='text-xs font-semibold truncate text-nowrap text-slate-700'>
@@ -57,12 +58,17 @@ const NavbarSearch = () => {
                                 <option className="text-xs tracking-wide" value="24">Bags & Accessories</option>
                             </select>
                         </div>
-                        <div className='relative w-full'>
-                            <input type="search" name="" className='w-full pl-10 outline-none bg-transparent relative py-2 px-1  tracking-wider text-base' placeholder='Search...' id="" />
-                            <div className="flex items-center left-2 top-0 absolute justify-center h-full w-fit">
-                                <SearchIcon className='text-2xl fill-gray-500 ' />
+                        {/* <div className='relative w-full'>
+                            <input type="search" name="" className='w-full pl-8 outline-none bg-transparent relative py-2 px-1  tracking-wider' placeholder='Search...' id="" />
+                            <div className="flex items-center bg-red-500 rounded-full size-5  right-2 top-0 absolute justify-center h-full w-fit">
+                                <SearchIcon className='text-xl fill-gray-500 ' />
                             </div>
+                        </div> */}
+                        <div className='relative w-full'>
+                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full pl-8 outline-none ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' icon={<div className='w-[52px] h-[32px] bg-neutral-700'><SearchIcon className='text-lg' /></div>} iconPosition='end' />
+
                         </div>
+
                     </div>
                 </form>
             </div>
