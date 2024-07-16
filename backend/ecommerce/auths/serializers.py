@@ -24,6 +24,7 @@ def get_user_token(user):
         "access": str(refresh.access_token),
     }
 
+
 class CookieObtainTokenPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -97,6 +98,7 @@ class CookieTokenRefreshSerializer(TokenRefreshView):
         if refresh_token:
             response.set_cookie("refresh", refresh_token)
         return super().finalize_response(request, response, *args, **kwargs)
+
     serializer_class = CustomTokenRefreshSerializer
 
 
