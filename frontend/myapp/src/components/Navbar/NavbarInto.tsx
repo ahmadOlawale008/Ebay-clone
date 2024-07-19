@@ -5,6 +5,7 @@ import AccountMenu from '../Menu/accountMenu'
 import { motion } from "framer-motion"
 import Button from '../Button/button'
 import EazeSalesLogo from '../../assets/icons/eazeSalesLogo/eazeSalesLogo'
+
 const NavbarInto = () => {
     const [accountMenuState, setOpenAccountMenuState] = useState(false)
     const accountMenuRef = useRef<HTMLDivElement | null>(null)
