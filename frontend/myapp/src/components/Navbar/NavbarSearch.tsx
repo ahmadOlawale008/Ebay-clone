@@ -60,7 +60,7 @@ const NavbarSearch = () => {
                             </select>
                         </div>
                         <div className='relative w-full'>
-                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full pl-8 font-custom outline-none ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' icon={<div className='w-[52px] h-[32px] bg-neutral-700'><SearchIcon className='text-lg' /></div>} iconPosition='end' />
+                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full pl-8 font-custom outline-none ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' icon={<div className='w-[52px] h-[32px] bg-neutral-700'><SearchIcon iconStyles={{strokeWidth: 1}} className='text-lg stroke-black' /></div>} iconPosition='end' />
                         </div>
 
                     </div>
