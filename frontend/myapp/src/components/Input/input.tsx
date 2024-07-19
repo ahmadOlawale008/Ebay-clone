@@ -3,7 +3,16 @@ import { ButtonProps, roundedStyleState } from "../Button/button"
 import isAnImageType from "../../utils/isAnImageType";
 import { twMerge } from "tailwind-merge";
 import IconType from "../../assets/icons/icons";
-import DOMPurify, { sanitize } from "dompurify"
+import DOMPurify from "dompurify"
+
+type InputPropsWithoutSize = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'>;
+interface TextInputProps extends Omit<ButtonProps, keyof ButtonHTMLAttributes<HTMLButtonElement>>, InputPropsWithoutSize {
+    helperText?: string,
+    error?: boolean,
+    helperTextClassName?: string,
+    label?: string,
+    labelClassName?: string
+}
 
 const sanitizeLabel = (label: string | Node)=>{
     const sanitizerConfig = {
@@ -15,14 +24,8 @@ const sanitizeLabel = (label: string | Node)=>{
     const sanitizer = DOMPurify.sanitize(label, sanitizerConfig)
     return sanitizer
 }
-type InputPropsWithoutSize = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'>;
-interface TextInputProps extends Omit<ButtonProps, keyof ButtonHTMLAttributes<HTMLButtonElement>>, InputPropsWithoutSize {
-    helperText?: string,
-    error?: boolean,
-    helperTextClassName?: string,
-    label?: string,
-    labelClassName?: string
-}
+
+
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ fullWidth, error, id, helperTextClassName, baseClassName, label, labelClassName, iconClassName, helperText, ringEffect = true, rounded = "md", icon, iconPosition = "start", variant = "text", size = "medium", ...props }, ref) => {
     // Defaults
     const inputVariant = variant === "outlined" ?

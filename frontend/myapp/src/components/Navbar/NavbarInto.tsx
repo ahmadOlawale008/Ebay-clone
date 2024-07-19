@@ -12,36 +12,44 @@ const NavbarInto = () => {
         console.log(e.target, e.currentTarget)
         setOpenAccountMenuState(accountMenuRef.current?.contains(e.target as Node) ? accountMenuRef.current?.contains(e.target as Node) : false)
     }
+    
     useEffect(() => {
         document.addEventListener("mousedown", closeMenu)
     })
+
     return (
         <nav className='bg-white text-black px-9 py-1 border-b border-gray-400/40'>
             <div className='flex items-center justify-between'>
                 <div>
-                    <div className='flex *:cursor-pointer *:inline-flex *:items-center *:font-custom font-medium items-center gap-x-3'>
+                    <div className='flex *:cursor-pointer *:inline-flex *:items-center *:font-custom font-medium items-center gap-x-4'>
                         <span><a className='text-sm' href="">Home</a></span>
                         <span><a className='text-sm' href="">Shop</a></span>
-                        <span><span className='text-sm'>Store</span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
+                        <span className='inline-flex items-center gap-x-1'><span className='text-sm'>Store</span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                         </svg></span>
                         <span><a className='text-sm' href="">Contact</a></span>
                     </div>
                 </div>
                 <div className='basis-1/2'>
-                    <h3 className='font-black text-primary-dark text-center text-xl'>Enjoy your Sales !</h3>
+                    <h3 className='font-semibold text-primary-dark font-custom text-center text-xl'>Enjoy your Sales !</h3>
                 </div>
                 <div className='self-end'>
                     <div className='flex  *:cursor-pointer *:inline-flex *:items-center  items-center gap-x-4'>
-                        <span><a className='text-[0.8rem] font-custom' href="">Sell</a></span>
+                        <span><a className='text-sm font-custom' href="">Sell</a></span>
+                        <span className='relative '><svg className="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.1" d="M10.0156 21.25C10.5445 21.7168 11.2392 22 12 22C12.7608 22 13.4555 21.7168 13.9844 21.25" />
+                            <path stroke="currentColor" strokeWidth="1.1" d="M12 3C8.83248 3 6.25 5.56488 6.25 8.72881V12.6697C6.25 13.9666 5.62126 15.183 4.56324 15.933L3.92116 16.3881C3.3248 16.8109 3.62389 17.75 4.3549 17.75H19.6451C20.3761 17.75 20.6752 16.8109 20.0788 16.3881L19.4368 15.933C18.3787 15.183 17.75 13.9666 17.75 12.6697V8.72881C17.75 5.56488 15.1675 3 12 3Z" />
+                        </svg>
+                        <span className='absolute dot top-0 right-0 size-1 animate-ping bg-green-400 rounded-full'></span>
+                        </span>
                         <div onClick={() => setOpenAccountMenuState(true)} className='inline-flex relative items-center'>
                             <div className='mr-1 bg-black rounded-full p-1'>
                                 <svg className='size-5 invert' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="6" r="3.5" stroke="currentColor" stroke-width="1.4" />
-                                    <path stroke="currentColor" stroke-width="1.4" d="M7.96473 13.6977C9.13333 13.2367 10.3783 13 11.6346 13H12.3654C13.6217 13 14.8667 13.2367 16.0353 13.6977L16.7475 13.9787C17.4493 14.2556 18.097 14.6535 18.6612 15.1543L18.7766 15.2568C19.0745 15.5212 19.3406 15.8194 19.5694 16.1454C20.1751 17.0082 20.5 18.0367 20.5 19.0909V19.0909C20.5 19.8691 19.8691 20.5 19.0909 20.5H4.90913C4.13089 20.5 3.5 19.8691 3.5 19.0909V19.0909C3.5 18.0367 3.82494 17.0082 4.43057 16.1454C4.65941 15.8194 4.92547 15.5212 5.22335 15.2568L5.33878 15.1543C5.90299 14.6535 6.55073 14.2556 7.25252 13.9787L7.96473 13.6977Z" />
+                                    <circle cx="12" cy="6" r="3.5" stroke="currentColor" strokeWidth="1.4" />
+                                    <path stroke="currentColor" strokeWidth="1.4" d="M7.96473 13.6977C9.13333 13.2367 10.3783 13 11.6346 13H12.3654C13.6217 13 14.8667 13.2367 16.0353 13.6977L16.7475 13.9787C17.4493 14.2556 18.097 14.6535 18.6612 15.1543L18.7766 15.2568C19.0745 15.5212 19.3406 15.8194 19.5694 16.1454C20.1751 17.0082 20.5 18.0367 20.5 19.0909V19.0909C20.5 19.8691 19.8691 20.5 19.0909 20.5H4.90913C4.13089 20.5 3.5 19.8691 3.5 19.0909V19.0909C3.5 18.0367 3.82494 17.0082 4.43057 16.1454C4.65941 15.8194 4.92547 15.5212 5.22335 15.2568L5.33878 15.1543C5.90299 14.6535 6.55073 14.2556 7.25252 13.9787L7.96473 13.6977Z" />
                                 </svg>
                             </div>
-                            <div className='text-sm'>
+                            <div className='text-sm select-none'>
                                 <h6 className='font-custom'>Welcome</h6>
                                 <b className='inline-flex items-center'>
                                     <span className='text-sm font-medium font-custom text-center'>Sign In/Register</span>
@@ -51,7 +59,7 @@ const NavbarInto = () => {
                                     </span>
                                 </b>
                             </div>
-                            <div ref={accountMenuRef} id='account_menu_' className={`absolute ${accountMenuState ? "block" : "hidden"} account-menu space-y-2 divide-y border-spacing-3 divide-neutral-200 px-1 py-2 top-full  shadow-2xl shadow-neutral-900 rounded-xl bg-white  w-[250px]`}>
+                            <div ref={accountMenuRef} id='account_menu_' className={`absolute select-none ${accountMenuState ? "block" : "hidden"} account-menu space-y-2 divide-y border-spacing-3 divide-neutral-200 px-1 py-2 top-full  shadow-2xl shadow-neutral-900 rounded-xl bg-white  w-[250px]`}>
                                 <div className='*:mt-1 px-3 py-2'>
                                     <div className='sign_in_btns_'>
                                         <a href="/login"><Button size='small' color='primary' variant='filled' baseClassName='rounded-2xl py-2' fullWidth>Sign In</Button></a>
@@ -88,7 +96,7 @@ const NavbarInto = () => {
                                 <ul className='font-medium'>
                                     {/* <li className='hover:bg-neutral-200 px-3 cursor-pointer rounded-lg py-2.5'>Account</li> */}
                                     <li className='hover:bg-neutral-200 text-[14px] px-3 flex items-center gap-x-2 mt-3  cursor-pointer rounded-lg py-2.5'>
-                                        <svg className='size-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54" stroke="#19191a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15 12H3.62" stroke="#19191a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5.85 8.6499L2.5 11.9999L5.85 15.3499" stroke="#19191a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>Logout</li>
+                                        <svg className='size-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54" stroke="#19191a" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"></path> <path d="M15 12H3.62" stroke="#19191a" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"></path> <path d="M5.85 8.6499L2.5 11.9999L5.85 15.3499" stroke="#19191a" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"></path> </g></svg>Logout</li>
                                 </ul>
                             </div>
                         </div>

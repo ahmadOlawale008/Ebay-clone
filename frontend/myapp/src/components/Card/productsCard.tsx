@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                     <div className="card-img select-none rounded-xl overflow-hidden">
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded h-auto block object-cover' />
                     </div>
-                    
+
                     <div className='text-black flex flex-col mt-3'>
                         <div className='product_name'>
                             <h5 className='font-semibold leading-relaxed'>{product_name}</h5>
@@ -54,10 +54,10 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         </div>
                         <Button color='secondary' size='small' baseClassName='tracking-normal z-10 font-medium' variant='outlined'>
                             <svg className='size-5 !stroke-red-800' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="1.6" d="M5.5 5.5H20.0539C21.0375 5.5 21.7549 6.43079 21.5044 7.38198L20.3194 11.882C20.1459 12.5408 19.5502 13 18.8689 13H7.75" />
-                                <path stroke="currentColor" stroke-linecap="round" stroke-width="1.6" d="M1.25 2H3.37908C4.04381 2 4.62926 2.43749 4.81761 3.07498L7.49958 12.1524C7.66305 12.7057 7.66351 13.2944 7.50091 13.848L6.575 17H17.5" />
-                                <circle cx="6.5" cy="19" r="2" stroke="currentColor" stroke-width="1.6" />
-                                <circle cx="17.5" cy="19" r="2" stroke="currentColor" stroke-width="1.6" />
+                                <path stroke="currentColor" strokeWidth="1.6" d="M5.5 5.5H20.0539C21.0375 5.5 21.7549 6.43079 21.5044 7.38198L20.3194 11.882C20.1459 12.5408 19.5502 13 18.8689 13H7.75" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" d="M1.25 2H3.37908C4.04381 2 4.62926 2.43749 4.81761 3.07498L7.49958 12.1524C7.66305 12.7057 7.66351 13.2944 7.50091 13.848L6.575 17H17.5" />
+                                <circle cx="6.5" cy="19" r="2" stroke="currentColor" strokeWidth="1.6" />
+                                <circle cx="17.5" cy="19" r="2" stroke="currentColor" strokeWidth="1.6" />
                             </svg>
                         </Button>
                     </div>

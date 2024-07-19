@@ -24,7 +24,6 @@ def get_user_token(user):
         "access": str(refresh.access_token),
     }
 
-
 class CookieObtainTokenPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -35,7 +34,6 @@ class CookieObtainTokenPairView(TokenObtainPairView):
             user = authenticate(email=email, password=password)
             request.user = user
         return response
-
     def finalize_response(self, request, response, *args, **kwargs):
         refresh_token = response.data.get("refresh") or None
         if response.status_code == 200 and request.user:
