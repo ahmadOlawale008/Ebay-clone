@@ -16,7 +16,7 @@ const AdvertisementCategory = () => {
           </div>
           <div className="adscontent-card col-span-2 flex items-start justify-">
             <div className="w-[550px] h-[450px] relative">
-              <motion.div drag="x" style={{x, rotate:"-6deg"}} dragConstraints={{left: 0, right:0, top:0, bottom:0}} transition={{type:"spring", stiffness: 30}} className="glassmorphism absolute cursor-grab active:cursor-grabbing origin-bottom -rotate-6 shrink-0 w-[550px] z-[10] px-6 py-8 overflow-hidden">
+              <motion.div drag="x" style={{ x, rotate: "-6deg" }} dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }} transition={{ type: "spring", stiffness: 30 }} className="glassmorphism absolute cursor-grab active:cursor-grabbing origin-bottom -rotate-6 shrink-0 w-[550px] z-[10] px-6 py-8 overflow-hidden">
                 <div className="flex items-center glassmorphism-content justify-between mx-auto">
                   <div className="glassmorphism-text select-none basis-1/2">
                     <div className="smallheader-ai8a">
@@ -34,7 +34,7 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white '>Shop Now</Button>
                 </div>
               </motion.div>
               <motion.div style={{ transform: "translateX(33%) rotate(-6deg)" }} className="glassmorphism z-[9] -ml-11 origin-bottom -rotate-3 absolute top-0 -left-0 shrink-0 w-[550px] px-6 py-8 overflow-hidden">
@@ -55,7 +55,7 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white '>Shop Now</Button>
                 </div>
               </motion.div>
               <motion.div style={{ transform: "translateX(66%) rotate(-6deg)" }} className="glassmorphism z-[8] -ml-11  origin-bottom -rotate-3 absolute top-0 left-0 shrink-0 w-[550px] px-6 py-8 overflow-hidden">
@@ -76,7 +76,7 @@ const AdvertisementCategory = () => {
                   </div>
                 </div>
                 <div className="glassmorphism-action">
-                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white text-black'>Shop Now</Button>
+                  <Button size='small' variant='filled' color='primary' baseClassName='shadow-btn bg-white '>Shop Now</Button>
                 </div>
               </motion.div>
             </div>

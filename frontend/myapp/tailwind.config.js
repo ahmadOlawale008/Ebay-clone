@@ -15,9 +15,12 @@ module.exports = {
           light: "#f45a16",
           dark: "#e34d0b",
         },
-        assets:{
-
-        }
+        assets: {
+          dark: {
+            background: "#0C0C0C",
+            text: "#151515",
+          }
+        },
       },
       fontFamily: {
         sans: ["Manrope", "Calbri", "Arial", "sans-serif"],

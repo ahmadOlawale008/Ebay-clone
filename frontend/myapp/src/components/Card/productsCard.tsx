@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCard> = ({ link, img, rate, product_name, sta
                         <img src={img} alt="" className='w-full relative aspect-square bg-cover bg-no-repeat rounded h-auto block object-cover' />
                     </div>
 
-                    <div className='text-black flex flex-col mt-3'>
+                    <div className=' flex flex-col mt-3'>
                         <div className='product_name'>
                             <h5 className='font-semibold leading-relaxed'>{product_name}</h5>
                         </div>

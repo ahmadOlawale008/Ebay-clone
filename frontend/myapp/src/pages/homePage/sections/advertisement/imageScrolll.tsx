@@ -34,7 +34,7 @@ const ImageScrolll = () => {
 
                 <div className="container mx-auto rounded-xl outline-double outline-zinc-400 overflow-hidden p-6">
                     <div className="flex mb-3 items-center justify-center">
-                        <span className='p-3 tracking-widest text-black  font-cursive text-2xl font-medium'>Sales Categories</span>
+                        <span className='p-3 tracking-widest   font-cursive text-2xl font-medium'>Sales Categories</span>
                     </div>
                     <div className="maniquee-container relative">
                         <div className="">

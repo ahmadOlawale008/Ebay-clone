@@ -23,14 +23,14 @@ const NavbarSearch = () => {
                     <div className="flex border border-neutral-400 rounded-lg items-stretch flex-1">
                         <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
                             <div className="flex w-[110px] justify-between items-center gap-x-1">
-                                <span className='text-xs font-semibold truncate text-nowrap text-slate-700'>
+                                <span className='text-xs font-semibold truncate text-nowrap text-black'>
                                     {selectedCategory}
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-3">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                 </svg>
                             </div>
-                            <select aria-label='Select product by category'  value={menu} tabIndex={1} ref={filterSelectRef} className='h-full w-full absolute cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
+                            <select aria-label='Select product by category'  value={menu} tabIndex={1} ref={filterSelectRef} className='h-full w-full absolute text-black font-semibold cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
                                 setMenu(Number(e.target.value))
                             }} name="categories-filter" id="">
                                 <option className="text-xs tracking-wide" value="1">All categories</option>

@@ -14,7 +14,7 @@ const NavbarInto = () => {
     })
 
     return (
-        <nav className='bg-white text-black px-9 py-1 border-b border-gray-400/40'>
+        <nav className='bg-white  px-9 py-1 border-b border-gray-400/40'>
             <div className='flex items-center !font-custom justify-between'>
                 <div>
                     <div className='flex *:cursor-pointer *:inline-flex *:items-center items-center gap-x-4'>
@@ -32,24 +32,33 @@ const NavbarInto = () => {
                 <div className='self-end'>
                     <div className='flex  *:cursor-pointer *:inline-flex *:items-center  items-center gap-x-4'>
                         <span><a className='text-sm font-custom' href="">Sell</a></span>
-                        <span className='relative '><svg className="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.1" d="M10.0156 21.25C10.5445 21.7168 11.2392 22 12 22C12.7608 22 13.4555 21.7168 13.9844 21.25" />
-                            <path stroke="currentColor" strokeWidth="1.1" d="M12 3C8.83248 3 6.25 5.56488 6.25 8.72881V12.6697C6.25 13.9666 5.62126 15.183 4.56324 15.933L3.92116 16.3881C3.3248 16.8109 3.62389 17.75 4.3549 17.75H19.6451C20.3761 17.75 20.6752 16.8109 20.0788 16.3881L19.4368 15.933C18.3787 15.183 17.75 13.9666 17.75 12.6697V8.72881C17.75 5.56488 15.1675 3 12 3Z" />
-                        </svg>
+                        <span className='relative '>
+                            <svg className="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" d="M10.0156 21.25C10.5445 21.7168 11.2392 22 12 22C12.7608 22 13.4555 21.7168 13.9844 21.25" />
+                                <path stroke="currentColor" strokeWidth="1.5" d="M12 3C8.83248 3 6.25 5.56488 6.25 8.72881V12.6697C6.25 13.9666 5.62126 15.183 4.56324 15.933L3.92116 16.3881C3.3248 16.8109 3.62389 17.75 4.3549 17.75H19.6451C20.3761 17.75 20.6752 16.8109 20.0788 16.3881L19.4368 15.933C18.3787 15.183 17.75 13.9666 17.75 12.6697V8.72881C17.75 5.56488 15.1675 3 12 3Z" />
+                            </svg>
                             <span className='absolute dot top-0 right-0 size-1 animate-ping bg-green-400 rounded-full'></span>
+                        </span>
+                        <span>
+                            <svg className='size-5' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" strokeWidth="1.5" d="M2 6C2 5.17157 2.67157 4.5 3.5 4.5H20.5C21.3284 4.5 22 5.17157 22 6V18C22 18.8284 21.3284 19.5 20.5 19.5H3.5C2.67157 19.5 2 18.8284 2 18V6Z" />
+                                <path stroke="currentColor" strokeWidth="1.5" d="M2 10H22" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" d="M6 15.5L8 15.5" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" d="M11.875 15.5L12.125 15.5" />
+                            </svg>
                         </span>
                         <div onClick={() => setOpenAccountMenuState(true)} className='inline-flex relative items-center'>
                             <div className='mr-1  rounded-full p-1'>
-                                <svg className='size-5 ' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="6" r="3.5" stroke="currentColor" strokeWidth="1.4" />
-                                    <path stroke="currentColor" strokeWidth="1.4" d="M7.96473 13.6977C9.13333 13.2367 10.3783 13 11.6346 13H12.3654C13.6217 13 14.8667 13.2367 16.0353 13.6977L16.7475 13.9787C17.4493 14.2556 18.097 14.6535 18.6612 15.1543L18.7766 15.2568C19.0745 15.5212 19.3406 15.8194 19.5694 16.1454C20.1751 17.0082 20.5 18.0367 20.5 19.0909V19.0909C20.5 19.8691 19.8691 20.5 19.0909 20.5H4.90913C4.13089 20.5 3.5 19.8691 3.5 19.0909V19.0909C3.5 18.0367 3.82494 17.0082 4.43057 16.1454C4.65941 15.8194 4.92547 15.5212 5.22335 15.2568L5.33878 15.1543C5.90299 14.6535 6.55073 14.2556 7.25252 13.9787L7.96473 13.6977Z" />
+                                <svg className='size-5' width="800px" height="800px" strokeWidth={"1.5"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
                             <div className='text-sm select-none'>
                                 <h6 className='font-custom'>Welcome</h6>
                                 <b className='inline-flex  items-center'>
                                     <span className='text-sm font-medium font-custom text-center'>Sign In/Register</span>
-                                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+                                    <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
                                         <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                                     </svg>
                                     </span>
@@ -58,10 +67,10 @@ const NavbarInto = () => {
                             <div ref={accountMenuRef} id='account_menu_' className={`absolute select-none ${accountMenuState ? "block" : "hidden"} account-menu space-y-2 divide-y border-spacing-3 divide-neutral-200 px-1 py-2 top-full  shadow-2xl shadow-neutral-900 rounded-xl bg-white  w-[250px]`}>
                                 <div className='*:mt-1 px-3 py-2'>
                                     <div className='sign_in_btns_'>
-                                        <a href="/login"><Button size='small' color='primary' variant='filled' baseClassName='rounded-2xl py-2 text-[13px]' fullWidth>Sign In</Button></a>
+                                        <a href="/login"><Button size='small' color='primary' variant='filled' baseClassName='rounded-2xl py-2 text-[14px]' fullWidth>Sign In</Button></a>
                                     </div>
                                     <div className='sign_in_btns_'>
-                                        <a href="/signup"> <Button size='small' color='primary' variant='text' baseClassName='rounded-2xl py-2 text-[13px]' fullWidth>Register</Button></a>
+                                        <a href="/signup"> <Button size='small' color='primary' variant='text' baseClassName='rounded-2xl py-2 text-[14px]' fullWidth>Register</Button></a>
                                     </div>
                                 </div>
                                 <ul className='text-[12px] flex flex-col gap-y-2  font-medium *:px-3 *:flex *:items-center *:gap-x-2 *:cursor-pointer *:rounded-lg *:py-2.5'>

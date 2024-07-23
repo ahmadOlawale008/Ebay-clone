@@ -18,7 +18,7 @@ const AdvertisementPage = () => {
   return (
     <div>
       <div className="min-h-full items-start flex flex-col relative">
-        <div className="max-md:px-1 max-md:py-2 px-1 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col self-start gap-x-8  grid grid-cols-5  flex-auto w-full items-baseline ">
+        <div className="max-md:px-1 max-md:py-2 px-1 py-6 h-auto overflow-hidden max-md:mt-12 max-md:flex max-md:flex-col  self-start gap-x-8  grid grid-cols-5  flex-auto w-full items-baseline ">
           <div className="flex  text-pretty flex-col max-md:gap-y-2 gap-y-3 max-md:mt-0  col-span-2 ">
             <h4 className="max-md:text[14px] text-md font-medium">Lorem ipsum dolor sit amet.</h4>
             <h3 className="text-4xl font-black">Explore millions of offerings tailored to your business needs.</h3>
@@ -28,19 +28,19 @@ const AdvertisementPage = () => {
               <sub className="line-through">₦5700</sub>
             </span>
             <motion.div onHoverStart={() => shopRef.current?.playFromBeginning()}>
-              <Button size="small" variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
+              <Button size="small" variant="filled" iconClassName="bg-red-500" baseClassName="text-white mt-3 font-light rounded-none shadow-btn" icon={<Player ref={shopRef} icon={ShopIcon} size={20} colorize="#fff" ></Player>}>Shop
               </Button>
             </motion.div>
           </div>
           <div className="col-span-3 gap-x-6 p-3   grid grid-cols-2">
             <div className="flex flex-col gap-y-5">
-              <div className="rounded-lg group min-h-[200px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
+              <div className="rounded-lg group min-h-[150px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={image} loading="eager" style={{ transition: "1s ease-in-out" }} className="size-full group-hover:scale-12 5 group-hover:blur-sm transition-all  bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
-              <div className="rounded-lg min-h-[200px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
+              <div className="rounded-lg min-h-[150px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageG} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
-              <div className="rounded-lg min-h-[200px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
+              <div className="rounded-lg min-h-[150px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/3">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageC} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
             </div>
@@ -48,10 +48,10 @@ const AdvertisementPage = () => {
               <div className="rounded-lg relative overflow-hidden  after:content-[''] after:absolute  after:top-0 after: left-0 after:h-full after:w-full z-[1] basis-1/5">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} src={imageD} threshold={0.4} loading="eager" className="size-full bg-white aspect-square  absolute top-0 left-0 object-cover " alt="image-card" />
               </div>
-              <div className="rounded-lg min-h-[200px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/2">
+              <div className="rounded-lg min-h-[150px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/2">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageE} loading="eager" className="size-full bg-white aspect-square absolute top-0 left-0 object-cover" alt="image-card" />
               </div>
-              <div className="rounded-lg min-h-[200px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/4">
+              <div className="rounded-lg min-h-[150px] after:content-[''] after:absolute relative after:top-0 after: left-0 after:h-full after:w-full z-[1] overflow-hidden flex basis-1/4">
                 <LazyLoadImage effect="blur" width={"100%"} height={"100%"} threshold={0.4} src={imageF} loading="eager" className="size-full  bg-white aspect-square absolute top-0 left-0 object-cover " alt="image-card" />
               </div>
             </div>

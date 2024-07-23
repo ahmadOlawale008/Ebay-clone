@@ -31,7 +31,7 @@
   
   * {
     box-sizing: border-box;
-    @apply antialiased text-[16px]
+    @apply antialiased text-[16px] text-assets-dark-text
   }
   .font-arial{
     font-family: "Roboto", Helvetica, sans-serif;
