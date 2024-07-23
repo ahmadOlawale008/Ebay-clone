@@ -3,9 +3,14 @@ import TopCategories from './sections/topCategories/topcategories'
 import RecentlyViewed from './sections/recentlyViewed/recently-viewed'
 import ImageScrolll from './sections/advertisement/imageScrolll'
 import AdvertisementCategory from './sections/topCategories/advertisement/advertisement-category'
+import { useEffect } from 'react'
 
 // const validator = require('validator');
 const HomePage = () => {
+  console.log("Hello")
+  useEffect(()=>{
+
+  }, [])
   return (
     <div className='main-content'>
       <div className="ads091k-content bg-slate-50/50">

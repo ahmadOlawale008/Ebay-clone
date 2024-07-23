@@ -15,13 +15,16 @@ module.exports = {
           light: "#f45a16",
           dark: "#e34d0b",
         },
+        assets:{
+
+        }
       },
       fontFamily: {
         sans: ["Manrope", "Calbri", "Arial", "sans-serif"],
         serif: ["Noto Serif", "serif"],
-        monospace: ["Inconsolata", "monospace"],
         cursive: ["Great Vibes", "cursive"],
         custom: ["Calibri", "Open Sans", "sans-serif"],
+        customB: ["Open Sans", "sans-serif"],
       },
     },
   },
