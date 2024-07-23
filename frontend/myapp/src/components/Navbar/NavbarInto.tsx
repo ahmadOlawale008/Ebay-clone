@@ -54,7 +54,7 @@ const NavbarInto = () => {
                                 </svg>
                             </div>
                             <div className='text-sm select-none'>
-                                <h6 className='font-custom'>Welcome</h6>
+                                <h6 className='font-custom font-semibold text-sm'>Welcome</h6>
                                 <b className='inline-flex  items-center'>
                                     <span className='text-sm font-medium font-custom text-center'>Sign In/Register</span>
                                     <span>

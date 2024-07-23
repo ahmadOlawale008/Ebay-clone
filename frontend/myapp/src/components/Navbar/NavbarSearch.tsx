@@ -21,14 +21,12 @@ const NavbarSearch = () => {
             <div className='col-span-3 '>
                 <form className='h-fit rounded-md' method='get'>
                     <div className="flex border border-neutral-400 rounded-lg items-stretch flex-1">
-                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
-                            <div className="flex w-[110px] justify-between items-center gap-x-1">
-                                <span className='text-xs font-semibold truncate text-nowrap text-black'>
+                        <div onClick={() => { filterSelectRef.current?.click() }} className="relative  cursor-pointer overflow-hidden border-neutral-200 border-r h-full m-auto z-[1]  py-3 px-1">
+                            <div className="flex w-[110px] justify-start items-center gap-x-1">
+                                <span className='text-xs w-[70%] font-semibold truncate text-nowrap text-black'>
                                     {selectedCategory}
                                 </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-3">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
+                                <svg className="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M17 10L13.0606 13.9394C12.4749 14.5251 11.5251 14.5251 10.9393 13.9394L6.99997 10" /></svg>
                             </div>
                             <select aria-label='Select product by category'  value={menu} tabIndex={1} ref={filterSelectRef} className='h-full w-full absolute text-black font-semibold cursor-pointer block left-0 opacity-0 bg-transparent  outline-none top-0' onChange={(e) => {
                                 setMenu(Number(e.target.value))
@@ -59,10 +57,10 @@ const NavbarSearch = () => {
                                 <option className="text-xs tracking-wide" value="24">Bags & Accessories</option>
                             </select>
                         </div>
-                        <div className='relative w-full'>
-                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full pl-8 font-custom outline-none ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' icon={<div className='w-[52px] h-[32px] bg-neutral-700'><SearchIcon iconStyles={{strokeWidth: 1}} className='text-lg stroke-black' /></div>} iconPosition='end' />
+                        <div className='relative w-full overflow-hidden !rounded-lg group'>
+                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full !pe-[55px] pl-8 group-hover/search_text_input:!pe-[60px] font-custom outline-none tracking-wide ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' />
+                            <button type='submit' className='w-[52px] group-hover:size-[40px] cursor-pointer rounded-l-lg group-hover:right-2 group-hover:rounded-full transition-all duration-200 rounded-r-lg flex items-center justify-center absolute top-0 h-full right-0 bg-secondary-dark'><SearchIcon iconStyles={{ strokeWidth: 1 }} className='text-2xl stroke-white' /></button>
                         </div>
-
                     </div>
                 </form>
             </div>
