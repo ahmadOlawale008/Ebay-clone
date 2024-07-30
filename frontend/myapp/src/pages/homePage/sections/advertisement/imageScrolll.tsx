@@ -46,8 +46,8 @@ const ImageScrolll = () => {
                                         className="flex  marquee02 whitespace-nowrap  w-full shrink-0 flex-auto justify-between items-start"
                                     >
                                         {ScrollContent.map((d) => (
-                                            <motion.a href={d.link} key={d.id} className='flex ease-in-out duration-75 marquee-link gap-x-6 flex-1 basis-full items-center'>
-                                                <div className='flex items-center justify-center flex-col gap-[10px]'>
+                                            <motion.a href={d.link} key={d.id} className='flex ease-in-out duration-75 marquee-link gap-x-1 flex-1 basis-full items-center'>
+                                                <div className='flex items-center justify-center flex-col gap-x-1'>
                                                     <div className="marquee-btn bg-gray-200 inline-flex justify-center items-center size-[80px] p-5 rounded-full">
                                                         <IconButton className='size-10 marquee-btn-icon' icon={d.src}></IconButton>
                                                     </div>

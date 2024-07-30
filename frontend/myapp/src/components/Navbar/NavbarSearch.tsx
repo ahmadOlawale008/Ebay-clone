@@ -58,7 +58,7 @@ const NavbarSearch = () => {
                             </select>
                         </div>
                         <div className='relative w-full overflow-hidden !rounded-lg group'>
-                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full !pe-[55px] pl-8 group-hover/search_text_input:!pe-[60px] font-custom outline-none tracking-wide ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' />
+                            <TextInput type="search" name="" placeholder='Search for anything' baseClassName='w-full !pe-[55px] pl-8 group-hover:!pe-[60px] font-custom outline-none tracking-wide ring-none text-sm !border-b-0 bg-transparent relative py-2 px-1 ' />
                             <button type='submit' className='w-[52px] group-hover:size-[40px] cursor-pointer rounded-l-lg group-hover:right-2 group-hover:rounded-full group-hover:border-2 group-hover:border-white transition-all duration-75 ease-in-out rounded-r-lg flex items-center justify-center absolute top-0 h-full right-0 bg-secondary-dark'><SearchIcon iconStyles={{ strokeWidth: 1 }} className='text-2xl stroke-white' /></button>
                         </div>
                     </div>
