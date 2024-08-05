@@ -1,6 +1,5 @@
 import React from 'react'
 import { GoogleOAuthProvider, IdConfiguration } from '@react-oauth/google';
-
 import { Outlet } from 'react-router-dom'
 import { toast } from 'sonner';
 

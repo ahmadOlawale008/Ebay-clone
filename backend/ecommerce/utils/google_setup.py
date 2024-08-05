@@ -17,7 +17,8 @@ def google_setup(redirect_uri: str):
         prompt="select_account",
     )
     return authorization_url
-
+def facebook_callback():
+    request = OAuth2Session()
 
 def google_callback(redirect_uri, auth_uri):
     session = OAuth2Session(

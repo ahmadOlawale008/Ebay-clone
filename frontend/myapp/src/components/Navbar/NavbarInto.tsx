@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Button from '../Button/button'
-
+import { LoginSocialFacebook } from 'reactjs-social-login'
 const NavbarInto = () => {
     const [accountMenuState, setOpenAccountMenuState] = useState(false)
     const accountMenuRef = useRef<HTMLDivElement | null>(null)
@@ -17,6 +17,14 @@ const NavbarInto = () => {
         <nav className='bg-white  px-9 py-1 border-b border-gray-400/40'>
             <div className='flex items-center !font-custom justify-between'>
                 <div>
+                    <div
+                        className="fb-login-button"
+                        data-max-rows="1"
+                        data-size="<medium, large>"
+                        data-button-type="continue_with"
+                        data-width="<100% or px>"
+                        data-scope="<comma separated list of permissions, e.g. public_profile, email>"
+                    ></div>
                     <div className='flex *:cursor-pointer *:inline-flex *:items-center items-center gap-x-4'>
                         <span><a className='text-[14px]' href="">Home</a></span>
                         <span><a className='text-[14px]' href="">Shop</a></span>

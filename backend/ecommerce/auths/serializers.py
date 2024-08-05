@@ -28,7 +28,6 @@ class CookieObtainTokenPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
-            # pass
             email = request.data.get("email")
             password = request.data.get("password")
             user = authenticate(email=email, password=password)
@@ -77,7 +76,6 @@ class CookieObtainTokenPairView(TokenObtainPairView):
                     status=status.HTTP_404_NOT_FOUND,
                 )
         return super().finalize_response(request, response, *args, **kwargs)
-
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):
     # Refresh is None since its serializer.charfield by default.
@@ -132,8 +130,8 @@ from django.core.validators import MinLengthValidator
 
 VALIDATION_MESSAGES = {
     "NAME": {
-        "DUPLICATE_ENTRY": "A user with this name already exists.",
-        "EMPTY_VALUE": "Please enter a value for this field.",
+        "DUPLICATE_ENTRY": "Email address already exists.",
+        "EMPTY_VALUE": "This field must contain at least one character.",
     },
     "EMAIL": {
         "INVALID_EMAIL": "Invalid email address.",
@@ -212,15 +210,14 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def validate_password(self, value):
-        if not any(char in string.ascii_uppercase for char in value):
+        if not any(char in string.ascii_letters for char in value):
             raise serializers.ValidationError(_("ALPHANUMERIC_NEEDED"))
-        if not any(char in string.ascii_lowercase for char in value):
-            raise serializers.ValidationError(_("ALPHANUMERIC_NEEDED"))
+        # if not any(char in string.ascii_lowercase for char in value):
+        #     raise serializers.ValidationError(_("ALPHANUMERIC_NEEDED"))
 
         # SPECIAL_CHARS_NEEDED Password must contain atleast one special characters {string.punctuation}
-        if not any(char in string.punctuation for char in value):
+        if not any(char in string.punctuation for char in value) or not any(char in string.digits for char in value):
             raise serializers.ValidationError(_("SPECIAL_CHARS_NEEDED"))
-        #   code for 'Password must have minimum length of 6.'
         if len(value.strip()) < 6:
             raise serializers.ValidationError(_("MAXLENGTH_OF_SIX"))
         return value

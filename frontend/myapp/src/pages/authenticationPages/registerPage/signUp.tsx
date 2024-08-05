@@ -6,7 +6,7 @@ import { CustomFieldValidations, ValidationMessages, ValidationResult, FirstName
 import { axiosInstance, SignUpResponseErrors } from '../../../api/axiosInstance'
 import { AxiosError, isAxiosError } from 'axios'
 import validator from 'validator'
-import {  ClipLoader, DotLoader } from 'react-spinners'
+import { ClipLoader, DotLoader } from 'react-spinners'
 import { toast } from 'sonner'
 
 const customNameValidator = (name: string, _val: FirstNameValidation | LastNameValidation): FirstNameValidation | LastNameValidation => {
@@ -97,10 +97,10 @@ const SignUpPage = () => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     }).then((response) => {
       const { data } = response;
-      const updatedEmailValidation = customEmailValidator(formContent.email, { ...formValidations.email, fetchedErrorMessage: data.error || '', validity: { ...formValidations.email.validity, doesNotAlreadyExists: data.valid || false, } })
+      const updatedEmailValidation = parse_validations("", "email")
       setFormValidations(prev => ({
         ...prev,
-        email: updatedEmailValidation,
+        email: updatedEmailValidation as EmailValidation,
       }));
     }).catch((error: AxiosError) => {
       console.log(error);
@@ -112,7 +112,7 @@ const SignUpPage = () => {
       formValidations.email.valid() &&
       formValidations.password.valid();
   };
-  
+
   const handleFormRegistrationForm = (e: React.FormEvent) => {
     e.preventDefault()
     setIsFormLoading(true)
@@ -128,7 +128,7 @@ const SignUpPage = () => {
         const responseData = error.response?.data;
         let updatedFormValidations = { ...formValidations };
         console.log(responseData, error)
-        if(typeof responseData === 'object'){
+        if (typeof responseData === 'object') {
           Object.keys(responseData).forEach((field) => {
             const validationField = field as keyof SignUpCustomValidation;
             if (validationField === 'email') {
@@ -145,17 +145,16 @@ const SignUpPage = () => {
           });
           // Set state once after the loop
           setFormValidations(updatedFormValidations);
-        }else{
+        } else {
           toast.error(SignUpResponseErrors.SERVER_ERROR)
         }
       }
-    }).finally(()=>{
+    }).finally(() => {
       setIsFormLoading(false)
     })
   }
 
   useEffect(() => {
-    console.log('formValidations updated:', formValidations);
     setIsFormValid(checkIfFormIsValidForSubmission())
   }, [formValidations])
   return (
@@ -177,7 +176,7 @@ const SignUpPage = () => {
               <TextInput onChange={(e) => handleFormChange(e)} onBlur={(e) => handleInputBlur(e)} value={formContent.last_name} autoComplete='lastname' aria-required="true" size='small' error={!formValidations.last_name.valid()} helperText={formValidations.last_name.fetchedErrorMessage || ""} required type='text' baseClassName='text-sm' name='form_last_name' variant='outlined' id='last_name_input' placeholder='Last Name' iconPosition='end' />
             </div>
             <div className="col-span-2">
-              <TextInput onChange={(e) => handleFormChange(e)} value={formContent.email} error={!formValidations.email.valid()} size='small' helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage : !formValidations.email.valid() ?  "Please enter a valid email address." : ""} autoComplete='email' aria-required="true" onBlur={(e) => { handleInputBlur(e); checkIfUserWithEmailExists(); }} required baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
+              <TextInput onChange={(e) => handleFormChange(e)} value={formContent.email} error={!formValidations.email.valid()} size='small' helperText={formValidations.email.fetchedErrorMessage ? formValidations.email.fetchedErrorMessage : !formValidations.email.valid() ? "Please enter a valid email address." : ""} autoComplete='email' aria-required="true" onBlur={(e) => { handleInputBlur(e); checkIfUserWithEmailExists(); }} required baseClassName='text-sm' variant='outlined' name='form_email' id='email_input' placeholder='Email' type='email' />
             </div>
             <div className="col-span-2">
               <TextInput onChange={(e) => handleFormChange(e)} autoComplete='new-password' size='small' value={formContent.password} aria-required="true" data-required="true" error={!formValidations.password.valid()} helperText={
