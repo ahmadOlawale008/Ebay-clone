@@ -31,6 +31,7 @@
   
   * {
     box-sizing: border-box;
+    text-rendering: optimizeLegibility;
     @apply antialiased text-[16px] text-assets-dark-text
   }
   .font-arial{

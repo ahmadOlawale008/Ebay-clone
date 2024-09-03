@@ -50,6 +50,7 @@ export const roundedStyleState: Record<RoundedType, RoundedType> = {
     xl: "xl",
     full: "full",
     none: "none"
+
 }
 const Button: React.FC<ButtonProps> = ({ children, iconClassName, fullWidth, baseClassName, ringEffect = true, rounded = "md", icon, iconPosition = "start", color = "secondary", variant = "text", size = "medium", ...props }) => {
     const defaultProps = "active:scale-[0.98] disabled:scale-1 gap-x-2 disabled:bg-neutral-500/30 disabled:!cursor-not-allowed disabled:!ring-0 disabled:!shadow-none ease-in-out font-normal tracking-wider inline-flex text-center justify-center items-center m-0"

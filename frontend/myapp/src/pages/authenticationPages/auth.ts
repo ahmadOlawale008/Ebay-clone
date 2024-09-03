@@ -1,6 +1,5 @@
 import React from "react"
 // Sign Up Auth
-
 // Backend Validation Messages
 export const VALIDATION_MESSAGES = {
     "NAME": {
